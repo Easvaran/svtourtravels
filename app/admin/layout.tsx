@@ -220,3 +220,4 @@ export default function AdminLayout({
       </main>
     </div>
   );
+}
