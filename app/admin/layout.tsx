@@ -15,6 +15,7 @@ import {
   IndianRupee
 } from "lucide-react";
 import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
@@ -39,6 +40,7 @@ export default function AdminLayout({
   const pathname = usePathname();
   const router = useRouter();
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const isLoginPage = pathname === "/admin/login";
 
@@ -60,10 +62,10 @@ export default function AdminLayout({
 
   return (
     <div className="flex min-h-screen bg-gray-50">
-      {/* Sidebar */}
+      {/* Sidebar - Desktop */}
       <aside 
         className={cn(
-          "bg-white border-r border-gray-200 transition-all duration-300 flex flex-col z-30",
+          "hidden md:flex bg-white border-r border-gray-200 transition-all duration-300 flex-col z-30",
           isCollapsed ? "w-20" : "w-64"
         )}
       >
@@ -73,7 +75,7 @@ export default function AdminLayout({
               {settings.logoUrl ? (
                 <img src={settings.logoUrl} alt="Logo" className="h-8 w-auto" />
               ) : (
-                <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center text-white font-bold text-xl">
+                <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center text-white font-bold text-xl group-hover:rotate-12 transition-transform shadow-lg">
                   {settings.websiteName.substring(0, 2).toUpperCase()}
                 </div>
               )}
@@ -123,12 +125,88 @@ export default function AdminLayout({
         </div>
       </aside>
 
+      {/* Mobile Sidebar Overlay */}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <>
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="fixed inset-0 bg-black/50 z-40 md:hidden backdrop-blur-sm"
+            />
+            <motion.aside
+              initial={{ x: -280 }}
+              animate={{ x: 0 }}
+              exit={{ x: -280 }}
+              className="fixed left-0 top-0 bottom-0 w-[280px] bg-white z-50 md:hidden flex flex-col shadow-2xl"
+            >
+              <div className="p-6 flex items-center justify-between border-b border-gray-100">
+                <Link href="/" className="flex items-center space-x-2">
+                  <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center text-white font-bold text-xl">
+                    {settings.websiteName.substring(0, 2).toUpperCase()}
+                  </div>
+                  <span className="font-black text-xl text-primary">
+                    {settings.websiteName.split(" ")[0].toUpperCase()}
+                  </span>
+                </Link>
+                <button onClick={() => setIsMobileMenuOpen(false)} className="p-2 text-gray-400">
+                  <ChevronLeft size={24} />
+                </button>
+              </div>
+
+              <nav className="flex-1 px-4 space-y-2 mt-6">
+                {sidebarLinks.map((link) => {
+                  const Icon = link.icon;
+                  const isActive = pathname === link.href;
+                  return (
+                    <Link
+                      key={link.name}
+                      href={link.href}
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className={cn(
+                        "flex items-center space-x-3 px-4 py-4 rounded-2xl transition-all",
+                        isActive 
+                          ? "bg-primary text-white shadow-lg" 
+                          : "text-gray-500 hover:bg-gray-50"
+                      )}
+                    >
+                      <Icon size={20} />
+                      <span className="font-bold">{link.name}</span>
+                    </Link>
+                  );
+                })}
+              </nav>
+
+              <div className="p-6 border-t border-gray-100">
+                <button 
+                  onClick={handleLogout}
+                  className="flex items-center space-x-3 px-4 py-4 w-full text-red-500 bg-red-50 rounded-2xl font-black"
+                >
+                  <LogOut size={20} />
+                  <span>Logout</span>
+                </button>
+              </div>
+            </motion.aside>
+          </>
+        )}
+      </AnimatePresence>
+
       {/* Main Content */}
       <main className="flex-1 flex flex-col min-w-0 overflow-hidden">
-        <header className="h-20 bg-white border-bottom border-gray-200 flex items-center justify-between px-8 sticky top-0 z-20">
-          <h1 className="text-xl font-black text-gray-900 capitalize">
-            {pathname.split("/").pop() === "admin" ? "Overview" : pathname.split("/").pop()?.replace(/-/g, " ")}
-          </h1>
+        <header className="h-20 bg-white border-b border-gray-200 flex items-center justify-between px-4 md:px-8 sticky top-0 z-20">
+          <div className="flex items-center gap-4">
+            <button 
+              onClick={() => setIsMobileMenuOpen(true)}
+              className="md:hidden p-2 text-gray-500 hover:bg-gray-100 rounded-xl"
+            >
+              <Menu size={24} />
+            </button>
+            <h1 className="text-lg md:text-xl font-black text-gray-900 capitalize truncate">
+              {pathname.split("/").pop() === "admin" ? "Overview" : pathname.split("/").pop()?.replace(/-/g, " ")}
+            </h1>
+          </div>
           <div className="flex items-center space-x-4">
             <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center text-primary font-bold">
               AD
@@ -136,10 +214,9 @@ export default function AdminLayout({
           </div>
         </header>
 
-        <div className="p-8 overflow-y-auto">
+        <div className="p-4 md:p-8 overflow-y-auto">
           {children}
         </div>
       </main>
     </div>
   );
-}
