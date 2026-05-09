@@ -7,7 +7,7 @@ import PackageCard from "@/components/PackageCard";
 import { ChevronRight, Sparkles } from "lucide-react";
 
 export default function PackagesPage() {
-  const [packages, setPackages] = useState([]);
+  const [packages, setPackages] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
