@@ -1,0 +1,369 @@
+"use client";
+
+import { useState, useEffect } from "react";
+import { useRouter, useParams } from "next/navigation";
+import { 
+  ArrowLeft, 
+  Save, 
+  Plus, 
+  Trash2, 
+  Image as ImageIcon,
+  CheckCircle2,
+  Clock,
+  IndianRupee,
+  Package as PackageIcon,
+  Tag
+} from "lucide-react";
+import { cn } from "@/lib/utils";
+import toast from "react-hot-toast";
+
+export default function PackageFormPage() {
+  const router = useRouter();
+  const { id } = useParams();
+  const isEdit = !!id;
+
+  const [loading, setLoading] = useState(isEdit);
+  const [saving, setSaving] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const [formData, setFormData] = useState({
+    name: "",
+    price: "",
+    duration: "",
+    image: "",
+    category: "Family",
+    includes: ["Hotel", "Cab", "Food"],
+    customEnabled: true,
+    featured: false,
+    description: ""
+  });
+
+  useEffect(() => {
+    if (isEdit) {
+      fetch(`/api/packages/${id}`)
+        .then(res => res.json())
+        .then(data => {
+          setFormData({
+            ...data,
+            includes: data.includes || ["Hotel", "Cab", "Food"]
+          });
+          setLoading(false);
+        });
+    }
+  }, [id, isEdit]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSaving(true);
+
+    try {
+      const url = isEdit ? `/api/packages/${id}` : "/api/packages";
+      const method = isEdit ? "PUT" : "POST";
+
+      const res = await fetch(url, {
+        method,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData)
+      });
+
+      if (res.ok) {
+        toast.success(`Package ${isEdit ? "updated" : "created"} successfully`);
+        router.push("/admin/packages");
+      } else {
+        const error = await res.json();
+        toast.error(error.error || "Something went wrong");
+      }
+    } catch (error) {
+      toast.error("Failed to save package");
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handleArrayChange = (index: number, value: string) => {
+    const newIncludes = [...formData.includes];
+    newIncludes[index] = value;
+    setFormData({ ...formData, includes: newIncludes });
+  };
+
+  const addInclude = () => {
+    setFormData({ ...formData, includes: [...formData.includes, ""] });
+  };
+
+  const removeInclude = (index: number) => {
+    setFormData({ ...formData, includes: formData.includes.filter((_, i) => i !== index) });
+  };
+
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploading(true);
+    const uploadData = new FormData();
+    uploadData.append("file", file);
+
+    try {
+      const res = await fetch("/api/upload", {
+        method: "POST",
+        body: uploadData,
+      });
+
+      const data = await res.json();
+      if (res.ok) {
+        setFormData({ ...formData, image: data.url });
+        toast.success("Image uploaded successfully!");
+      } else {
+        toast.error(data.error || "Upload failed");
+      }
+    } catch (error) {
+      toast.error("Failed to upload image");
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const copyToClipboard = (text: string) => {
+    navigator.clipboard.writeText(text);
+    toast.success("URL copied to clipboard!");
+  };
+
+  if (loading) return <div className="animate-pulse space-y-8">
+    <div className="h-10 w-48 bg-gray-200 rounded-xl" />
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <div className="h-96 bg-gray-200 rounded-3xl" />
+      <div className="h-96 bg-gray-200 rounded-3xl" />
+    </div>
+  </div>;
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-8 pb-24">
+      <div className="flex items-center justify-between">
+        <button 
+          type="button"
+          onClick={() => router.back()}
+          className="flex items-center space-x-2 text-gray-500 hover:text-gray-900 font-bold transition-colors"
+        >
+          <ArrowLeft size={20} />
+          <span>Back to Packages</span>
+        </button>
+        <button 
+          type="submit"
+          disabled={saving}
+          className="bg-primary hover:bg-blue-700 text-white font-black px-10 py-4 rounded-2xl flex items-center space-x-2 transition-all shadow-lg shadow-primary/20 hover:-translate-y-1 disabled:opacity-70"
+        >
+          {saving ? <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" /> : <Save size={20} />}
+          <span>{isEdit ? "Update Package" : "Create Package"}</span>
+        </button>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="lg:col-span-2 space-y-8">
+          <section className="bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-sm space-y-6">
+            <h3 className="text-xl font-black text-gray-900 flex items-center space-x-2">
+              <span className="w-8 h-8 bg-blue-50 text-blue-600 rounded-lg flex items-center justify-center text-sm">01</span>
+              <span>General Information</span>
+            </h3>
+            
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <label className="text-xs font-black text-gray-400 uppercase tracking-widest ml-1">Package Name</label>
+                <input 
+                  required
+                  type="text" 
+                  placeholder="Ex: Ooty Honeymoon Special"
+                  className="w-full bg-gray-50 border-2 border-transparent rounded-2xl py-4 px-6 focus:border-primary/10 focus:bg-white outline-none transition-all font-bold text-gray-900"
+                  value={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                />
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <label className="text-xs font-black text-gray-400 uppercase tracking-widest ml-1">Price (₹)</label>
+                  <div className="relative">
+                    <IndianRupee size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
+                    <input 
+                      required
+                      type="text" 
+                      placeholder="Ex: 12,999"
+                      className="w-full bg-gray-50 border-2 border-transparent rounded-2xl py-4 pl-12 pr-6 focus:border-primary/10 focus:bg-white outline-none transition-all font-bold text-gray-900"
+                      value={formData.price}
+                      onChange={(e) => setFormData({ ...formData, price: e.target.value })}
+                    />
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <label className="text-xs font-black text-gray-400 uppercase tracking-widest ml-1">Duration</label>
+                  <div className="relative">
+                    <Clock size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
+                    <input 
+                      required
+                      type="text" 
+                      placeholder="Ex: 3 Days / 2 Nights"
+                      className="w-full bg-gray-50 border-2 border-transparent rounded-2xl py-4 pl-12 pr-6 focus:border-primary/10 focus:bg-white outline-none transition-all font-bold text-gray-900"
+                      value={formData.duration}
+                      onChange={(e) => setFormData({ ...formData, duration: e.target.value })}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-xs font-black text-gray-400 uppercase tracking-widest ml-1">Description</label>
+                <textarea 
+                  rows={4}
+                  placeholder="Tell us about this package..."
+                  className="w-full bg-gray-50 border-2 border-transparent rounded-2xl py-4 px-6 focus:border-primary/10 focus:bg-white outline-none transition-all font-bold text-gray-900 resize-none"
+                  value={formData.description}
+                  onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                />
+              </div>
+            </div>
+          </section>
+
+          <section className="bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-sm space-y-6">
+            <div className="flex items-center justify-between">
+              <h3 className="text-xl font-black text-gray-900 flex items-center space-x-2">
+                <span className="w-8 h-8 bg-green-50 text-green-600 rounded-lg flex items-center justify-center text-sm">02</span>
+                <span>Package Inclusions</span>
+              </h3>
+              <button 
+                type="button"
+                onClick={addInclude}
+                className="p-2 bg-primary/5 text-primary hover:bg-primary hover:text-white rounded-xl transition-all"
+              >
+                <Plus size={20} />
+              </button>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {formData.includes?.map((item, idx) => (
+                <div key={idx} className="flex space-x-2 items-center bg-gray-50 p-4 rounded-2xl border border-gray-100">
+                  <Tag size={16} className="text-primary" />
+                  <input 
+                    type="text" 
+                    placeholder="Ex: Breakfast Included"
+                    className="flex-1 bg-transparent outline-none font-bold text-gray-900"
+                    value={item}
+                    onChange={(e) => handleArrayChange(idx, e.target.value)}
+                  />
+                  <button type="button" onClick={() => removeInclude(idx)} className="text-gray-300 hover:text-red-500"><Trash2 size={16} /></button>
+                </div>
+              ))}
+            </div>
+          </section>
+        </div>
+
+        <div className="space-y-8">
+          <section className="bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-sm space-y-6">
+            <h3 className="text-xl font-black text-gray-900 flex items-center space-x-2">
+              <span className="w-8 h-8 bg-orange-50 text-orange-600 rounded-lg flex items-center justify-center text-sm">03</span>
+              <span>Settings & Category</span>
+            </h3>
+            
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <label className="text-xs font-black text-gray-400 uppercase tracking-widest ml-1">Featured Image</label>
+                  <label className="cursor-pointer text-xs font-black text-primary hover:text-blue-700 transition-colors uppercase tracking-widest flex items-center gap-1">
+                    <Plus size={14} />
+                    <span>Upload Image</span>
+                    <input type="file" className="hidden" accept="image/*" onChange={handleFileUpload} disabled={uploading} />
+                  </label>
+                </div>
+                
+                <div className="relative">
+                  <ImageIcon size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
+                  <input 
+                    required
+                    type="text" 
+                    placeholder="https://images.unsplash.com/..."
+                    className="w-full bg-gray-50 border-2 border-transparent rounded-2xl py-4 pl-12 pr-12 focus:border-primary/10 focus:bg-white outline-none transition-all font-bold text-gray-900"
+                    value={formData.image}
+                    onChange={(e) => setFormData({ ...formData, image: e.target.value })}
+                  />
+                  {formData.image && (
+                    <button 
+                      type="button"
+                      onClick={() => copyToClipboard(formData.image)}
+                      className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-primary transition-colors"
+                      title="Copy URL"
+                    >
+                      <Plus size={18} className="rotate-45" />
+                    </button>
+                  )}
+                </div>
+              </div>
+
+              {uploading && (
+                <div className="flex items-center justify-center p-8 bg-gray-50 rounded-2xl border-2 border-dashed border-primary/20">
+                  <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin" />
+                </div>
+              )}
+
+              {formData.image && !uploading && (
+                <div className="relative h-48 rounded-2xl overflow-hidden border border-gray-100 group">
+                  <img src={formData.image} alt="Preview" className="w-full h-full object-cover" />
+                  <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                    <button 
+                      type="button"
+                      onClick={() => copyToClipboard(formData.image)}
+                      className="bg-white text-gray-900 px-4 py-2 rounded-xl font-black text-xs uppercase tracking-widest shadow-xl"
+                    >
+                      Copy URL
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              <div className="space-y-2">
+                <label className="text-xs font-black text-gray-400 uppercase tracking-widest ml-1">Category</label>
+                <div className="relative group">
+                  <PackageIcon size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
+                  <select 
+                    className="w-full bg-gray-50 border-2 border-transparent rounded-2xl py-4 pl-12 pr-6 focus:border-primary/10 focus:bg-white outline-none transition-all font-bold text-gray-900 appearance-none"
+                    value={formData.category}
+                    onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                  >
+                    <option value="Honeymoon">Honeymoon</option>
+                    <option value="Family">Family</option>
+                    <option value="Group">Group</option>
+                    <option value="Custom">Custom</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4 pt-4">
+                <button 
+                  type="button"
+                  onClick={() => setFormData({ ...formData, customEnabled: !formData.customEnabled })}
+                  className={cn(
+                    "w-full h-[60px] rounded-2xl font-black transition-all flex items-center justify-center space-x-2 border-2",
+                    formData.customEnabled 
+                      ? "bg-primary/5 border-primary text-primary" 
+                      : "bg-gray-50 border-transparent text-gray-400"
+                  )}
+                >
+                  <CheckCircle2 size={20} />
+                  <span>Customizable</span>
+                </button>
+                <button 
+                  type="button"
+                  onClick={() => setFormData({ ...formData, featured: !formData.featured })}
+                  className={cn(
+                    "w-full h-[60px] rounded-2xl font-black transition-all flex items-center justify-center space-x-2 border-2",
+                    formData.featured 
+                      ? "bg-secondary/10 border-secondary text-secondary" 
+                      : "bg-gray-50 border-transparent text-gray-400"
+                  )}
+                >
+                  <Plus size={20} />
+                  <span>Featured</span>
+                </button>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </form>
+  );
+}

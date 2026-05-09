@@ -1,0 +1,32 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("MONGODB_URI")
+}
+
+model Enquiry {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  name         String
+  phone        String
+  destination  String
+  travelDate   String
+  days         Int
+  people       Int
+  packageType  String
+  message      String
+  vehicleName  String?
+  vehicleType  String?
+  vehiclePrice Int?
+  vehicleSeats Int?
+  paymentType  String?   @default("enquiry")
+  totalAmount  Int?      @default(0)
+  paidAmount   Int?      @default(0)
+  remainingAmount Int?   @default(0)
+  paymentStatus String?  @default("pending")
+  razorpayOrderId String?
+  razorpayPaymentId String?
+  createdAt    DateTime @default(now())
+}
