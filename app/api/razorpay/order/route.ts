@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
-import { razorpay } from "@/lib/razorpay";
+import { getRazorpay } from "@/lib/razorpay";
+
+export const dynamic = 'force-dynamic';
 
 export async function POST(req: Request) {
   try {
@@ -11,6 +13,7 @@ export async function POST(req: Request) {
       receipt: `receipt_${Date.now()}`,
     };
 
+    const razorpay = getRazorpay();
     const order = await razorpay.orders.create(options);
 
     return NextResponse.json({
