@@ -33,9 +33,11 @@ const Navbar = () => {
     <nav
       className={cn(
         "fixed w-full z-50 transition-all duration-500 px-4 py-3",
-        scrolled 
-          ? "bg-white/95 backdrop-blur-xl shadow-lg py-2 border-b border-primary/10" 
-          : "bg-[#0870b8]/90 backdrop-blur-lg border-b border-white/10"
+        isOpen 
+          ? "bg-white shadow-lg py-3" 
+          : scrolled 
+            ? "bg-white/95 backdrop-blur-xl shadow-lg py-2 border-b border-primary/10" 
+            : "bg-[#0870b8]/90 backdrop-blur-lg border-b border-white/10"
       )}
     >
       <div className="max-w-7xl mx-auto flex justify-between items-center">
@@ -50,13 +52,13 @@ const Navbar = () => {
           <div className="flex flex-col">
             <span className={cn(
               "font-black text-xl tracking-tighter leading-none transition-colors",
-              scrolled ? "text-primary" : "text-white"
+              isOpen || scrolled ? "text-primary" : "text-white"
             )}>
               {settings.websiteName.toUpperCase()}
             </span>
             <span className={cn(
               "text-[10px] font-bold tracking-[0.2em] uppercase transition-colors",
-              scrolled ? "text-gray-500" : "text-white/70"
+              isOpen || scrolled ? "text-gray-500" : "text-white/70"
             )}>
               Explore | Discover
             </span>
@@ -97,7 +99,7 @@ const Navbar = () => {
         <button
           className={cn(
             "md:hidden p-2 rounded-xl transition-colors", 
-            scrolled ? "text-primary bg-primary/5" : "text-white bg-white/10"
+            isOpen || scrolled ? "text-primary bg-primary/5" : "text-white bg-white/10"
           )}
           onClick={() => setIsOpen(!isOpen)}
         >
@@ -124,7 +126,7 @@ const Navbar = () => {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: '100%' }}
               transition={{ type: "spring", damping: 25, stiffness: 200 }}
-              className="fixed inset-y-0 right-0 w-[85%] max-w-[400px] z-[40] bg-white shadow-2xl flex flex-col p-6 md:hidden"
+              className="fixed inset-y-0 right-0 w-[85%] max-w-[400px] z-[9999] !bg-white shadow-2xl flex flex-col p-6 md:hidden border-l border-gray-100"
             >
               <div className="flex justify-between items-center mb-10">
                 <Link href="/" onClick={() => setIsOpen(false)} className="flex items-center space-x-3">
