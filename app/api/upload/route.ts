@@ -1,7 +1,4 @@
 import { NextResponse } from "next/server";
-import { writeFile, mkdir } from "fs/promises";
-import path from "path";
-import { v4 as uuidv4 } from "uuid";
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 const ALLOWED_MIME_TYPES = [
@@ -32,42 +29,14 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Invalid file type. Allowed types: JPG, JPEG, PNG, WEBP, SVG, ICO" }, { status: 400 });
     }
 
+    // Convert file to Base64
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
-
-    // Create unique filename - ensure proper extension handling
-    let extension = path.extname(file.name).toLowerCase();
-    if (!extension) {
-      // Map mime type to extension if no extension in filename
-      const mimeToExt: { [key: string]: string } = {
-        "image/jpeg": ".jpg",
-        "image/jpg": ".jpg",
-        "image/png": ".png",
-        "image/webp": ".webp",
-        "image/svg+xml": ".svg",
-        "image/x-icon": ".ico"
-      };
-      extension = mimeToExt[file.type] || ".jpg";
-    }
-
-    const safeFilename = file.name.replace(/\s+/g, "-").replace(/[^a-zA-Z0-9.-]/g, "");
-    const filename = `${uuidv4()}-${safeFilename}`;
-    const uploadDir = path.join(process.cwd(), "public", "uploads");
+    const base64 = buffer.toString("base64");
+    const dataUrl = `data:${file.type};base64,${base64}`;
     
-    // Ensure directory exists
-    try {
-      await mkdir(uploadDir, { recursive: true });
-    } catch (err) {
-      // Ignore if directory already exists
-    }
-
-    const filePath = path.join(uploadDir, filename);
-    await writeFile(filePath, buffer);
-
-    const fileUrl = `/uploads/${filename}`;
-    
-    console.log(`File uploaded successfully: ${fileUrl}`);
-    return NextResponse.json({ url: fileUrl });
+    console.log(`File converted to Base64 successfully: ${file.name} (${file.size} bytes)`);
+    return NextResponse.json({ url: dataUrl });
   } catch (error: any) {
     console.error("Upload error:", error);
     return NextResponse.json({ error: "Failed to upload image: " + error.message }, { status: 500 });
