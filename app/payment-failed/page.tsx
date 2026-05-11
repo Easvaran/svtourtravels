@@ -41,7 +41,7 @@ export default function PaymentFailedPage() {
             <span>Try Again</span>
           </Link>
           <a 
-            href={`https://wa.me/${settings.whatsappNumber}`}
+            href={`https://wa.me/918668076871`}
             target="_blank"
             className="flex items-center justify-center space-x-2 bg-green-500 text-white py-4 rounded-2xl font-black hover:bg-green-600 transition-all shadow-lg"
           >

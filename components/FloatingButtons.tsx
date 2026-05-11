@@ -25,7 +25,7 @@ const FloatingButtons = () => {
     <div className="fixed bottom-8 right-8 z-[60] flex flex-col space-y-4">
       {/* WhatsApp Button */}
       <motion.a
-        href={`https://wa.me/${settings.whatsappNumber}?text=${encodeURIComponent("Hi I want to book a tour")}`}
+        href={`https://wa.me/918668076871?text=${encodeURIComponent("Hi I want to book a tour")}`}
         target="_blank"
         rel="noopener noreferrer"
         initial={{ scale: 0 }}

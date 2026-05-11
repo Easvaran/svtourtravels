@@ -50,7 +50,7 @@ const EnquiryForm = ({
   const tourAmount = pricePerPerson * peopleCount;
   const vehicleAmount = selectedVehicle ? (Number(selectedVehicle.price) * daysCount) : 0;
   const totalAmount = tourAmount + vehicleAmount;
-  const WHATSAPP_NUMBER = settings.whatsappNumber;
+  const WHATSAPP_NUMBER = "918668076871";
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });

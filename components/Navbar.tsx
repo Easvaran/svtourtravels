@@ -194,7 +194,7 @@ const Navbar = () => {
                       <Phone size={20} />
                     </a>
                     <a 
-                      href={`https://wa.me/${settings.whatsappNumber}`}
+                      href={`https://wa.me/918668076871`}
                       target="_blank"
                       className="w-12 h-12 bg-green-50 hover:bg-green-500 hover:text-white text-green-600 rounded-2xl flex items-center justify-center transition-all"
                     >
