@@ -7,7 +7,7 @@ const SettingsSchema = new Schema(
     faviconUrl: { type: String, default: "" },
     contactEmail: { type: String, default: "info@svtourtravels.com" },
     contactPhone: { type: String, default: "+91 XXXXXXXXXX" },
-    whatsappNumber: { type: String, default: "+91 XXXXXXXXXX" },
+    whatsappNumber: { type: String, default: "+91 8668076871" },
     address: { type: String, default: "123 Travel Street, Destination City, India 600001" },
     mapIframe: { type: String, default: "" },
     socialLinks: {

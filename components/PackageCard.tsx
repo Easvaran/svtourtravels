@@ -34,7 +34,7 @@ const PackageCard = ({
   };
 
   const whatsappMsg = `Hi, I am interested in the ${name} package (${category}).`;
-  const whatsappLink = `https://wa.me/919025335720?text=${encodeURIComponent(whatsappMsg)}`;
+  const whatsappLink = `https://wa.me/918668076871?text=${encodeURIComponent(whatsappMsg)}`;
 
   return (
     <motion.div

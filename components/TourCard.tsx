@@ -18,7 +18,7 @@ interface TourCardProps {
 }
 
 const TourCard = ({ title, image, price, duration, rating, slug, description, featured }: TourCardProps) => {
-  const whatsappLink = `https://wa.me/919025335720?text=${encodeURIComponent(`Hi, I am interested in ${title} tour package.`)}`;
+  const whatsappLink = `https://wa.me/918668076871?text=${encodeURIComponent(`Hi, I am interested in ${title} tour package.`)}`;
 
   return (
     <motion.div

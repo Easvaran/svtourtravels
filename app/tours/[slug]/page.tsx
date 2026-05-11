@@ -92,7 +92,7 @@ export default function TourDetailsPage() {
   }
 
   const whatsappMsg = `Hi, I am interested in ${tour.title} package. Please provide more details.`;
-  const whatsappLink = `https://wa.me/919025335720?text=${encodeURIComponent(whatsappMsg)}`;
+  const whatsappLink = `https://wa.me/918668076871?text=${encodeURIComponent(whatsappMsg)}`;
 
   return (
     <div className="min-h-screen bg-gray-50/50 pb-24">
