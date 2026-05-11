@@ -34,15 +34,35 @@ export default function VehicleUploader({ label, value, onChange, description }:
         method: "POST",
         body: formData,
       });
-      const data = await res.json();
+      
+      // Get response as text first for safety
+      const text = await res.text();
+      
+      if (!text || text.trim() === "") {
+        throw new Error("Empty response from server");
+      }
+      
+      let data;
+      try {
+        data = JSON.parse(text);
+      } catch (parseError) {
+        console.error("Failed to parse JSON:", text);
+        throw new Error("Invalid response from server. Expected JSON.");
+      }
+      
+      if (!res.ok) {
+        throw new Error(data.error || "Upload failed");
+      }
+      
       if (data.url) {
         onChange(data.url);
         toast.success("Image uploaded successfully");
       } else {
-        throw new Error(data.error || "Upload failed");
+        throw new Error("Server returned success but no URL in response");
       }
     } catch (error: any) {
-      toast.error(error.message);
+      console.error("Vehicle upload error:", error);
+      toast.error(error.message || "Upload failed");
     } finally {
       setUploading(false);
     }

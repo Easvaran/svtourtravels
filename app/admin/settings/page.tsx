@@ -121,12 +121,29 @@ export default function SettingsPage() {
         body: formData,
       });
       
-      if (!res.ok) {
-        const errorData = await res.json();
-        throw new Error(errorData.error || "Upload failed");
+      // Get response as text first for safety
+      const text = await res.text();
+      
+      if (!text || text.trim() === "") {
+        throw new Error("Empty response from server");
       }
       
-      const data = await res.json();
+      let data;
+      try {
+        data = JSON.parse(text);
+      } catch (parseError) {
+        console.error("Failed to parse JSON:", text);
+        throw new Error("Invalid response from server. Expected JSON but got: " + text.substring(0, 100));
+      }
+      
+      if (!res.ok) {
+        throw new Error(data.error || "Upload failed");
+      }
+      
+      if (!data.url) {
+        throw new Error("Server returned success but no URL in response");
+      }
+      
       console.log("File uploaded successfully:", data.url);
       return data.url;
     } catch (error: any) {
