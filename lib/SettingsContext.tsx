@@ -61,19 +61,34 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   const fetchSettings = async () => {
     try {
       const res = await fetch("/api/admin/settings");
-      if (res.ok) {
-        const data = await res.json();
+      
+      const text = await res.text();
+      if (!text || text.trim() === "") {
+        console.error("Empty response from settings API");
+        return;
+      }
+      
+      let data;
+      try {
+        data = JSON.parse(text);
+      } catch (parseError) {
+        console.error("Failed to parse settings JSON:", text);
+        return;
+      }
+      
+      if (res.ok && data.success) {
+        const settingsData = data.data || data;
         console.log("Settings loaded from API:", {
-          logoUrl: data.logoUrl,
-          faviconUrl: data.faviconUrl,
-          hasLogo: !!data.logoUrl,
-          hasFavicon: !!data.faviconUrl
+          logoUrl: settingsData.logoUrl,
+          faviconUrl: settingsData.faviconUrl,
+          hasLogo: !!settingsData.logoUrl,
+          hasFavicon: !!settingsData.faviconUrl
         });
-        setSettings(data);
+        setSettings(settingsData);
 
         // Update favicon dynamically
-        if (data.faviconUrl) {
-          console.log("Updating favicon to:", data.faviconUrl);
+        if (settingsData.faviconUrl) {
+          console.log("Updating favicon to:", settingsData.faviconUrl);
           // Remove existing favicon links
           const existingLinks = document.querySelectorAll("link[rel~='icon']");
           existingLinks.forEach(link => link.remove());
@@ -81,19 +96,19 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({ chil
           // Create new favicon link
           const link = document.createElement('link');
           link.rel = 'icon';
-          link.href = data.faviconUrl;
+          link.href = settingsData.faviconUrl;
           document.head.appendChild(link);
           
           // Also add apple-touch-icon for iOS
           const appleLink = document.createElement('link');
           appleLink.rel = 'apple-touch-icon';
-          appleLink.href = data.faviconUrl;
+          appleLink.href = settingsData.faviconUrl;
           document.head.appendChild(appleLink);
         }
 
         // Update title dynamically
-        if (data.websiteName) {
-          document.title = `${data.websiteName} | Modern Tour Booking Website`;
+        if (settingsData.websiteName) {
+          document.title = `${settingsData.websiteName} | Modern Tour Booking Website`;
         }
       }
     } catch (error) {
