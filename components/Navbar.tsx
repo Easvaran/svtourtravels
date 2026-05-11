@@ -179,7 +179,7 @@ const Navbar = () => {
                 <Link
                   href="/contact"
                   onClick={() => setIsOpen(false)}
-                  className="w-full bg-primary hover:bg-blue-700 text-white text-center font-black py-5 rounded-2xl shadow-xl shadow-primary/20 transition-all active:scale-[0.98]"
+                  className="w-full bg-primary hover:bg-blue-700 text-white text-center font-bold py-4 rounded-2xl shadow-xl shadow-primary/20 transition-all active:scale-[0.98] text-sm"
                 >
                   Book Your Trip
                 </Link>
