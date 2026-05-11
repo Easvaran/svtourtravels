@@ -351,7 +351,7 @@ export default function SettingsPage() {
                   onChange={(e) => setFormData({ ...formData, mapIframe: e.target.value })}
                 />
               </div>
-              <p className="text-[10px] text-gray-400 ml-1 italic">* Go to Google Maps &gt; Share &gt; Embed a map &gt; Copy the URL inside the "src" attribute.</p>
+              <p className="text-[10px] text-gray-400 ml-1 italic">* Go to Google Maps > Share > Embed a map > Copy the URL inside the "src" attribute.</p>
             </div>
           </div>
         </section>

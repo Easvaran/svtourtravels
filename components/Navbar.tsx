@@ -185,7 +185,7 @@ const Navbar = () => {
                   <p className="text-xs font-bold uppercase tracking-[0.2em] text-gray-400 mb-4 text-center">Contact Us</p>
                   <div className="flex justify-center space-x-4">
                     <a 
-                      href={`tel:${settings.contactNumber}`}
+                      href={`tel:${settings.contactPhone}`}
                       className="w-12 h-12 bg-primary/10 hover:bg-primary hover:text-white text-primary rounded-2xl flex items-center justify-center transition-all"
                     >
                       <Phone size={20} />

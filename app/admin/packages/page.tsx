@@ -19,7 +19,7 @@ import toast from "react-hot-toast";
 import ConfirmModal from "@/components/admin/ConfirmModal";
 
 export default function ManagePackages() {
-  const [packages, setPackages] = useState<any[]>([]);
+  const [packages, setPackages] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [showConfirm, setShowConfirm] = useState(false);

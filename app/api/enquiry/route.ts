@@ -4,8 +4,6 @@ import Enquiry from "@/models/Enquiry";
 import Settings from "@/models/Settings";
 import { sendEmail } from "@/lib/mail";
 
-export const dynamic = 'force-dynamic';
-
 export async function GET() {
   try {
     await connectDB();

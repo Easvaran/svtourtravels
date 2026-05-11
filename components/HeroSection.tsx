@@ -153,7 +153,7 @@ const HeroSection = () => {
             initial={{ opacity: 0, scale: 0.9, x: 50 }}
             animate={{ opacity: 1, scale: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="bg-white/95 backdrop-blur-xl p-8 rounded-[3rem] shadow-[0_40px_120px_rgba(0,0,0,0.4)] border border-white/20 w-full max-w-md mx-auto lg:ml-auto"
+            className="hidden lg:block bg-white/95 backdrop-blur-xl p-8 rounded-[3rem] shadow-[0_40px_120px_rgba(0,0,0,0.4)] border border-white/20 w-full max-w-md ml-auto"
           >
             <div className="mb-6">
               <h3 className="text-2xl font-black text-gray-900 mb-1 tracking-tight">Book Your Trip</h3>
@@ -198,24 +198,23 @@ const HeroSection = () => {
                     <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 text-primary group-focus-within:scale-110 transition-transform z-10" size={16} />
                     <input 
                       required
-                      type="date"
-                      className="w-full h-11 bg-gray-100/50 border-2 border-transparent focus:border-primary/10 focus:bg-white rounded-xl pl-11 pr-4 outline-none transition-all font-bold text-gray-800 text-sm appearance-none"
+                      type="date" 
+                      className="w-full h-11 bg-gray-100/50 border-2 border-transparent focus:border-primary/10 focus:bg-white rounded-xl pl-11 pr-4 outline-none transition-all font-bold text-gray-800 text-sm appearance-none relative"
                       value={formData.travelDate}
                       onChange={(e) => setFormData({ ...formData, travelDate: e.target.value })}
                     />
                   </div>
                 </div>
-
                 <div className="space-y-1">
-                  <label className="text-[9px] font-black text-gray-600 uppercase tracking-[0.2em] ml-2 block">Duration (Days)</label>
+                  <label className="text-[9px] font-black text-gray-600 uppercase tracking-[0.2em] ml-2 block">Travel Days</label>
                   <div className="relative group">
                     <Clock className="absolute left-4 top-1/2 -translate-y-1/2 text-primary group-focus-within:scale-110 transition-transform" size={16} />
                     <input 
                       required
-                      type="number"
-                      placeholder="Days"
+                      type="number" 
                       min="1"
-                      className="w-full h-11 bg-gray-100/50 border-2 border-transparent focus:border-primary/10 focus:bg-white rounded-xl pl-11 pr-4 outline-none transition-all font-bold text-gray-800 text-sm"
+                      placeholder="Ex: 3"
+                      className="w-full h-11 bg-gray-100/50 border-2 border-transparent focus:border-primary/10 focus:bg-white rounded-xl pl-11 pr-4 outline-none transition-all font-bold text-gray-800 text-sm placeholder:text-gray-400"
                       value={formData.days}
                       onChange={(e) => setFormData({ ...formData, days: e.target.value })}
                     />
@@ -225,66 +224,65 @@ const HeroSection = () => {
 
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1">
-                  <label className="text-[9px] font-black text-gray-600 uppercase tracking-[0.2em] ml-2 block">Phone Number</label>
-                  <div className="relative group">
-                    <Phone className="absolute left-4 top-1/2 -translate-y-1/2 text-primary group-focus-within:scale-110 transition-transform" size={16} />
-                    <input 
-                      required
-                      type="tel"
-                      placeholder="Phone"
-                      className="w-full h-11 bg-gray-100/50 border-2 border-transparent focus:border-primary/10 focus:bg-white rounded-xl pl-11 pr-4 outline-none transition-all font-bold text-gray-800 text-sm"
-                      value={formData.phone}
-                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                    />
-                  </div>
-                </div>
-
-                <div className="space-y-1">
-                  <label className="text-[9px] font-black text-gray-600 uppercase tracking-[0.2em] ml-2 block">No. of People</label>
+                  <label className="text-[9px] font-black text-gray-600 uppercase tracking-[0.2em] ml-2 block">Travelers</label>
                   <div className="relative group">
                     <Users className="absolute left-4 top-1/2 -translate-y-1/2 text-primary group-focus-within:scale-110 transition-transform" size={16} />
                     <input 
                       required
-                      type="number"
-                      placeholder="People"
+                      type="number" 
                       min="1"
-                      className="w-full h-11 bg-gray-100/50 border-2 border-transparent focus:border-primary/10 focus:bg-white rounded-xl pl-11 pr-4 outline-none transition-all font-bold text-gray-800 text-sm"
+                      placeholder="Ex: 2"
+                      className="w-full h-11 bg-gray-100/50 border-2 border-transparent focus:border-primary/10 focus:bg-white rounded-xl pl-11 pr-4 outline-none transition-all font-bold text-gray-800 text-sm placeholder:text-gray-400"
                       value={formData.people}
                       onChange={(e) => setFormData({ ...formData, people: e.target.value })}
                     />
                   </div>
                 </div>
+                <div className="space-y-1">
+                  <label className="text-[9px] font-black text-gray-600 uppercase tracking-[0.2em] ml-2 block">Package Type</label>
+                  <div className="relative group">
+                    <Briefcase className="absolute left-4 top-1/2 -translate-y-1/2 text-primary group-focus-within:scale-110 transition-transform z-10" size={16} />
+                    <select 
+                      className="w-full h-11 bg-gray-100/50 border-2 border-transparent focus:border-primary/10 focus:bg-white rounded-xl pl-11 pr-4 outline-none transition-all font-bold text-gray-800 text-sm appearance-none cursor-pointer relative"
+                      value={formData.packageType}
+                      onChange={(e) => setFormData({ ...formData, packageType: e.target.value })}
+                    >
+                      <option>Budget</option>
+                      <option>Premium</option>
+                      <option>Luxury</option>
+                      <option>Custom</option>
+                    </select>
+                    <ChevronDown size={14} className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
+                  </div>
+                </div>
               </div>
 
               <div className="space-y-1">
-                <label className="text-[9px] font-black text-gray-600 uppercase tracking-[0.2em] ml-2 block">Package Type</label>
+                <label className="text-[9px] font-black text-gray-600 uppercase tracking-[0.2em] ml-2 block">Contact No.</label>
                 <div className="relative group">
-                  <Briefcase className="absolute left-4 top-1/2 -translate-y-1/2 text-primary group-focus-within:scale-110 transition-transform z-10" size={16} />
-                  <select 
-                    className="w-full h-11 bg-gray-100/50 border-2 border-transparent focus:border-primary/10 focus:bg-white rounded-xl pl-11 pr-4 outline-none transition-all font-bold text-gray-800 text-sm appearance-none cursor-pointer"
-                    value={formData.packageType}
-                    onChange={(e) => setFormData({ ...formData, packageType: e.target.value })}
-                  >
-                    <option value="Budget">Budget Package</option>
-                    <option value="Standard">Standard Package</option>
-                    <option value="Premium">Premium Package</option>
-                    <option value="Luxury">Luxury Package</option>
-                  </select>
-                  <ChevronDown size={14} className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
+                  <Phone className="absolute left-4 top-1/2 -translate-y-1/2 text-primary group-focus-within:scale-110 transition-transform" size={16} />
+                  <input 
+                    required
+                    type="tel" 
+                    placeholder="Enter your phone number"
+                    className="w-full h-11 bg-gray-100/50 border-2 border-transparent focus:border-primary/10 focus:bg-white rounded-xl pl-11 pr-4 outline-none transition-all font-bold text-gray-800 text-sm placeholder:text-gray-400"
+                    value={formData.phone}
+                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                  />
                 </div>
               </div>
 
               <button 
-                type="submit"
                 disabled={loading}
-                className="w-full bg-primary hover:bg-blue-700 text-white font-black py-4 rounded-2xl shadow-lg transition-all active:scale-95 disabled:opacity-50 mt-4 flex items-center justify-center space-x-2"
+                type="submit"
+                className="w-full bg-primary hover:bg-blue-700 text-white font-black py-4 rounded-2xl shadow-[0_20px_40px_rgba(8,112,184,0.3)] transition-all hover:-translate-y-1 active:scale-[0.98] mt-2 flex items-center justify-center space-x-3 group/btn disabled:opacity-70"
               >
                 {loading ? (
-                  <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  <div className="w-5 h-5 border-3 border-white border-t-transparent rounded-full animate-spin" />
                 ) : (
                   <>
-                    <span>Send Enquiry</span>
-                    <ChevronRight size={18} />
+                    <span className="text-base">Get a Free Quote</span>
+                    <ChevronRight size={18} className="group-hover:translate-x-1 transition-transform" />
                   </>
                 )}
               </button>

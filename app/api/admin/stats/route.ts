@@ -4,8 +4,6 @@ import Tour from "@/models/Tour";
 import Package from "@/models/Package";
 import Enquiry from "@/models/Enquiry";
 
-export const dynamic = 'force-dynamic';
-
 export async function GET() {
   try {
     await connectDB();
