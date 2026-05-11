@@ -153,7 +153,7 @@ const HeroSection = () => {
             initial={{ opacity: 0, scale: 0.9, x: 50 }}
             animate={{ opacity: 1, scale: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="hidden lg:block bg-white/95 backdrop-blur-xl p-8 rounded-[3rem] shadow-[0_40px_120px_rgba(0,0,0,0.4)] border border-white/20 w-full max-w-md ml-auto"
+            className="hidden lg:block bg-white/95 backdrop-blur-xl p-8 rounded-[3rem] shadow-[0_40px_120px_rgba(0,0,0,0.4)] border border-white/20 w-full"
           >
             <div className="mb-6">
               <h3 className="text-2xl font-black text-gray-900 mb-1 tracking-tight">Book Your Trip</h3>

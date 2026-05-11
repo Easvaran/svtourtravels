@@ -32,12 +32,12 @@ const Navbar = () => {
   return (
     <nav
       className={cn(
-        "fixed w-full z-50 transition-all duration-500 px-4 py-3",
+        "fixed w-full z-50 px-4 py-3",
         isOpen 
           ? "bg-white shadow-lg py-3" 
           : scrolled 
-            ? "bg-white/95 backdrop-blur-xl shadow-lg py-2 border-b border-primary/10" 
-            : "bg-[#0870b8]/90 backdrop-blur-lg border-b border-white/10"
+            ? "bg-white/95 backdrop-blur-xl shadow-lg py-2 border-b border-primary/10 transition-all duration-500" 
+            : "bg-[#0870b8]/90 backdrop-blur-lg border-b border-white/10 transition-all duration-500"
       )}
     >
       <div className="max-w-7xl mx-auto flex justify-between items-center">
@@ -126,7 +126,8 @@ const Navbar = () => {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: '100%' }}
               transition={{ type: "spring", damping: 25, stiffness: 200 }}
-              className="fixed inset-y-0 right-0 w-[85%] max-w-[400px] z-[9999] !bg-white shadow-2xl flex flex-col p-6 md:hidden border-l border-gray-100"
+              className="fixed inset-y-0 right-0 w-[85%] max-w-[400px] z-[9999] bg-white shadow-2xl flex flex-col p-6 md:hidden border-l border-gray-100"
+              style={{ backgroundColor: 'white' }}
             >
               <div className="flex justify-between items-center mb-10">
                 <Link href="/" onClick={() => setIsOpen(false)} className="flex items-center space-x-3">
