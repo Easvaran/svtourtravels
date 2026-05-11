@@ -82,7 +82,22 @@ export default function SettingsPage() {
   const fetchSettings = async () => {
     try {
       const res = await fetch("/api/admin/settings");
-      const data = await res.json();
+      
+      // Get response as text first for safety
+      const text = await res.text();
+      
+      if (!text || text.trim() === "") {
+        throw new Error("Empty response from server");
+      }
+      
+      let data;
+      try {
+        data = JSON.parse(text);
+      } catch (parseError) {
+        console.error("Failed to parse JSON:", text);
+        throw new Error("Invalid response from server");
+      }
+      
       console.log("API Response (Fetched):", data);
       
       if (res.ok) {
@@ -106,10 +121,12 @@ export default function SettingsPage() {
           adminEmail: data.adminEmail || "",
           additionalEmails: data.additionalEmails || [],
         });
+      } else {
+        throw new Error(data.error || "Failed to load settings");
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error("Fetch Error:", error);
-      toast.error("Failed to load settings");
+      toast.error(`Failed to load settings: ${error.message}`);
     } finally {
       setLoading(false);
     }
@@ -274,7 +291,21 @@ export default function SettingsPage() {
         body: JSON.stringify(updatedData),
       });
 
-      const result = await res.json();
+      // Get response as text first for safety
+      const text = await res.text();
+      
+      if (!text || text.trim() === "") {
+        throw new Error("Empty response from server");
+      }
+      
+      let result;
+      try {
+        result = JSON.parse(text);
+      } catch (parseError) {
+        console.error("Failed to parse JSON:", text);
+        throw new Error("Invalid response from server");
+      }
+      
       console.log("API Response (Saved):", result);
 
       if (res.ok) {

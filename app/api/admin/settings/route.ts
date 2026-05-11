@@ -2,8 +2,11 @@ import { NextResponse } from "next/server";
 import connectDB from "@/lib/mongodb";
 import Settings from "@/models/Settings";
 
+export const runtime = "nodejs";
+
 export async function GET() {
   try {
+    console.log("=== GET /api/admin/settings called");
     await connectDB();
     let settings = await Settings.findOne({});
     
@@ -21,17 +24,44 @@ export async function GET() {
     }
     
     console.log("Settings fetched from DB:", { adminEmail: settings.adminEmail });
-    return NextResponse.json(settings);
+    return NextResponse.json(settings, {
+      headers: {
+        "Content-Type": "application/json; charset=utf-8",
+        "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate"
+      }
+    });
   } catch (error: any) {
-    console.error("GET Settings Error:", error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    console.error("=== GET Settings Error:", error);
+    return NextResponse.json(
+      { error: error.message || "Failed to load settings" },
+      { 
+        status: 500,
+        headers: {
+          "Content-Type": "application/json; charset=utf-8"
+        }
+      }
+    );
   }
 }
 
 export async function PUT(request: Request) {
   try {
+    console.log("=== PUT /api/admin/settings called");
     await connectDB();
-    const data = await request.json();
+    
+    // Parse request body safely
+    const text = await request.text();
+    let data;
+    try {
+      data = JSON.parse(text);
+    } catch (parseError) {
+      console.error("Failed to parse request JSON:", text);
+      return NextResponse.json(
+        { error: "Invalid JSON in request body" },
+        { status: 400 }
+      );
+    }
+    
     console.log("Updating settings with data:", data);
     
     let settings = await Settings.findOne({});
@@ -39,7 +69,6 @@ export async function PUT(request: Request) {
     if (!settings) {
       settings = await Settings.create(data);
     } else {
-      // Use findByIdAndUpdate to ensure we get the fresh document back
       settings = await Settings.findByIdAndUpdate(
         settings._id, 
         { $set: data }, 
@@ -48,9 +77,22 @@ export async function PUT(request: Request) {
     }
     
     console.log("Settings updated successfully. New Email:", settings.adminEmail);
-    return NextResponse.json(settings);
+    return NextResponse.json(settings, {
+      headers: {
+        "Content-Type": "application/json; charset=utf-8",
+        "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate"
+      }
+    });
   } catch (error: any) {
-    console.error("PUT Settings Error:", error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    console.error("=== PUT Settings Error:", error);
+    return NextResponse.json(
+      { error: error.message || "Failed to update settings" },
+      { 
+        status: 500,
+        headers: {
+          "Content-Type": "application/json; charset=utf-8"
+        }
+      }
+    );
   }
 }
