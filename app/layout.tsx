@@ -11,6 +11,9 @@ export const metadata: Metadata = {
   title: "SV TOUR & TRAVELS | Modern Tour Booking Website",
   description: "Discover amazing tour packages at best prices. Explore, Discover, and Travel Smart with SV TOUR & TRAVELS.",
   keywords: ["Tour packages in India", "Best travel agency", "Affordable tour packages", "Holiday packages"],
+  verification: {
+    google: "wJJFY_2llTEmf5HgRC3Ogi0BoG88iygCVdRn-r3HijQ",
+  },
 };
 
 export default function RootLayout({
