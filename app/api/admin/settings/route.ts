@@ -42,8 +42,8 @@ export async function GET() {
   }
 }
 
-export async function PUT(request: Request) {
-  console.log("========== PUT /api/admin/settings ==========");
+async function handleUpdate(request: Request) {
+  console.log("========== UPDATE /api/admin/settings ==========");
   
   try {
     await connectDB();
@@ -72,7 +72,7 @@ export async function PUT(request: Request) {
       }
     );
   } catch (error) {
-    console.error("PUT ERROR:", error);
+    console.error("UPDATE ERROR:", error);
     return NextResponse.json(
       {
         success: false,
@@ -84,4 +84,12 @@ export async function PUT(request: Request) {
       }
     );
   }
+}
+
+export async function PUT(request: Request) {
+  return handleUpdate(request);
+}
+
+export async function POST(request: Request) {
+  return handleUpdate(request);
 }
