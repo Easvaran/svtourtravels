@@ -100,29 +100,30 @@ export default function SettingsPage() {
       
       console.log("API Response (Fetched):", data);
       
-      if (res.ok) {
+      if (res.ok && data.success) {
+        const settingsData = data.data || data;
         setFormData({
-          websiteName: data.websiteName || "",
-          contactEmail: data.contactEmail || "",
-          contactPhone: data.contactPhone || "",
-          whatsappNumber: data.whatsappNumber || "",
-          address: data.address || "",
-          mapIframe: data.mapIframe || "",
+          websiteName: settingsData.websiteName || "",
+          contactEmail: settingsData.contactEmail || "",
+          contactPhone: settingsData.contactPhone || "",
+          whatsappNumber: settingsData.whatsappNumber || "",
+          address: settingsData.address || "",
+          mapIframe: settingsData.mapIframe || "",
           socialLinks: {
-            facebook: data.socialLinks?.facebook || "",
-            instagram: data.socialLinks?.instagram || "",
-            twitter: data.socialLinks?.twitter || "",
-            youtube: data.socialLinks?.youtube || "",
+            facebook: settingsData.socialLinks?.facebook || "",
+            instagram: settingsData.socialLinks?.instagram || "",
+            twitter: settingsData.socialLinks?.twitter || "",
+            youtube: settingsData.socialLinks?.youtube || "",
           },
-          logoUrl: data.logoUrl || "",
-          faviconUrl: data.faviconUrl || "",
-          adminUsername: data.adminUsername || "",
+          logoUrl: settingsData.logoUrl || "",
+          faviconUrl: settingsData.faviconUrl || "",
+          adminUsername: settingsData.adminUsername || "",
           adminPassword: "",
-          adminEmail: data.adminEmail || "",
-          additionalEmails: data.additionalEmails || [],
+          adminEmail: settingsData.adminEmail || "",
+          additionalEmails: settingsData.additionalEmails || [],
         });
       } else {
-        throw new Error(data.error || "Failed to load settings");
+        throw new Error(data.message || data.error || "Failed to load settings");
       }
     } catch (error: any) {
       console.error("Fetch Error:", error);
@@ -308,18 +309,19 @@ export default function SettingsPage() {
       
       console.log("API Response (Saved):", result);
 
-      if (res.ok) {
+      if (res.ok && result.success) {
         await refreshSettings();
+        const savedData = result.data || result;
         setFormData(prev => ({
           ...prev,
-          ...result,
+          ...savedData,
           adminPassword: ""
         }));
         setLogoPreview("");
         setFaviconPreview("");
-        toast.success("Settings saved successfully!");
+        toast.success(result.message || "Settings saved successfully!");
       } else {
-        toast.error(result.error || "Failed to update settings");
+        toast.error(result.message || result.error || "Failed to update settings");
       }
     } catch (error: any) {
       console.error("Submit Error:", error);
