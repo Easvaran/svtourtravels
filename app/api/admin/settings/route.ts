@@ -1,37 +1,26 @@
 import { NextResponse } from "next/server";
+import connectDB from "@/lib/mongodb";
+import Settings from "@/models/Settings";
 
 export const runtime = "nodejs";
 
-const DEFAULT_SETTINGS = {
-  _id: "hardcoded-id-123",
-  websiteName: "SV Tour & Travels",
-  logoUrl: "",
-  faviconUrl: "",
-  contactEmail: "info@svtourtravels.com",
-  contactPhone: "+91 8668076871",
-  whatsappNumber: "+91 8668076871",
-  address: "123 Travel Street, Destination City, India 600001",
-  mapIframe: "",
-  socialLinks: { facebook: "", instagram: "", twitter: "", youtube: "" },
-  adminUsername: "admin",
-  adminEmail: "admin@svtourtravels.com",
-  additionalEmails: [],
-  createdAt: new Date().toISOString(),
-  updatedAt: new Date().toISOString()
-};
-
-let savedSettings = { ...DEFAULT_SETTINGS };
-
 export async function GET() {
-  console.log("========== GET /api/admin/settings - NO DATABASE ==========");
+  console.log("========== GET /api/admin/settings ==========");
   
   try {
-    console.log("Returning hardcoded settings");
+    await connectDB();
+    let settings = await Settings.findOne();
+    
+    if (!settings) {
+      settings = await Settings.create({});
+    }
+    
+    console.log("Settings fetched from database");
     return NextResponse.json(
       {
         success: true,
         message: "Settings fetched successfully",
-        data: savedSettings
+        data: settings
       },
       {
         status: 200,
@@ -54,39 +43,28 @@ export async function GET() {
 }
 
 export async function PUT(request: Request) {
-  console.log("========== PUT /api/admin/settings - NO DATABASE ==========");
+  console.log("========== PUT /api/admin/settings ==========");
   
   try {
+    await connectDB();
     console.log("Request received");
     
-    const text = await request.text();
-    console.log("Request body:", text);
+    const body = await request.json();
+    console.log("Request body:", body);
     
-    let body;
-    try {
-      body = JSON.parse(text);
-      console.log("Parsed successfully");
-    } catch (e) {
-      console.error("Invalid JSON");
-      return NextResponse.json(
-        { success: false, message: "Invalid JSON in request" },
-        { status: 400, headers: { "Content-Type": "application/json; charset=utf-8" } }
-      );
-    }
+    const updatedSettings = await Settings.findOneAndUpdate(
+      {},
+      body,
+      { new: true, upsert: true }
+    );
     
-    savedSettings = {
-      ...savedSettings,
-      ...body,
-      updatedAt: new Date().toISOString()
-    };
-    
-    console.log("Settings updated in memory");
+    console.log("Settings updated in database");
     
     return NextResponse.json(
       {
         success: true,
         message: "Settings updated successfully",
-        data: savedSettings
+        data: updatedSettings
       },
       {
         status: 200,
