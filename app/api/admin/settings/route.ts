@@ -20,7 +20,7 @@ export async function GET() {
       {
         success: true,
         message: "Settings fetched successfully",
-        data: settings
+        data: settings.toObject()
       },
       {
         status: 200,
@@ -64,7 +64,7 @@ export async function PUT(request: Request) {
       {
         success: true,
         message: "Settings updated successfully",
-        data: updatedSettings
+        data: updatedSettings.toObject()
       },
       {
         status: 200,
