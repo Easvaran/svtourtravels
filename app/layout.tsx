@@ -9,12 +9,65 @@ import LayoutContent from "@/components/LayoutContent";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "SV TOUR & TRAVELS | Modern Tour Booking Website",
-  description: "Discover amazing tour packages at best prices. Explore, Discover, and Travel Smart with SV TOUR & TRAVELS.",
-  keywords: ["Tour packages in India", "Best travel agency", "Affordable tour packages", "Holiday packages"],
+  metadataBase: new URL("https://www.svtourandtravels.com"),
+
+  title: {
+    default: "SV Tour and Travels | Best Tours and Travels in Chennai",
+    template: "%s | SV Tour and Travels",
+  },
+
+  description:
+    "SV Tour and Travels provides reliable cab booking, airport pickup and drop, local taxi, outstation trips, and tour packages in Chennai at affordable prices.",
+
+  keywords: [
+    "Tours and Travels in Chennai",
+    "Best Travels in Chennai",
+    "Cab Booking Chennai",
+    "Airport Pickup Chennai",
+    "Airport Drop Taxi Chennai",
+    "Outstation Cab Chennai",
+    "Tour Packages Chennai",
+    "Taxi Service Chennai",
+    "Affordable Travels Chennai",
+    "24/7 Cab Service Chennai",
+  ],
+
+  authors: [{ name: "SV Tour and Travels" }],
+  creator: "SV Tour and Travels",
+  publisher: "SV Tour and Travels",
+
+  openGraph: {
+    title: "SV Tour and Travels | Best Tours and Travels in Chennai",
+    description:
+      "Book affordable cab services, airport transfers, local and outstation trips with SV Tour and Travels in Chennai.",
+    url: "https://www.svtourandtravels.com",
+    siteName: "SV Tour and Travels",
+    locale: "en_IN",
+    type: "website",
+  },
+
+  twitter: {
+    card: "summary_large_image",
+    title: "SV Tour and Travels",
+    description:
+      "Reliable tours, travels, airport pickup, taxi and outstation cab services in Chennai.",
+  },
+
+  robots: {
+    index: true,
+    follow: true,
+  },
+
+  alternates: {
+    canonical: "https://www.svtourandtravels.com",
+  },
+
   verification: {
     google: "wJJFY_2llTEmf5HgRC3Ogi0BoG88iygCVdRn-r3HijQ",
   },
+
+  themeColor: "#0870b8",
+  viewport: "width=device-width, initial-scale=1, maximum-scale=5",
 };
 
 export default function RootLayout({
