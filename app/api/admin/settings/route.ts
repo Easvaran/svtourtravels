@@ -10,6 +10,10 @@ export async function GET() {
     if (!settings) {
       settings = await Settings.create({
         websiteName: "SV Tour & Travels",
+        contactEmail: "info@svtourtravels.com",
+        contactPhone: "+91 8668076871",
+        whatsappNumber: "+91 8668076871",
+        address: "123 Travel Street, Destination City, Chennai, Tamil Nadu, India 600001",
         adminEmail: "admin@svtourtravels.com",
         adminUsername: "admin"
       });

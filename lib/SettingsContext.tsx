@@ -32,7 +32,7 @@ const defaultSettings: Settings = {
   logoUrl: "",
   faviconUrl: "",
   contactEmail: "info@svtourtravels.com",
-  contactPhone: "+91 XXXXXXXXXX",
+  contactPhone: "+91 8668076871",
   whatsappNumber: "+91 8668076871",
   address: "123 Travel Street, Destination City, Tamil Nadu, India 600001",
   mapIframe: "",
