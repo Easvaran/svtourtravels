@@ -175,11 +175,11 @@ const Navbar = () => {
                 })}
               </div>
 
-              <div className="mt-8 space-y-4">
+              <div className="mt-8 space-y-4 px-2">
                 <Link
                   href="/contact"
                   onClick={() => setIsOpen(false)}
-                  className="w-full bg-primary hover:bg-blue-700 text-white text-center font-bold py-4 rounded-2xl shadow-xl shadow-primary/20 transition-all active:scale-[0.98] text-sm"
+                  className="inline-flex items-center justify-center px-6 py-3.5 rounded-2xl text-sm md:text-base font-semibold whitespace-nowrap w-full bg-primary hover:bg-blue-700 text-white shadow-xl shadow-primary/20 transition-all hover:-translate-y-0.5 active:scale-[0.98]"
                 >
                   Book Your Trip
                 </Link>
