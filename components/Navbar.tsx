@@ -7,7 +7,6 @@ import { Menu, X, Phone, MessageSquare, ChevronRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { useSettings } from "@/lib/SettingsContext";
-import SafeImage from "./SafeImage";
 
 const Navbar = () => {
   const { settings } = useSettings();
@@ -44,8 +43,17 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto flex justify-between items-center">
         <Link href="/" className="flex items-center space-x-2 group">
           {settings.logoUrl ? (
-            <SafeImage src={settings.logoUrl} alt="Logo" width={40} height={40} className="h-10 w-auto object-contain" />
-          ) : (
+            <img 
+              src={settings.logoUrl} 
+              alt="Logo" 
+              className="h-10 w-auto object-contain"
+              onError={(e) => {
+                console.error("Logo failed to load:", settings.logoUrl);
+                (e.target as HTMLImageElement).style.display = 'none';
+              }}
+            />
+          ) : null}
+          {(!settings.logoUrl || !settings.logoUrl.trim()) && (
             <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center text-white font-bold text-xl group-hover:rotate-12 transition-transform shadow-lg">
               {settings.websiteName.substring(0, 2).toUpperCase()}
             </div>
@@ -133,8 +141,17 @@ const Navbar = () => {
               <div className="flex justify-between items-center mb-10">
                 <Link href="/" onClick={() => setIsOpen(false)} className="flex items-center space-x-3">
                   {settings.logoUrl ? (
-                    <SafeImage src={settings.logoUrl} alt="Logo" width={36} height={36} className="h-9 w-auto object-contain" />
-                  ) : (
+                    <img 
+                      src={settings.logoUrl} 
+                      alt="Logo" 
+                      className="h-9 w-auto object-contain"
+                      onError={(e) => {
+                        console.error("Mobile logo failed to load:", settings.logoUrl);
+                        (e.target as HTMLImageElement).style.display = 'none';
+                      }}
+                    />
+                  ) : null}
+                  {(!settings.logoUrl || !settings.logoUrl.trim()) && (
                     <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center text-white font-bold text-xl shadow-lg">
                       {settings.websiteName.substring(0, 2).toUpperCase()}
                     </div>

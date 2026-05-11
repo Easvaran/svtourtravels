@@ -63,6 +63,12 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       const res = await fetch("/api/admin/settings");
       if (res.ok) {
         const data = await res.json();
+        console.log("Settings loaded from API:", {
+          logoUrl: data.logoUrl,
+          faviconUrl: data.faviconUrl,
+          hasLogo: !!data.logoUrl,
+          hasFavicon: !!data.faviconUrl
+        });
         setSettings(data);
 
         // Update favicon dynamically

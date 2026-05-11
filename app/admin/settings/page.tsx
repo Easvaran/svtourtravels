@@ -402,7 +402,7 @@ export default function SettingsPage() {
                 >
                   Choose Logo
                 </button>
-                <p className="text-[10px] text-gray-400 mt-3 font-medium">SVG or PNG recommended (max 2MB)</p>
+                <p className="text-[10px] text-gray-400 mt-3 font-medium">JPG, JPEG, PNG or SVG recommended (max 5MB)</p>
               </div>
             </div>
 

@@ -75,7 +75,7 @@ export default function VehicleUploader({ label, value, onChange, description }:
               <p className="mb-2 text-sm text-gray-500 font-bold">
                 {uploading ? "Uploading..." : "Click to upload vehicle thumbnail"}
               </p>
-              <p className="text-xs text-gray-400">PNG, JPG or WEBP (Max. 5MB)</p>
+              <p className="text-xs text-gray-400">PNG, JPG, JPEG or WEBP (Max. 5MB)</p>
             </div>
             <input type="file" className="hidden" onChange={handleUpload} disabled={uploading} accept="image/*" />
           </label>
