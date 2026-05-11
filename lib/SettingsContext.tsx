@@ -67,13 +67,22 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
         // Update favicon dynamically
         if (data.faviconUrl) {
-          let link = document.querySelector("link[rel~='icon']") as HTMLLinkElement;
-          if (!link) {
-            link = document.createElement('link');
-            link.rel = 'icon';
-            document.head.appendChild(link);
-          }
+          console.log("Updating favicon to:", data.faviconUrl);
+          // Remove existing favicon links
+          const existingLinks = document.querySelectorAll("link[rel~='icon']");
+          existingLinks.forEach(link => link.remove());
+          
+          // Create new favicon link
+          const link = document.createElement('link');
+          link.rel = 'icon';
           link.href = data.faviconUrl;
+          document.head.appendChild(link);
+          
+          // Also add apple-touch-icon for iOS
+          const appleLink = document.createElement('link');
+          appleLink.rel = 'apple-touch-icon';
+          appleLink.href = data.faviconUrl;
+          document.head.appendChild(appleLink);
         }
 
         // Update title dynamically
