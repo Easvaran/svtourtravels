@@ -16,11 +16,30 @@ import {
   MessageCircle,
   Server,
   Plus,
-  X
+  X,
+  Loader2,
+  Upload
 } from "lucide-react";
 import { motion } from "framer-motion";
 import toast from "react-hot-toast";
 import { useSettings } from "@/lib/SettingsContext";
+
+// File validation constants
+const LOGO_ALLOWED_TYPES = [
+  "image/png", 
+  "image/jpeg", 
+  "image/jpg", 
+  "image/svg+xml"
+];
+const FAVICON_ALLOWED_TYPES = [
+  "image/png", 
+  "image/jpeg", 
+  "image/jpg", 
+  "image/svg+xml", 
+  "image/x-icon"
+];
+const MAX_LOGO_SIZE = 5 * 1024 * 1024; // 5MB
+const MAX_FAVICON_SIZE = 1 * 1024 * 1024; // 1MB
 
 export default function SettingsPage() {
   const { refreshSettings } = useSettings();
@@ -28,6 +47,9 @@ export default function SettingsPage() {
   const faviconInputRef = useRef<HTMLInputElement>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [logoUploading, setLogoUploading] = useState(false);
+  const [faviconUploading, setFaviconUploading] = useState(false);
+  
   const [formData, setFormData] = useState({
     websiteName: "",
     contactEmail: "",
@@ -50,8 +72,6 @@ export default function SettingsPage() {
   });
 
   const [newEmail, setNewEmail] = useState("");
-  const [logoFile, setLogoFile] = useState<File | null>(null);
-  const [faviconFile, setFaviconFile] = useState<File | null>(null);
   const [logoPreview, setLogoPreview] = useState("");
   const [faviconPreview, setFaviconPreview] = useState("");
 
@@ -82,7 +102,7 @@ export default function SettingsPage() {
           logoUrl: data.logoUrl || "",
           faviconUrl: data.faviconUrl || "",
           adminUsername: data.adminUsername || "",
-          adminPassword: "", // Don't populate password
+          adminPassword: "",
           adminEmail: data.adminEmail || "",
           additionalEmails: data.additionalEmails || [],
         });
@@ -95,27 +115,32 @@ export default function SettingsPage() {
     }
   };
 
-  const handleLogoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setLogoFile(file);
-      setLogoPreview(URL.createObjectURL(file));
+  // Validate and upload file helper
+  const validateAndUploadFile = async (
+    file: File, 
+    allowedTypes: string[], 
+    maxSize: number,
+    setUploading: (val: boolean) => void
+  ): Promise<string> => {
+    // Validate file type
+    if (!allowedTypes.includes(file.type)) {
+      const typeNames = allowedTypes.map(t => t.split("/")[1].toUpperCase()).join(", ");
+      throw new Error(`Invalid file type. Allowed: ${typeNames}`);
     }
-  };
 
-  const handleFaviconChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setFaviconFile(file);
-      setFaviconPreview(URL.createObjectURL(file));
+    // Validate file size
+    if (file.size > maxSize) {
+      const sizeMB = (maxSize / 1024 / 1024).toFixed(0);
+      throw new Error(`File too large. Max size is ${sizeMB}MB`);
     }
-  };
 
-  const uploadFile = async (file: File) => {
+    setUploading(true);
+    
     try {
       console.log("Uploading file:", file.name);
       const formData = new FormData();
       formData.append("file", file);
+      
       const res = await fetch("/api/upload", {
         method: "POST",
         body: formData,
@@ -133,7 +158,7 @@ export default function SettingsPage() {
         data = JSON.parse(text);
       } catch (parseError) {
         console.error("Failed to parse JSON:", text);
-        throw new Error("Invalid response from server. Expected JSON but got: " + text.substring(0, 100));
+        throw new Error("Invalid response from server");
       }
       
       if (!res.ok) {
@@ -146,11 +171,79 @@ export default function SettingsPage() {
       
       console.log("File uploaded successfully:", data.url);
       return data.url;
-    } catch (error: any) {
-      console.error("Upload error:", error);
-      toast.error(`Upload failed: ${error.message}`);
-      throw error;
+    } finally {
+      setUploading(false);
     }
+  };
+
+  const handleLogoChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Show preview immediately
+    setLogoPreview(URL.createObjectURL(file));
+
+    try {
+      const uploadedUrl = await validateAndUploadFile(
+        file, 
+        LOGO_ALLOWED_TYPES, 
+        MAX_LOGO_SIZE,
+        setLogoUploading
+      );
+      
+      // Update form data with the uploaded URL immediately
+      setFormData(prev => ({ ...prev, logoUrl: uploadedUrl }));
+      toast.success("Logo uploaded successfully!");
+    } catch (error: any) {
+      console.error("Logo upload error:", error);
+      toast.error(`Logo upload failed: ${error.message}`);
+      // Revert preview on error
+      setLogoPreview(formData.logoUrl);
+    }
+  };
+
+  const handleFaviconChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Show preview immediately
+    setFaviconPreview(URL.createObjectURL(file));
+
+    try {
+      const uploadedUrl = await validateAndUploadFile(
+        file, 
+        FAVICON_ALLOWED_TYPES, 
+        MAX_FAVICON_SIZE,
+        setFaviconUploading
+      );
+      
+      // Update form data with the uploaded URL immediately
+      setFormData(prev => ({ ...prev, faviconUrl: uploadedUrl }));
+      toast.success("Favicon uploaded successfully!");
+    } catch (error: any) {
+      console.error("Favicon upload error:", error);
+      toast.error(`Favicon upload failed: ${error.message}`);
+      // Revert preview on error
+      setFaviconPreview(formData.faviconUrl);
+    }
+  };
+
+  const handleRemoveLogo = () => {
+    setLogoPreview("");
+    setFormData(prev => ({ ...prev, logoUrl: "" }));
+    if (logoInputRef.current) {
+      logoInputRef.current.value = "";
+    }
+    toast.success("Logo removed");
+  };
+
+  const handleRemoveFavicon = () => {
+    setFaviconPreview("");
+    setFormData(prev => ({ ...prev, faviconUrl: "" }));
+    if (faviconInputRef.current) {
+      faviconInputRef.current.value = "";
+    }
+    toast.success("Favicon removed");
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -159,7 +252,6 @@ export default function SettingsPage() {
     console.log("Submitting form data:", formData);
 
     try {
-      // Clean mapIframe if user pasted whole iframe tag
       let mapUrl = formData.mapIframe;
       if (mapUrl.includes('<iframe')) {
         const srcMatch = mapUrl.match(/src="([^"]+)"/);
@@ -169,20 +261,7 @@ export default function SettingsPage() {
       }
 
       const updatedData = { ...formData, mapIframe: mapUrl };
-
-      // Upload logo if changed
-      if (logoFile) {
-        const logoUrl = await uploadFile(logoFile);
-        updatedData.logoUrl = logoUrl;
-      }
-
-      // Upload favicon if changed
-      if (faviconFile) {
-        const faviconUrl = await uploadFile(faviconFile);
-        updatedData.faviconUrl = faviconUrl;
-      }
       
-      // Remove password from update if it's empty
       if (!updatedData.adminPassword) {
         delete (updatedData as any).adminPassword;
       }
@@ -200,14 +279,11 @@ export default function SettingsPage() {
 
       if (res.ok) {
         await refreshSettings();
-        // Update local state with confirmed data from server
         setFormData(prev => ({
           ...prev,
           ...result,
-          adminPassword: "" // Clear password field after save
+          adminPassword: ""
         }));
-        setLogoFile(null);
-        setFaviconFile(null);
         setLogoPreview("");
         setFaviconPreview("");
         toast.success("Settings saved successfully!");
@@ -285,7 +361,6 @@ export default function SettingsPage() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {/* Website Information */}
         <section className="bg-white p-8 md:p-10 rounded-[2.5rem] border border-gray-100 shadow-sm space-y-8">
           <h3 className="text-xl font-black text-gray-900 flex items-center space-x-3">
             <Globe className="text-primary" size={24} />
@@ -362,7 +437,7 @@ export default function SettingsPage() {
                 <Globe className="absolute left-4 top-6 text-gray-400" size={18} />
                 <textarea
                   rows={3}
-                  placeholder='Paste the src URL from the Google Maps embed code here (starts with https://www.google.com/maps/embed...)'
+                  placeholder='Paste the src URL from the Google Maps embed code here'
                   className="w-full bg-gray-50 border-2 border-transparent rounded-2xl py-4 pl-12 pr-6 focus:border-primary/10 focus:bg-white outline-none transition-all font-bold text-gray-900 resize-none text-sm"
                   value={formData.mapIframe}
                   onChange={(e) => setFormData({ ...formData, mapIframe: e.target.value })}
@@ -373,7 +448,6 @@ export default function SettingsPage() {
           </div>
         </section>
 
-        {/* Branding Settings */}
         <section className="bg-white p-8 md:p-10 rounded-[2.5rem] border border-gray-100 shadow-sm space-y-8">
           <h3 className="text-xl font-black text-gray-900 flex items-center space-x-3">
             <ImageIcon className="text-primary" size={24} />
@@ -381,12 +455,16 @@ export default function SettingsPage() {
           </h3>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {/* Logo Upload */}
             <div className="space-y-4">
               <label className="text-xs font-black text-gray-400 uppercase tracking-widest ml-1">Sidebar Logo</label>
               <div className="flex flex-col items-center p-6 border-2 border-dashed border-gray-200 rounded-3xl hover:border-primary/30 transition-colors bg-gray-50/50">
                 {(logoPreview || formData.logoUrl) ? (
                   <div className="relative w-full aspect-video rounded-2xl overflow-hidden bg-white border border-gray-100 mb-4 flex items-center justify-center p-4">
+                    {logoUploading && (
+                      <div className="absolute inset-0 bg-white/80 flex items-center justify-center z-10">
+                        <Loader2 className="w-8 h-8 text-primary animate-spin" />
+                      </div>
+                    )}
                     <img 
                       src={logoPreview || formData.logoUrl} 
                       alt="Logo Preview" 
@@ -394,41 +472,51 @@ export default function SettingsPage() {
                     />
                     <button 
                       type="button"
-                      onClick={() => { setLogoFile(null); setLogoPreview(""); }}
-                      className="absolute top-2 right-2 p-1.5 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors shadow-lg"
+                      onClick={handleRemoveLogo}
+                      className="absolute top-2 right-2 p-1.5 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors shadow-lg z-20"
                     >
                       <X size={14} />
                     </button>
                   </div>
                 ) : (
                   <div className="w-16 h-16 bg-white rounded-2xl border border-gray-100 flex items-center justify-center mb-4 text-gray-300">
-                    <ImageIcon size={32} />
+                    {logoUploading ? <Loader2 className="w-8 h-8 animate-spin" /> : <ImageIcon size={32} />}
                   </div>
                 )}
                 <input 
                   type="file" 
                   ref={logoInputRef}
                   className="hidden" 
-                  accept="image/*" 
+                  accept={LOGO_ALLOWED_TYPES.join(",")} 
                   onChange={handleLogoChange} 
+                  disabled={logoUploading}
                 />
                 <button 
                   type="button"
                   onClick={() => logoInputRef.current?.click()}
-                  className="bg-white border border-gray-200 hover:border-primary text-gray-600 font-bold py-2 px-6 rounded-xl transition-all text-sm shadow-sm"
+                  disabled={logoUploading}
+                  className="bg-white border border-gray-200 hover:border-primary text-gray-600 font-bold py-2 px-6 rounded-xl transition-all text-sm shadow-sm flex items-center space-x-2 disabled:opacity-50"
                 >
-                  Choose Logo
+                  {logoUploading ? (
+                    <><Loader2 size={16} className="animate-spin" /> Uploading...</>
+                  ) : (
+                    <><Upload size={16} /> Choose Logo</>
+                  )}
                 </button>
-                <p className="text-[10px] text-gray-400 mt-3 font-medium">JPG, JPEG, PNG or SVG recommended (max 5MB)</p>
+                <p className="text-[10px] text-gray-400 mt-3 font-medium">JPG, JPEG, PNG or SVG (max 5MB)</p>
               </div>
             </div>
 
-            {/* Favicon Upload */}
             <div className="space-y-4">
               <label className="text-xs font-black text-gray-400 uppercase tracking-widest ml-1">Favicon (Browser Icon)</label>
               <div className="flex flex-col items-center p-6 border-2 border-dashed border-gray-200 rounded-3xl hover:border-primary/30 transition-colors bg-gray-50/50">
                 {(faviconPreview || formData.faviconUrl) ? (
                   <div className="relative w-20 h-20 rounded-2xl overflow-hidden bg-white border border-gray-100 mb-4 flex items-center justify-center p-2">
+                    {faviconUploading && (
+                      <div className="absolute inset-0 bg-white/80 flex items-center justify-center z-10">
+                        <Loader2 className="w-6 h-6 text-primary animate-spin" />
+                      </div>
+                    )}
                     <img 
                       src={faviconPreview || formData.faviconUrl} 
                       alt="Favicon Preview" 
@@ -436,39 +524,44 @@ export default function SettingsPage() {
                     />
                     <button 
                       type="button"
-                      onClick={() => { setFaviconFile(null); setFaviconPreview(""); }}
-                      className="absolute top-1 right-1 p-1 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors shadow-lg"
+                      onClick={handleRemoveFavicon}
+                      className="absolute top-1 right-1 p-1 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors shadow-lg z-20"
                     >
                       <X size={10} />
                     </button>
                   </div>
                 ) : (
                   <div className="w-16 h-16 bg-white rounded-2xl border border-gray-100 flex items-center justify-center mb-4 text-gray-300">
-                    <Globe size={32} />
+                    {faviconUploading ? <Loader2 className="w-8 h-8 animate-spin" /> : <Globe size={32} />}
                   </div>
                 )}
                 <input 
                   type="file" 
                   ref={faviconInputRef}
                   className="hidden" 
-                  accept="image/x-icon,image/png,image/svg+xml" 
+                  accept={FAVICON_ALLOWED_TYPES.join(",")} 
                   onChange={handleFaviconChange} 
+                  disabled={faviconUploading}
                 />
                 <button 
                   type="button"
                   onClick={() => faviconInputRef.current?.click()}
-                  className="bg-white border border-gray-200 hover:border-primary text-gray-600 font-bold py-2 px-6 rounded-xl transition-all text-sm shadow-sm"
+                  disabled={faviconUploading}
+                  className="bg-white border border-gray-200 hover:border-primary text-gray-600 font-bold py-2 px-6 rounded-xl transition-all text-sm shadow-sm flex items-center space-x-2 disabled:opacity-50"
                 >
-                  Choose Favicon
+                  {faviconUploading ? (
+                    <><Loader2 size={16} className="animate-spin" /> Uploading...</>
+                  ) : (
+                    <><Upload size={16} /> Choose Favicon</>
+                  )}
                 </button>
-                <p className="text-[10px] text-gray-400 mt-3 font-medium">ICO, PNG or SVG (max 1MB)</p>
+                <p className="text-[10px] text-gray-400 mt-3 font-medium">ICO, PNG, JPG, JPEG or SVG (max 1MB)</p>
               </div>
             </div>
           </div>
         </section>
 
         <div className="space-y-8">
-          {/* Social Media Links */}
           <section className="bg-white p-8 md:p-10 rounded-[2.5rem] border border-gray-100 shadow-sm space-y-8">
             <h3 className="text-xl font-black text-gray-900 flex items-center space-x-3">
               <Instagram className="text-primary" size={24} />
@@ -502,7 +595,6 @@ export default function SettingsPage() {
             </div>
           </section>
 
-          {/* Security Settings */}
           <section className="bg-white p-8 md:p-10 rounded-[2.5rem] border border-gray-100 shadow-sm space-y-8">
             <h3 className="text-xl font-black text-gray-900 flex items-center space-x-3">
               <Shield className="text-primary" size={24} />
