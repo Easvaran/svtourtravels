@@ -18,8 +18,8 @@ import { useSettings } from "@/lib/SettingsContext";
 
 export default function Home() {
   const { settings } = useSettings();
-  const [tours, setTours] = useState([]);
-  const [filteredTours, setFilteredTours] = useState([]);
+  const [tours, setTours] = useState<any[]>([]);
+  const [filteredTours, setFilteredTours] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedLocation, setSelectedLocation] = useState("All");
