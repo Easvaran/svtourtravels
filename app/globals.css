@@ -13,10 +13,9 @@
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: rgb(var(--background-rgb));
+  color: #0f172a;
+  background: #f8fafc;
   overflow-x: hidden;
-  font-weight: 600;
 }
 
 @layer utilities {
@@ -25,17 +24,17 @@ body {
   }
 
   .glass {
-    background: rgba(255, 255, 255, 0.75);
+    background: rgba(255, 255, 255, 0.85);
     backdrop-filter: blur(24px);
     -webkit-backdrop-filter: blur(24px);
-    border: 1px solid rgba(255, 255, 255, 0.35);
+    border: 1px solid rgba(255, 255, 255, 0.4);
   }
 
   .glass-dark {
-    background: rgba(15, 23, 42, 0.75);
+    background: rgba(15, 23, 42, 0.85);
     backdrop-filter: blur(24px);
     -webkit-backdrop-filter: blur(24px);
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.2);
   }
 
   .gradient-text {
@@ -75,32 +74,27 @@ body {
   }
 }
 
-/* Make all text bold by default for better readability */
-h1, h2, h3, h4, h5, h6, p, span, div, li, a {
+/* Ensure text is visible and bold */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 900;
+  color: #0f172a;
+}
+
+p, span, div, li, a {
   font-weight: 700;
+  color: #1e293b;
 }
 
-/* Ensure primary colors are vibrant */
+/* White text on dark backgrounds */
+.text-white, .bg-primary, .bg-slate-900, .bg-gradient-to-r {
+  color: white !important;
+}
+
+/* Vibrant primary color */
 .text-primary {
-  color: #0ea5e9 !important;
+  color: #0ea5e9;
 }
 
-.text-gray-900 {
-  color: #0f172a !important;
-}
-
-.text-gray-800 {
-  color: #1e293b !important;
-}
-
-.text-gray-700 {
-  color: #334155 !important;
-}
-
-.text-gray-600 {
-  color: #475569 !important;
-}
-
-.text-gray-500 {
-  color: #64748b !important;
+.text-blue-100, .text-gray-200, .text-gray-300, .text-gray-400 {
+  color: #e2e8f0 !important;
 }
