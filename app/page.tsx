@@ -4,7 +4,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import HeroSection from "@/components/HeroSection";
 import TourCard from "@/components/TourCard";
 import EnquiryForm from "@/components/EnquiryForm";
-import PopularDestinations from "@/components/PopularDestinations";
 import TravelPackages from "@/components/TravelPackages";
 import WhyChooseUs from "@/components/WhyChooseUs";
 import Testimonials from "@/components/Testimonials";
@@ -34,9 +33,6 @@ export default function Home() {
   return (
     <div className="relative">
       <HeroSection />
-
-      {/* Popular Destinations first for better flow */}
-      <PopularDestinations />
 
       {/* Tours Grid Section */}
       <section className="py-24 bg-gradient-to-b from-white to-gray-50/30">
