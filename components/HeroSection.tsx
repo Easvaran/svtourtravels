@@ -3,8 +3,8 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import SafeImage from "./SafeImage";
-import Link from "next/link";
-import { ChevronRight, ChevronLeft } from "lucide-react";
+import { ChevronRight, ChevronLeft, X } from "lucide-react";
+import EnquiryForm from "./EnquiryForm";
 
 const slides = [
   {
@@ -29,6 +29,7 @@ const slides = [
 
 const HeroSection = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [showForm, setShowForm] = useState(false);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -64,7 +65,8 @@ const HeroSection = () => {
       </AnimatePresence>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 w-full">
-        <div className="grid grid-cols-1 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          {/* Left Content */}
           <motion.div
             key={`content-${currentSlide}`}
             initial={{ opacity: 0, x: -50 }}
@@ -91,11 +93,29 @@ const HeroSection = () => {
             </p>
             
             <div className="flex flex-wrap gap-4">
-              <Link href="/tours" className="bg-primary hover:bg-blue-700 text-white font-bold px-10 py-5 rounded-2xl transition-all hover:shadow-[0_20px_50px_rgba(8,112,184,0.4)] hover:-translate-y-1 active:scale-95 text-center">
-                Start Exploring
-              </Link>
+              <button 
+                onClick={() => setShowForm(!showForm)}
+                className="bg-primary hover:bg-blue-700 text-white font-bold px-10 py-5 rounded-2xl transition-all hover:shadow-[0_20px_50px_rgba(8,112,184,0.4)] hover:-translate-y-1 active:scale-95 text-center flex items-center gap-2"
+              >
+                {showForm ? <X size={20} /> : null}
+                {showForm ? "Hide Form" : "Start Exploring"}
+              </button>
             </div>
           </motion.div>
+
+          {/* Enquiry Form (Right Side) */}
+          <AnimatePresence>
+            {showForm && (
+              <motion.div
+                initial={{ opacity: 0, x: 50, scale: 0.9 }}
+                animate={{ opacity: 1, x: 0, scale: 1 }}
+                exit={{ opacity: 0, x: 50, scale: 0.9 }}
+                transition={{ duration: 0.5 }}
+              >
+                <EnquiryForm showTitle={false} />
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </div>
 
