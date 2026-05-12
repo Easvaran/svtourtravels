@@ -113,9 +113,9 @@ export default function Home() {
               
               <div className="space-y-8">
                 {[
-                  "Personalized Itineraries tailored to you",
-                  "Expert Travel Advice from local guides",
-                  "No Hidden Charges, total transparency"
+                  { title: "24/7 Premium Support", desc: "Always here for your needs" },
+                  { title: "Luxury Fleet Access", desc: "Travel in style and comfort" },
+                  { title: "Best Price Guarantee", desc: "Unmatched value for your trip" }
                 ].map((item, idx) => (
                   <div key={idx} className="flex items-center space-x-4 group">
                     <div className="w-14 h-14 bg-secondary/20 rounded-2xl flex items-center justify-center text-primary group-hover:bg-secondary transition-colors">
@@ -123,7 +123,10 @@ export default function Home() {
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" />
                       </svg>
                     </div>
-                    <span className="font-black text-gray-700 text-lg">{item}</span>
+                    <div className="flex flex-col">
+                      <span className="font-bold text-gray-900 text-lg">{item.title}</span>
+                      <span className="text-gray-500 text-sm">{item.desc}</span>
+                    </div>
                   </div>
                 ))}
               </div>

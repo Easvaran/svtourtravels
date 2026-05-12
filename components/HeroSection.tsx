@@ -148,7 +148,7 @@ const HeroSection = () => {
                 className="bg-[#00bcd4] hover:bg-[#0097a7] text-white font-semibold px-8 py-3.5 lg:px-10 lg:py-4 rounded-xl transition-all hover:shadow-xl hover:-translate-y-1 active:scale-95 text-center flex items-center gap-2.5 text-sm lg:text-base"
               >
                 {showForm ? <X size={20} /> : <ChevronRight size={20} />}
-                {showForm ? "Hide Form" : "Plan Your Journey"}
+                {showForm ? "Hide Form" : "Book Now"}
               </button>
             </motion.div>
           </motion.div>

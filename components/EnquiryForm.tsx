@@ -173,8 +173,8 @@ ${selectedVehicle ? `
         <div className="absolute top-0 left-0 w-24 h-24 bg-white/10 rounded-full -translate-x-1/2 -translate-y-1/2 blur-2xl" />
         <div className="absolute bottom-0 right-0 w-32 h-32 bg-blue-400/20 rounded-full translate-x-1/2 translate-y-1/2 blur-2xl" />
         
-        <h2 className="text-3xl font-bold text-white mb-2 tracking-tight relative z-10">Book Your Journey</h2>
-        <p className="text-white/80 font-medium text-sm relative z-10">Fill in the details below to get started</p>
+        <h2 className="text-3xl font-bold text-white mb-2 tracking-tight relative z-10">Start Your Adventure</h2>
+        <p className="text-white/80 font-medium text-sm relative z-10">Professional guidance for every mile of your trip</p>
       </div>
 
       <div className="p-8 md:p-10">
