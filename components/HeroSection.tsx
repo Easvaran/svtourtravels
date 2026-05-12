@@ -65,7 +65,7 @@ const HeroSection = () => {
             priority
             className="object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-br from-slate-900/80 via-slate-900/50 to-slate-900/80" />
+          <div className="absolute inset-0 bg-gradient-to-br from-slate-900/90 via-slate-900/70 to-slate-900/90" />
           <div className="absolute inset-0 bg-gradient-mesh" />
         </motion.div>
       </AnimatePresence>
