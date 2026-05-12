@@ -16,6 +16,7 @@ body {
   color: rgb(var(--foreground-rgb));
   background: rgb(var(--background-rgb));
   overflow-x: hidden;
+  font-weight: 600;
 }
 
 @layer utilities {
@@ -24,17 +25,17 @@ body {
   }
 
   .glass {
-    background: rgba(255, 255, 255, 0.7);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, 0.35);
   }
 
   .glass-dark {
-    background: rgba(15, 23, 42, 0.7);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(15, 23, 42, 0.75);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
   }
 
   .gradient-text {
@@ -72,4 +73,34 @@ body {
   .image-hover:hover {
     transform: scale(1.05);
   }
+}
+
+/* Make all text bold by default for better readability */
+h1, h2, h3, h4, h5, h6, p, span, div, li, a {
+  font-weight: 700;
+}
+
+/* Ensure primary colors are vibrant */
+.text-primary {
+  color: #0ea5e9 !important;
+}
+
+.text-gray-900 {
+  color: #0f172a !important;
+}
+
+.text-gray-800 {
+  color: #1e293b !important;
+}
+
+.text-gray-700 {
+  color: #334155 !important;
+}
+
+.text-gray-600 {
+  color: #475569 !important;
+}
+
+.text-gray-500 {
+  color: #64748b !important;
 }
