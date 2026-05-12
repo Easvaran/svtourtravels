@@ -4,7 +4,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import HeroSection from "@/components/HeroSection";
 import TourCard from "@/components/TourCard";
 import EnquiryForm from "@/components/EnquiryForm";
-import Services from "@/components/Services";
 import HowItWorks from "@/components/HowItWorks";
 import PopularDestinations from "@/components/PopularDestinations";
 import TravelPackages from "@/components/TravelPackages";
@@ -13,18 +12,13 @@ import Testimonials from "@/components/Testimonials";
 import { useState, useEffect } from "react";
 import SafeImage from "@/components/SafeImage";
 import Link from "next/link";
-import { ChevronRight, Search, MapPin, IndianRupee, Clock, ChevronDown, Filter } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 import { useSettings } from "@/lib/SettingsContext";
 
 export default function Home() {
   const { settings } = useSettings();
   const [tours, setTours] = useState<any[]>([]);
-  const [filteredTours, setFilteredTours] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedLocation, setSelectedLocation] = useState("All");
-  const [selectedPrice, setSelectedPrice] = useState("All");
-  const [selectedDuration, setSelectedDuration] = useState("All");
 
   useEffect(() => {
     fetch("/api/tours")
@@ -32,174 +26,71 @@ export default function Home() {
       .then(data => {
         if (Array.isArray(data)) {
           setTours(data);
-          setFilteredTours(data);
         }
         setLoading(false);
       })
       .catch(() => setLoading(false));
   }, []);
 
-  useEffect(() => {
-    let result = tours;
-    if (selectedLocation !== "All") {
-      result = result.filter((t: any) => t.location === selectedLocation || t.title?.toLowerCase().includes(selectedLocation.toLowerCase()));
-    }
-    if (searchTerm) {
-      result = result.filter((t: any) => t.title?.toLowerCase().includes(searchTerm.toLowerCase()));
-    }
-    if (selectedPrice !== "All") {
-      const priceNum = (p: any) => parseInt(p?.toString().replace(/,/g, "") || "0");
-      result = result.filter((t: any) => {
-        const p = priceNum(t.price);
-        if (selectedPrice === "Under 10k") return p < 10000;
-        if (selectedPrice === "10k - 20k") return p >= 10000 && p <= 20000;
-        if (selectedPrice === "20k - 30k") return p >= 20000 && p <= 30000;
-        return p > 30000;
-      });
-    }
-    if (selectedDuration !== "All") {
-      const days = (d: any) => parseInt(d?.toString().split(" ")[0] || "0");
-      result = result.filter((t: any) => {
-        const d = days(t.duration);
-        if (selectedDuration === "1-3 Days") return d >= 1 && d <= 3;
-        if (selectedDuration === "4-6 Days") return d >= 4 && d <= 6;
-        return d >= 7;
-      });
-    }
-    setFilteredTours(result);
-  }, [searchTerm, selectedLocation, selectedPrice, selectedDuration, tours]);
-
-  const locations = ["All", "Ooty", "Kodaikanal", "Chennai", "Madurai", "Kerala", "Himachal", "Goa"];
-  const priceRanges = ["All", "Under 10k", "10k - 20k", "20k - 30k", "Above 30k"];
-  const durations = ["All", "1-3 Days", "4-6 Days", "7+ Days"];
-
   return (
     <div className="relative">
       <HeroSection />
 
-      <Services />
-
-      {/* Filter Bar */}
-      <div className="max-w-7xl mx-auto px-4 -mt-10 relative z-20">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.3 }}
-          className="bg-white p-6 md:p-10 rounded-[2.5rem] shadow-[0_40px_100px_rgba(0,0,0,0.1)] border border-gray-100"
-        >
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {/* Search */}
-            <div className="space-y-2">
-              <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-2">Search Tours</label>
-              <div className="relative group">
-                <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-primary group-focus-within:scale-110 transition-transform" size={18} />
-                <input
-                  type="text"
-                  placeholder="Where to?"
-                  className="w-full h-14 bg-gray-50 border-2 border-transparent focus:border-primary/10 focus:bg-white rounded-2xl pl-12 pr-4 outline-none transition-all font-bold text-gray-900 placeholder:text-gray-400"
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                />
-              </div>
-            </div>
-
-            {/* Location */}
-            <div className="space-y-2">
-              <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-2">Location</label>
-              <div className="relative group">
-                <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 text-primary group-focus-within:scale-110 transition-transform z-10" size={18} />
-                <select
-                  className="w-full h-14 bg-gray-50 border-2 border-transparent focus:border-primary/10 focus:bg-white rounded-2xl pl-12 pr-4 outline-none transition-all font-bold text-gray-900 appearance-none relative cursor-pointer"
-                  value={selectedLocation}
-                  onChange={(e) => setSelectedLocation(e.target.value)}
-                >
-                  {locations.map(loc => <option key={loc} value={loc}>{loc}</option>)}
-                </select>
-                <ChevronDown size={16} className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
-              </div>
-            </div>
-
-            {/* Price */}
-            <div className="space-y-2">
-              <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-2">Price Range</label>
-              <div className="relative group">
-                <IndianRupee className="absolute left-4 top-1/2 -translate-y-1/2 text-primary group-focus-within:scale-110 transition-transform z-10" size={18} />
-                <select
-                  className="w-full h-14 bg-gray-50 border-2 border-transparent focus:border-primary/10 focus:bg-white rounded-2xl pl-12 pr-4 outline-none transition-all font-bold text-gray-900 appearance-none relative cursor-pointer"
-                  value={selectedPrice}
-                  onChange={(e) => setSelectedPrice(e.target.value)}
-                >
-                  {priceRanges.map(price => <option key={price} value={price}>{price}</option>)}
-                </select>
-                <ChevronDown size={16} className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
-              </div>
-            </div>
-
-            {/* Duration */}
-            <div className="space-y-2">
-              <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-2">Duration</label>
-              <div className="relative group">
-                <Clock className="absolute left-4 top-1/2 -translate-y-1/2 text-primary group-focus-within:scale-110 transition-transform z-10" size={18} />
-                <select
-                  className="w-full h-14 bg-gray-50 border-2 border-transparent focus:border-primary/10 focus:bg-white rounded-2xl pl-12 pr-4 outline-none transition-all font-bold text-gray-900 appearance-none relative cursor-pointer"
-                  value={selectedDuration}
-                  onChange={(e) => setSelectedDuration(e.target.value)}
-                >
-                  {durations.map(dur => <option key={dur} value={dur}>{dur}</option>)}
-                </select>
-                <ChevronDown size={16} className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
-              </div>
-            </div>
-          </div>
-        </motion.div>
-      </div>
+      {/* Popular Destinations first for better flow */}
+      <PopularDestinations />
 
       {/* Tours Grid Section */}
-      <section className="py-24 bg-gray-50/50">
+      <section className="py-24 bg-gradient-to-b from-white to-gray-50/30">
         <div className="max-w-7xl mx-auto px-4">
-          <div className="flex items-center justify-between mb-12">
-            <h2 className="text-3xl font-black text-gray-900">
-              {searchTerm || selectedLocation !== "All" ? `Search Results (${filteredTours.length})` : "All Tour Packages"}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <span className="text-primary font-black tracking-[0.3em] uppercase text-sm mb-4 block">Our Tours</span>
+            <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-4">
+              Discover Amazing <span className="text-primary">Destinations</span>
             </h2>
-            <div className="flex items-center gap-2 text-gray-400 font-bold text-sm">
-              <Filter size={16} />
-              <span>{filteredTours.length} tours found</span>
-            </div>
-          </div>
+            <p className="text-gray-500 text-lg font-medium max-w-2xl mx-auto">
+              Explore our hand-picked tour packages designed to give you the best travel experience
+            </p>
+          </motion.div>
 
           {loading ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {[1, 2, 3].map(i => (
-                <div key={i} className="h-[500px] bg-white rounded-[2.5rem] animate-pulse border border-gray-100" />
+                <motion.div 
+                  key={i}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: i * 0.1 }}
+                  className="h-[500px] bg-white rounded-[2.5rem] animate-pulse border border-gray-100" 
+                />
               ))}
             </div>
-          ) : filteredTours.length === 0 ? (
-            <div className="text-center py-20 bg-white rounded-[3rem] border-2 border-dashed border-gray-100">
+          ) : tours.length === 0 ? (
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              className="text-center py-20 bg-white rounded-[3rem] border-2 border-dashed border-primary/20"
+            >
               <h3 className="text-2xl font-black text-gray-900 mb-2">No tours found</h3>
-              <button 
-                onClick={() => {
-                  setSearchTerm("");
-                  setSelectedLocation("All");
-                  setSelectedPrice("All");
-                  setSelectedDuration("All");
-                }}
-                className="text-primary font-bold hover:underline"
-              >
-                Clear all filters
-              </button>
-            </div>
+              <p className="text-gray-500 mb-6">Check back soon for new destinations!</p>
+            </motion.div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               <AnimatePresence mode="popLayout">
-                {filteredTours.map((tour: any) => (
+                {tours.map((tour: any, index: number) => (
                   <motion.div
                     key={tour._id || tour.id}
                     layout
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.9 }}
-                    transition={{ duration: 0.3 }}
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: index * 0.1 }}
+                    whileHover={{ y: -10 }}
                   >
                     <TourCard {...tour} />
                   </motion.div>
