@@ -4,7 +4,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import HeroSection from "@/components/HeroSection";
 import TourCard from "@/components/TourCard";
 import EnquiryForm from "@/components/EnquiryForm";
-import HowItWorks from "@/components/HowItWorks";
 import PopularDestinations from "@/components/PopularDestinations";
 import TravelPackages from "@/components/TravelPackages";
 import WhyChooseUs from "@/components/WhyChooseUs";
@@ -100,8 +99,6 @@ export default function Home() {
           )}
         </div>
       </section>
-
-      <HowItWorks />
 
       {/* Enquiry Section */}
       <section className="py-24 bg-white relative overflow-hidden">

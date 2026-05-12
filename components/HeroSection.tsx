@@ -42,7 +42,7 @@ const HeroSection = () => {
   const prevSlide = () => setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
 
   return (
-    <section className="relative h-screen min-h-[700px] flex items-center justify-center overflow-hidden">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden py-12 md:py-0">
       {/* Background Carousel */}
       <AnimatePresence mode="wait">
         <motion.div
@@ -60,12 +60,12 @@ const HeroSection = () => {
             priority
             className="object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/60" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black/80" />
         </motion.div>
       </AnimatePresence>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 w-full">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
           {/* Left Content */}
           <motion.div
             key={`content-${currentSlide}`}
@@ -82,20 +82,20 @@ const HeroSection = () => {
             >
               Explore | Discover | Travel
             </motion.span>
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-black text-white mb-6 leading-[0.9] tracking-tighter">
+            <h1 className="text-3xl md:text-5xl lg:text-7xl font-black text-white mb-4 md:mb-6 leading-[1.1] tracking-tighter">
               {slides[currentSlide].title} <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-secondary to-yellow-300">
                 {slides[currentSlide].subtitle}
               </span>
             </h1>
-            <p className="text-lg md:text-xl text-gray-200 mb-10 max-w-xl leading-relaxed font-medium">
+            <p className="text-base md:text-lg lg:text-xl text-gray-200 mb-8 md:mb-10 max-w-xl leading-relaxed font-medium">
               {slides[currentSlide].description}
             </p>
             
             <div className="flex flex-wrap gap-4">
               <button 
                 onClick={() => setShowForm(!showForm)}
-                className="bg-primary hover:bg-blue-700 text-white font-bold px-10 py-5 rounded-2xl transition-all hover:shadow-[0_20px_50px_rgba(8,112,184,0.4)] hover:-translate-y-1 active:scale-95 text-center flex items-center gap-2"
+                className="bg-primary hover:bg-blue-700 text-white font-bold px-8 py-4 md:px-10 md:py-5 rounded-2xl transition-all hover:shadow-[0_20px_50px_rgba(8,112,184,0.4)] hover:-translate-y-1 active:scale-95 text-center flex items-center gap-2"
               >
                 {showForm ? <X size={20} /> : null}
                 {showForm ? "Hide Form" : "Start Exploring"}
@@ -103,13 +103,13 @@ const HeroSection = () => {
             </div>
           </motion.div>
 
-          {/* Enquiry Form (Right Side) */}
+          {/* Enquiry Form (Right Side / Mobile: Below) */}
           <AnimatePresence>
             {showForm && (
               <motion.div
-                initial={{ opacity: 0, x: 50, scale: 0.9 }}
-                animate={{ opacity: 1, x: 0, scale: 1 }}
-                exit={{ opacity: 0, x: 50, scale: 0.9 }}
+                initial={{ opacity: 0, y: 30, scale: 0.9 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: 30, scale: 0.9 }}
                 transition={{ duration: 0.5 }}
               >
                 <EnquiryForm showTitle={false} />

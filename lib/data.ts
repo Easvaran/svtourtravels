@@ -235,25 +235,43 @@ export const testimonialData = [
   {
     name: "Amit Sharma",
     photo: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1974&auto=format&fit=crop",
-    review: "Our trip to Kerala organized by SV Tour & Travels was absolutely flawless. Every detail was taken care of, from the houseboat to the local transfers.",
-    rating: 5
+    review: "Our Kerala backwaters tour with SV Tour & Travels was absolutely magical! The houseboat experience was unforgettable, and the food was delicious.",
+    rating: 5,
+    tour: "Kerala Backwaters"
   },
   {
     name: "Priya Singh",
     photo: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=1974&auto=format&fit=crop",
-    review: "The Himachal package was perfect for our honeymoon. The hotels were romantic and the views were breathtaking. Highly recommended!",
-    rating: 5
+    review: "Perfect honeymoon package to Manali! The resort was stunning, and the snow activities were so much fun. Thank you for making our trip special!",
+    rating: 5,
+    tour: "Manali Honeymoon"
   },
   {
     name: "Rahul Verma",
     photo: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=1974&auto=format&fit=crop",
-    review: "We were a group of 10 friends and the arrangements for our Goa trip were excellent. The coordination was top-notch.",
-    rating: 4
+    review: "Goa trip with 10 friends was a blast! The beach resort was perfect, and the water sports package was totally worth it!",
+    rating: 4,
+    tour: "Goa Beach Tour"
   },
   {
     name: "Sneha Reddy",
     photo: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=1976&auto=format&fit=crop",
-    review: "I've been traveling with SV for years. Their service is consistently excellent and they always provide the best value for money.",
-    rating: 5
+    review: "Ooty tour with family was amazing! The botanical gardens and tea factory visit were highlights. The driver was very knowledgeable.",
+    rating: 5,
+    tour: "Ooty Hill Station"
+  },
+  {
+    name: "Vikram Patel",
+    photo: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=1974&auto=format&fit=crop",
+    review: "Kodaikanal tour was fantastic! The lake boating and Coaker's Walk were incredible. The accommodation was very comfortable.",
+    rating: 5,
+    tour: "Kodaikanal Tour"
+  },
+  {
+    name: "Ananya Nair",
+    photo: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=1970&auto=format&fit=crop",
+    review: "Best travel experience ever! The team at SV Tours is very professional. We'll definitely book with them again!",
+    rating: 5,
+    tour: "Munnar Tea Garden"
   }
 ];

@@ -17,9 +17,9 @@ const Testimonials = () => {
   }, []);
 
   return (
-    <section className="py-24 bg-gray-50 overflow-hidden">
+    <section className="py-24 bg-gradient-to-b from-gray-50 to-white overflow-hidden">
       <div className="max-w-7xl mx-auto px-4">
-        <div className="text-center max-w-3xl mx-auto mb-20">
+        <div className="text-center max-w-3xl mx-auto mb-16">
           <motion.span 
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -33,13 +33,60 @@ const Testimonials = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="text-4xl md:text-5xl font-black text-gray-900 mb-6"
+            className="text-4xl md:text-5xl font-black text-gray-900 mb-4"
           >
-            What Our Travelers Say
+            Loved by Our <span className="text-primary">Travelers</span>
           </motion.h2>
+          <p className="text-gray-500 text-lg font-medium">
+            See what our customers have to say about their incredible experiences
+          </p>
         </div>
 
-        <div className="relative max-w-4xl mx-auto">
+        {/* Mobile: Grid of all testimonials */}
+        <div className="md:hidden grid grid-cols-1 gap-6">
+          {testimonialData.map((testimonial, idx) => (
+            <motion.div
+              key={idx}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: idx * 0.1 }}
+              className="bg-white p-8 rounded-[2.5rem] shadow-xl border border-gray-100"
+            >
+              <div className="flex items-center gap-4 mb-6">
+                <div className="relative w-16 h-16 rounded-full overflow-hidden border-3 border-primary/10 flex-shrink-0">
+                  <Image
+                    src={testimonial.photo}
+                    alt={testimonial.name}
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+                <div>
+                  <h4 className="text-xl font-black text-gray-900">{testimonial.name}</h4>
+                  {testimonial.tour && (
+                    <p className="text-primary font-bold text-sm">📍 {testimonial.tour}</p>
+                  )}
+                </div>
+              </div>
+              <div className="flex space-x-1 mb-4">
+                {[...Array(5)].map((_, i) => (
+                  <Star
+                    key={i}
+                    size={18}
+                    className={i < testimonial.rating ? "text-secondary fill-secondary" : "text-gray-200"}
+                  />
+                ))}
+              </div>
+              <p className="text-gray-700 font-medium leading-relaxed">
+                "{testimonial.review}"
+              </p>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Desktop: Carousel */}
+        <div className="hidden md:block relative max-w-4xl mx-auto">
           <div className="absolute -top-10 -left-10 text-primary/10">
             <Quote size={120} fill="currentColor" />
           </div>
@@ -64,6 +111,12 @@ const Testimonials = () => {
                     />
                   </div>
                 </div>
+                
+                {testimonialData[currentIndex].tour && (
+                  <p className="text-primary font-bold uppercase tracking-widest text-sm mb-4">
+                    📍 {testimonialData[currentIndex].tour}
+                  </p>
+                )}
                 
                 <div className="flex justify-center space-x-1 mb-8">
                   {[...Array(5)].map((_, i) => (
