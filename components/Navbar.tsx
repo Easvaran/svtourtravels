@@ -54,19 +54,19 @@ const Navbar = () => {
             />
           ) : null}
           {(!settings.logoUrl || !settings.logoUrl.trim()) && (
-            <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center text-white font-bold text-xl group-hover:rotate-12 transition-transform shadow-lg">
+            <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center text-white font-semibold text-xl group-hover:rotate-12 transition-transform shadow-lg">
               {settings.websiteName.substring(0, 2).toUpperCase()}
             </div>
           )}
           <div className="flex flex-col">
             <span className={cn(
-              "font-black text-xl tracking-tighter leading-none transition-colors",
+              "font-bold text-xl tracking-tighter leading-none transition-colors",
               isOpen || scrolled ? "text-primary" : "text-white"
             )}>
               {settings.websiteName.toUpperCase()}
             </span>
             <span className={cn(
-              "text-[10px] font-bold tracking-[0.2em] uppercase transition-colors",
+              "text-[10px] font-medium tracking-[0.2em] uppercase transition-colors",
               isOpen || scrolled ? "text-gray-500" : "text-white/70"
             )}>
               Explore | Discover
@@ -83,7 +83,7 @@ const Navbar = () => {
                 key={link.name}
                 href={link.href}
                 className={cn(
-                  "relative px-4 py-2 font-bold text-sm transition-all group overflow-hidden rounded-full",
+                  "relative px-4 py-2 font-medium text-sm transition-all group overflow-hidden rounded-full",
                   scrolled ? "text-gray-700" : "text-white",
                   isActive && "text-primary"
                 )}
@@ -91,14 +91,14 @@ const Navbar = () => {
                 <span className="relative z-10 group-hover:text-primary transition-colors">{link.name}</span>
                 <span className={cn(
                   "absolute inset-0 transition-transform origin-left duration-300",
-                  isActive ? "bg-yellow-400 scale-x-100" : "bg-primary/10 scale-x-0 group-hover:scale-x-100"
+                  isActive ? "bg-[#00bcd4] scale-x-100" : "bg-primary/10 scale-x-0 group-hover:scale-x-100"
                 )} />
               </Link>
             );
           })}
           <Link
             href="/contact"
-            className="ml-4 bg-primary hover:bg-blue-700 text-white font-bold px-6 py-2.5 rounded-full flex items-center space-x-2 transition-all hover:shadow-xl hover:-translate-y-0.5 active:scale-95"
+            className="ml-4 bg-[#00bcd4] hover:bg-[#0097a7] text-white font-medium px-6 py-2.5 rounded-full flex items-center space-x-2 transition-all hover:shadow-xl hover:-translate-y-0.5 active:scale-95"
           >
             <span className="text-sm">Book Now</span>
           </Link>
@@ -152,11 +152,11 @@ const Navbar = () => {
                     />
                   ) : null}
                   {(!settings.logoUrl || !settings.logoUrl.trim()) && (
-                    <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center text-white font-bold text-xl shadow-lg">
+                    <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center text-white font-semibold text-xl shadow-lg">
                       {settings.websiteName.substring(0, 2).toUpperCase()}
                     </div>
                   )}
-                  <span className="font-black text-xl text-primary tracking-tight">
+                  <span className="font-bold text-xl text-primary tracking-tight">
                     {settings.websiteName.toUpperCase()}
                   </span>
                 </Link>
@@ -179,7 +179,7 @@ const Navbar = () => {
                         href={link.href}
                         onClick={() => setIsOpen(false)}
                         className={cn(
-                          "group text-base font-black flex items-center justify-between px-5 py-4 rounded-2xl transition-all",
+                          "group text-base font-medium flex items-center justify-between px-5 py-4 rounded-2xl transition-all",
                           isActive 
                             ? "bg-gradient-to-r from-primary/10 to-blue-50 text-primary border border-primary/20" 
                             : "text-gray-800 hover:bg-gray-50"
@@ -197,13 +197,13 @@ const Navbar = () => {
                 <Link
                   href="/contact"
                   onClick={() => setIsOpen(false)}
-                  className="inline-flex items-center justify-center px-6 py-3.5 rounded-2xl text-sm md:text-base font-semibold whitespace-nowrap w-full bg-primary hover:bg-blue-700 text-white shadow-xl shadow-primary/20 transition-all hover:-translate-y-0.5 active:scale-[0.98]"
+                  className="inline-flex items-center justify-center px-6 py-3.5 rounded-2xl text-sm md:text-base font-medium whitespace-nowrap w-full bg-[#00bcd4] hover:bg-[#0097a7] text-white shadow-xl shadow-[#00bcd4]/20 transition-all hover:-translate-y-0.5 active:scale-[0.98]"
                 >
                   Book Your Trip
                 </Link>
                 
                 <div className="pt-6 border-t border-gray-100">
-                  <p className="text-xs font-bold uppercase tracking-[0.2em] text-gray-400 mb-4 text-center">Contact Us</p>
+                  <p className="text-xs font-medium uppercase tracking-[0.2em] text-gray-400 mb-4 text-center">Contact Us</p>
                   <div className="flex justify-center space-x-4">
                     <a 
                       href={`tel:${settings.contactPhone}`}

@@ -1,12 +1,15 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Poppins } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 import { Toaster } from "react-hot-toast";
 import { SettingsProvider } from "@/lib/SettingsContext";
 import LayoutContent from "@/components/LayoutContent";
 
-const inter = Inter({ subsets: ["latin"] });
+const poppins = Poppins({ 
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800", "900"]
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.svtourandtravels.com"),
@@ -66,7 +69,7 @@ export const metadata: Metadata = {
     google: "wJJFY_2llTEmf5HgRC3Ogi0BoG88iygCVdRn-r3HijQ",
   },
 
-  themeColor: "#0870b8",
+  themeColor: "#0f172a",
   viewport: "width=device-width, initial-scale=1, maximum-scale=5",
 };
 
@@ -92,7 +95,7 @@ export default function RootLayout({
           `}
         </Script>
       </head>
-      <body className={inter.className}>
+      <body className={poppins.className}>
         <SettingsProvider>
           <Toaster position="top-center" />
           <LayoutContent>{children}</LayoutContent>

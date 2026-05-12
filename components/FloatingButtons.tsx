@@ -22,7 +22,7 @@ const FloatingButtons = () => {
   };
 
   return (
-    <div className="fixed bottom-8 right-8 z-[60] flex flex-col space-y-4">
+    <div className="fixed bottom-8 right-8 z-[60] flex flex-col items-end space-y-4">
       {/* WhatsApp Button */}
       <motion.a
         href={`https://wa.me/918668076871?text=${encodeURIComponent("Hi I want to book a tour")}`}
@@ -36,7 +36,7 @@ const FloatingButtons = () => {
       >
         <div className="absolute inset-0 bg-[#25D366] rounded-full animate-ping opacity-20 group-hover:hidden" />
         <MessageCircle size={32} />
-        <span className="absolute right-full mr-4 bg-white text-gray-900 font-bold px-4 py-2 rounded-xl text-sm shadow-xl opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
+        <span className="absolute right-full mr-4 bg-[#0f172a] text-white font-bold px-4 py-2 rounded-xl text-sm shadow-xl opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none border border-white/10 hidden lg:block">
           Chat with us
         </span>
       </motion.a>

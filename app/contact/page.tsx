@@ -34,16 +34,16 @@ export default function ContactPage() {
   return (
     <div className="pt-0">
       {/* Header */}
-      <section className="bg-primary py-24 text-white relative overflow-hidden">
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-0 right-0 w-96 h-96 bg-white rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl" />
+      <section className="bg-white py-24 text-gray-900 relative overflow-hidden">
+        <div className="absolute inset-0 opacity-5">
+          <div className="absolute top-0 right-0 w-96 h-96 bg-primary rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl" />
           <div className="absolute bottom-0 left-0 w-64 h-64 bg-secondary rounded-full translate-y-1/2 -translate-x-1/2 blur-3xl" />
         </div>
         <div className="max-w-7xl mx-auto px-4 text-center relative z-10">
           <motion.h1 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-5xl md:text-7xl font-bold mb-6"
+            className="text-5xl md:text-7xl font-black mb-6 text-[#0f172a]"
           >
             Get In Touch
           </motion.h1>
@@ -51,7 +51,7 @@ export default function ContactPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="text-blue-100 text-xl max-w-2xl mx-auto"
+            className="text-gray-600 text-xl max-w-2xl mx-auto font-medium"
           >
             Have questions about a package or need a custom itinerary? We're here to help you plan your next journey.
           </motion.p>

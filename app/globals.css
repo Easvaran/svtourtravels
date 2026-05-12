@@ -5,17 +5,28 @@
 :root {
   --foreground-rgb: 15, 23, 42;
   --background-rgb: 248, 250, 252;
-  --primary-rgb: 14, 165, 233;
+  --primary-rgb: 15, 23, 42;
 }
 
 * {
   box-sizing: border-box;
+  transition: all 0.3s ease;
 }
 
 body {
   color: #0f172a;
   background: #f8fafc;
   overflow-x: hidden;
+  font-family: 'Poppins', sans-serif;
+}
+
+.container-custom {
+  max-width: 1200px;
+  margin: auto;
+}
+
+section {
+  padding: 60px 20px;
 }
 
 @layer utilities {
@@ -92,7 +103,7 @@ p, span, div, li, a {
 
 /* Vibrant primary color */
 .text-primary {
-  color: #0ea5e9;
+  color: #00bcd4;
 }
 
 .text-blue-100, .text-gray-200, .text-gray-300, .text-gray-400 {

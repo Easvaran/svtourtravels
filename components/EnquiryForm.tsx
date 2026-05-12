@@ -162,45 +162,56 @@ ${selectedVehicle ? `
 
   return (
     <motion.div
-      initial={{ opacity: 0, scale: 0.95 }}
-      whileInView={{ opacity: 1, scale: 1 }}
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      transition={{ duration: 0.5 }}
-      className={`bg-white rounded-[2.5rem] p-4 md:p-6 shadow-[0_20px_60px_rgba(0,0,0,0.1)] border border-gray-100 ${className}`}
+      transition={{ duration: 0.6 }}
+      className={`bg-white rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.08)] border border-gray-100 max-w-[900px] mx-auto overflow-hidden ${className}`}
     >
-      {showTitle && (
-        <div className="text-center mb-10">
-          <h2 className="text-3xl md:text-4xl font-black text-gray-900 mb-2">Get a Free Quote</h2>
-          <p className="text-gray-500 font-medium">Your dream vacation is just a few details away.</p>
-        </div>
-      )}
+      <div className="bg-gradient-to-r from-[#00bcd4] to-blue-600 py-8 px-10 text-center relative overflow-hidden">
+        {/* Decorative background shapes */}
+        <div className="absolute top-0 left-0 w-24 h-24 bg-white/10 rounded-full -translate-x-1/2 -translate-y-1/2 blur-2xl" />
+        <div className="absolute bottom-0 right-0 w-32 h-32 bg-blue-400/20 rounded-full translate-x-1/2 translate-y-1/2 blur-2xl" />
+        
+        <h2 className="text-3xl font-bold text-white mb-2 tracking-tight relative z-10">Book Your Journey</h2>
+        <p className="text-white/80 font-medium text-sm relative z-10">Fill in the details below to get started</p>
+      </div>
 
-      <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
+      <div className="p-8 md:p-10">
+        {showTitle && (
+          <div className="text-center mb-12 hidden">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3 tracking-tight">Get a Free Quote</h2>
+            <div className="w-20 h-1.5 bg-[#00bcd4] mx-auto rounded-full mb-4" />
+            <p className="text-gray-500 font-medium">Your dream vacation is just a few details away.</p>
+          </div>
+        )}
+
+      <form onSubmit={handleSubmit} className="space-y-6">
         <Script src="https://checkout.razorpay.com/v1/checkout.js" strategy="lazyOnload" />
         {/* Selected Vehicle Summary */}
         {selectedVehicle && (
           <motion.div 
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
-            className="bg-blue-50 border-2 border-primary/10 rounded-3xl p-5 md:p-6 flex items-center justify-between"
+            className="bg-[#00bcd4]/5 border border-[#00bcd4]/20 rounded-2xl p-6 flex items-center justify-between mb-8"
           >
             <div className="flex items-center space-x-4">
-              <div className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center text-primary shadow-sm">
+              <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center text-[#00bcd4] shadow-sm border border-[#00bcd4]/10">
                 <Car size={24} />
               </div>
               <div>
-                <p className="text-[10px] font-black text-primary uppercase tracking-[0.2em] mb-1">Selected Vehicle</p>
-                <h4 className="text-base md:text-lg font-black text-gray-900">{selectedVehicle.name}</h4>
+                <p className="text-[10px] font-bold text-[#00bcd4] uppercase tracking-widest mb-1">Selected Vehicle</p>
+                <h4 className="text-lg font-bold text-gray-900">{selectedVehicle.name}</h4>
               </div>
             </div>
             <div className="text-right">
-              <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Price</p>
-              <p className="text-base md:text-lg font-black text-gray-900">₹{selectedVehicle.price.toLocaleString()}</p>
+              <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Price</p>
+              <p className="text-xl font-bold text-gray-900">₹{selectedVehicle.price.toLocaleString()}</p>
             </div>
           </motion.div>
         )}
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-2">
           <BookingInput 
             label="Full Name" 
             name="name" 
@@ -296,26 +307,26 @@ ${selectedVehicle ? `
         )}
 
         <div className="space-y-2">
-          <label className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] ml-1">
+          <label className="text-[11px] font-bold text-gray-500 uppercase tracking-wider ml-1">
             Additional Requirements
           </label>
           <textarea
             name="message"
             value={formData.message}
             onChange={handleChange}
-            rows={3}
+            rows={4}
             placeholder="Tell us about your preferences..."
-            className="w-full bg-gray-50 border-2 border-transparent rounded-2xl p-5 focus:border-primary/20 focus:bg-white focus:ring-0 outline-none transition-all font-bold text-gray-900 placeholder:text-gray-400 placeholder:font-medium resize-none"
+            className="w-full bg-white border border-gray-200 rounded-xl p-5 focus:border-[#00bcd4] focus:ring-4 focus:ring-[#00bcd4]/10 outline-none transition-all font-semibold text-gray-900 placeholder:text-gray-400 placeholder:font-normal resize-none shadow-sm"
           ></textarea>
         </div>
 
         <button
           disabled={loading}
           type="submit"
-          className={`w-full font-black py-5 rounded-2xl flex items-center justify-center space-x-3 transition-all hover:-translate-y-1 active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed text-base md:text-lg px-6 ${
+          className={`w-full font-bold py-5 rounded-xl flex items-center justify-center space-x-3 transition-all hover:shadow-[0_20px_40px_rgba(0,188,212,0.25)] hover:-translate-y-1 active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed text-lg px-6 ${
             submitted
-              ? "bg-green-500 hover:bg-green-600 text-white shadow-[0_20px_50px_rgba(34,197,94,0.3)]"
-              : "bg-gradient-to-r from-primary to-blue-700 text-white shadow-[0_20px_50px_rgba(8,112,184,0.3)]"
+              ? "bg-green-500 text-white"
+              : "bg-[#00bcd4] text-white"
           }`}
         >
           {loading ? (
@@ -340,6 +351,7 @@ ${selectedVehicle ? `
           )}
         </button>
       </form>
+      </div>
     </motion.div>
   );
 };

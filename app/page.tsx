@@ -35,8 +35,8 @@ export default function Home() {
       <HeroSection />
 
       {/* Tours Grid Section */}
-      <section className="py-24 bg-gradient-to-b from-white to-gray-50/30">
-        <div className="max-w-7xl mx-auto px-4">
+      <section className="py-[60px] px-[20px] bg-gradient-to-b from-white to-gray-50/30">
+        <div className="max-w-[1200px] mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -97,9 +97,9 @@ export default function Home() {
       </section>
 
       {/* Enquiry Section */}
-      <section className="py-24 bg-white relative overflow-hidden">
+      <section className="py-[60px] px-[20px] bg-white relative overflow-hidden">
         <div className="absolute top-0 right-0 w-1/2 h-full bg-primary/5 -skew-x-12 translate-x-1/4 hidden lg:block" />
-        <div className="max-w-7xl mx-auto px-4 relative z-10">
+        <div className="max-w-[1200px] mx-auto relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
             <div>
               <span className="text-primary font-black tracking-[0.3em] uppercase text-sm mb-4 block">Get a Quote</span>
@@ -139,23 +139,24 @@ export default function Home() {
       <Testimonials />
 
       {/* Final Call to Action */}
-      <section className="py-24">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="bg-primary rounded-[4rem] p-12 md:p-24 relative overflow-hidden text-center text-white shadow-[0_40px_100px_rgba(8,112,184,0.4)]">
-            <div className="absolute inset-0 opacity-20 pointer-events-none">
+      <section className="py-[80px] px-[20px]">
+        <div className="max-w-[1200px] mx-auto">
+          <div className="bg-primary rounded-[4rem] relative overflow-hidden text-center text-white shadow-[0_40px_100px_rgba(8,112,184,0.4)]">
+            <div className="absolute inset-0 pointer-events-none">
               <SafeImage
                 src="https://images.unsplash.com/photo-1488646953014-85cb44e25828?q=80&w=2070&auto=format&fit=crop"
                 alt="Background"
                 fill
                 className="object-cover"
               />
+              <div className="absolute inset-0 bg-black/60" />
             </div>
-            <div className="relative z-10">
+            <div className="relative z-10 py-[80px] px-[20px]">
               <motion.h2 
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                className="text-4xl md:text-6xl font-black mb-8 leading-tight"
+                className="text-[42px] font-bold text-[#ffffff] mb-8 leading-tight"
               >
                 Ready to Start Your <br /> Next Adventure?
               </motion.h2>
@@ -164,7 +165,7 @@ export default function Home() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.1 }}
-                className="text-blue-100 text-xl mb-12 max-w-2xl mx-auto font-medium"
+                className="text-[rgba(255,255,255,0.8)] text-xl mb-12 max-w-2xl mx-auto font-medium"
               >
                 Join thousands of happy travelers who explored the world with {settings.websiteName}. Your dream vacation is just a click away.
               </motion.p>
@@ -177,7 +178,7 @@ export default function Home() {
               >
                 <Link 
                   href="/contact"
-                  className="w-full sm:w-auto bg-secondary text-primary font-black px-12 py-6 rounded-2xl hover:bg-yellow-400 transition-all text-xl shadow-2xl hover:-translate-y-1 text-center"
+                  className="w-full sm:w-auto bg-[#00bcd4] text-white font-black px-12 py-6 rounded-2xl hover:bg-[#0097a7] transition-all text-xl shadow-2xl hover:-translate-y-1 text-center"
                 >
                   Book Now
                 </Link>

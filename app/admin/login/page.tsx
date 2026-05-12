@@ -42,9 +42,9 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0f172a] flex items-center justify-center p-4 relative overflow-hidden">
+    <div className="min-h-screen bg-[#0f172a] flex items-center justify-center p-4 relative overflow-hidden font-poppins">
       {/* Background Orbs */}
-      <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary/20 rounded-full blur-[120px] animate-pulse" />
+      <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-[#00bcd4]/20 rounded-full blur-[120px] animate-pulse" />
       <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-blue-600/20 rounded-full blur-[120px] animate-pulse" />
       
       <motion.div
@@ -59,28 +59,28 @@ export default function LoginPage() {
             className="inline-block mb-4"
           >
             <div className="bg-white/5 backdrop-blur-xl p-4 rounded-3xl border border-white/10 shadow-2xl">
-              <span className="text-4xl font-black bg-gradient-to-r from-primary to-blue-400 bg-clip-text text-transparent">SV</span>
-              <span className="text-4xl font-black text-white ml-2">TOUR</span>
+              <span className="text-4xl font-bold bg-gradient-to-r from-[#00bcd4] to-blue-400 bg-clip-text text-transparent">SV</span>
+              <span className="text-4xl font-bold text-white ml-2">TOUR</span>
             </div>
           </motion.div>
-          <h1 className="text-3xl font-black text-white mb-2 tracking-tight">Admin Access</h1>
+          <h1 className="text-3xl font-bold text-white mb-2 tracking-tight">Admin Access</h1>
           <p className="text-slate-400 font-medium">Enter your secure credentials below</p>
         </div>
 
-        <div className="bg-white/5 backdrop-blur-2xl p-8 md:p-10 rounded-[3rem] shadow-[0_32px_64px_-12px_rgba(0,0,0,0.5)] border border-white/10 relative overflow-hidden">
-          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary to-transparent opacity-50" />
+        <div className="bg-white/5 backdrop-blur-2xl p-8 md:p-10 rounded-[2.5rem] shadow-[0_32px_64px_-12px_rgba(0,0,0,0.5)] border border-white/10 relative overflow-hidden">
+          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[#00bcd4] to-transparent opacity-50" />
           
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-2">
-              <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] ml-1">Username or Email</label>
+              <label className="text-[11px] font-bold text-slate-400 uppercase tracking-[0.2em] ml-1">Username or Email</label>
               <div className="relative group">
-                <div className="absolute inset-0 bg-primary/5 rounded-2xl blur-xl group-focus-within:bg-primary/10 transition-all" />
-                <User className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-primary transition-colors z-10" size={20} />
+                <div className="absolute inset-0 bg-[#00bcd4]/5 rounded-2xl blur-xl group-focus-within:bg-[#00bcd4]/10 transition-all" />
+                <User className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-[#00bcd4] transition-colors z-10" size={20} />
                 <input
                   required
                   type="text"
                   placeholder="admin or email@example.com"
-                  className="w-full bg-white/5 border-2 border-white/5 rounded-2xl py-4 pl-12 pr-4 focus:border-primary/30 focus:bg-white/10 focus:ring-0 outline-none transition-all font-bold text-white placeholder:text-slate-600 relative z-10"
+                  className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 pl-12 pr-4 focus:border-[#00bcd4]/30 focus:bg-white/10 focus:ring-0 outline-none transition-all font-semibold text-white placeholder:text-slate-600 relative z-10"
                   value={formData.username}
                   onChange={(e) => setFormData({ ...formData, username: e.target.value })}
                 />
@@ -88,15 +88,15 @@ export default function LoginPage() {
             </div>
 
             <div className="space-y-2">
-              <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] ml-1">Password</label>
+              <label className="text-[11px] font-bold text-slate-400 uppercase tracking-[0.2em] ml-1">Password</label>
               <div className="relative group">
-                <div className="absolute inset-0 bg-primary/5 rounded-2xl blur-xl group-focus-within:bg-primary/10 transition-all" />
-                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-primary transition-colors z-10" size={20} />
+                <div className="absolute inset-0 bg-[#00bcd4]/5 rounded-2xl blur-xl group-focus-within:bg-[#00bcd4]/10 transition-all" />
+                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-[#00bcd4] transition-colors z-10" size={20} />
                 <input
                   required
                   type={showPassword ? "text" : "password"}
                   placeholder="••••••••"
-                  className="w-full bg-white/5 border-2 border-white/5 rounded-2xl py-4 pl-12 pr-12 focus:border-primary/30 focus:bg-white/10 focus:ring-0 outline-none transition-all font-bold text-white placeholder:text-slate-600 relative z-10"
+                  className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 pl-12 pr-12 focus:border-[#00bcd4]/30 focus:bg-white/10 focus:ring-0 outline-none transition-all font-semibold text-white placeholder:text-slate-600 relative z-10"
                   value={formData.password}
                   onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                 />
@@ -113,7 +113,7 @@ export default function LoginPage() {
             <div className="flex justify-end">
               <Link 
                 href="/forgot-password" 
-                className="text-[10px] font-black text-primary uppercase tracking-widest hover:text-blue-400 transition-colors"
+                className="text-[11px] font-bold text-[#00bcd4] uppercase tracking-widest hover:text-blue-400 transition-colors"
               >
                 Forgot Password?
               </Link>
@@ -122,7 +122,7 @@ export default function LoginPage() {
             <button
               disabled={loading}
               type="submit"
-              className="w-full bg-primary hover:bg-blue-600 text-white font-black py-5 rounded-2xl flex items-center justify-center space-x-3 transition-all hover:shadow-[0_20px_50px_rgba(8,112,184,0.3)] hover:-translate-y-1 active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed mt-4 shadow-lg shadow-primary/20"
+              className="w-full bg-[#00bcd4] hover:bg-[#0097a7] text-white font-bold py-5 rounded-2xl flex items-center justify-center space-x-3 transition-all hover:shadow-[0_20px_50px_rgba(0,188,212,0.3)] hover:-translate-y-1 active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed mt-4 shadow-lg shadow-[#00bcd4]/20"
             >
               {loading ? (
                 <div className="w-6 h-6 border-4 border-white border-t-transparent rounded-full animate-spin" />
@@ -136,7 +136,7 @@ export default function LoginPage() {
           </form>
         </div>
 
-        <p className="text-center mt-12 text-slate-500 text-[10px] font-black uppercase tracking-[0.4em]">
+        <p className="text-center mt-12 text-slate-500 text-[11px] font-bold uppercase tracking-[0.4em]">
           &copy; {new Date().getFullYear()} SV Tour & Travels • Secure Portal
         </p>
       </motion.div>

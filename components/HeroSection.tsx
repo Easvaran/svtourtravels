@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import SafeImage from "./SafeImage";
 import { ChevronRight, ChevronLeft, X, Globe, MapPin, Users } from "lucide-react";
 import EnquiryForm from "./EnquiryForm";
+import { cn } from "@/lib/utils";
 
 const slides = [
   {
@@ -42,20 +43,19 @@ const HeroSection = () => {
   const prevSlide = () => setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden py-12 md:py-0">
-      {/* Decorative elements */}
-      <div className="absolute top-20 left-10 w-32 h-32 bg-primary-500/20 rounded-full blur-3xl animate-blob" />
-      <div className="absolute bottom-20 right-10 w-48 h-48 bg-secondary/20 rounded-full blur-3xl animate-blob" style={{ animationDelay: "2s" }} />
-      <div className="absolute top-1/2 left-1/4 w-24 h-24 bg-accent-500/10 rounded-full blur-2xl animate-float" />
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden py-10 lg:py-0 bg-[#0f172a]">
+      {/* Decorative elements - Lowered opacity to prevent "beams" */}
+      <div className="absolute top-20 left-10 w-32 h-32 bg-primary/10 rounded-full blur-3xl animate-blob" />
+      <div className="absolute bottom-20 right-10 w-48 h-48 bg-secondary/10 rounded-full blur-3xl animate-blob" style={{ animationDelay: "2s" }} />
 
       {/* Background Carousel */}
-      <AnimatePresence mode="wait">
+      <AnimatePresence mode="popLayout">
         <motion.div
           key={currentSlide}
-          initial={{ opacity: 0, x: 100 }}
-          animate={{ opacity: 1, x: 0 }}
-          exit={{ opacity: 0, x: -100 }}
-          transition={{ duration: 0.8, ease: "easeInOut" }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 1.2, ease: "easeInOut" }}
           className="absolute inset-0 z-0"
         >
           <SafeImage
@@ -65,46 +65,52 @@ const HeroSection = () => {
             priority
             className="object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-br from-slate-900/90 via-slate-900/70 to-slate-900/90" />
-          <div className="absolute inset-0 bg-gradient-mesh" />
+          <div className="absolute inset-0 bg-black/50" />
+          <div className="absolute inset-0 bg-gradient-mesh opacity-30" />
         </motion.div>
       </AnimatePresence>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 w-full">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 w-full h-full flex items-center pt-24 lg:pt-0">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start lg:items-center w-full pb-10 lg:pb-0">
           {/* Left Content */}
           <motion.div
             key={`content-${currentSlide}`}
             initial={{ opacity: 0, x: -60 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            className="text-left"
+            className={cn(
+              "lg:col-span-7 text-left transition-all duration-500",
+              showForm ? "hidden lg:block opacity-0 lg:opacity-100" : "block opacity-100"
+            )}
           >
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.15 }}
-              className="flex items-center gap-3 mb-6"
+              className="flex items-center gap-3 mb-4 lg:mb-6"
             >
               <div className="flex -space-x-3">
-                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-green-400 to-emerald-600 border-3 border-white/20 flex items-center justify-center">
-                  <Users size={18} className="text-white" />
+                <div className="w-8 h-8 lg:w-10 lg:h-10 rounded-full bg-gradient-to-br from-green-400 to-emerald-600 border-2 lg:border-3 border-white/20 flex items-center justify-center">
+                  <Users size={14} className="text-white lg:hidden" />
+                  <Users size={18} className="text-white hidden lg:block" />
                 </div>
-                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-primary-600 border-3 border-white/20 flex items-center justify-center">
-                  <Globe size={18} className="text-white" />
+                <div className="w-8 h-8 lg:w-10 lg:h-10 rounded-full bg-gradient-to-br from-blue-400 to-primary-600 border-2 lg:border-3 border-white/20 flex items-center justify-center">
+                  <Globe size={14} className="text-white lg:hidden" />
+                  <Globe size={18} className="text-white hidden lg:block" />
                 </div>
-                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-amber-400 to-accent-600 border-3 border-white/20 flex items-center justify-center">
-                  <MapPin size={18} className="text-white" />
+                <div className="w-8 h-8 lg:w-10 lg:h-10 rounded-full bg-gradient-to-br from-amber-400 to-accent-600 border-2 lg:border-3 border-white/20 flex items-center justify-center">
+                  <MapPin size={14} className="text-white lg:hidden" />
+                  <MapPin size={18} className="text-white hidden lg:block" />
                 </div>
               </div>
-              <span className="text-white/80 font-semibold text-sm">5000+ Happy Travelers</span>
+              <span className="text-white font-semibold text-xs lg:text-sm">5000+ Happy Travelers</span>
             </motion.div>
 
             <motion.span 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.25 }}
-              className="inline-block px-5 py-2 mb-6 text-xs font-black tracking-[0.35em] text-cyan-300 uppercase bg-white/5 backdrop-blur-xl rounded-full border border-white/10"
+              className="inline-block px-4 py-1.5 lg:px-5 lg:py-2 mb-4 lg:mb-6 text-[10px] lg:text-xs font-black tracking-[0.2em] lg:tracking-[0.35em] text-white uppercase bg-white/10 backdrop-blur-xl rounded-full border border-white/20"
             >
               Explore • Discover • Travel
             </motion.span>
@@ -113,7 +119,8 @@ const HeroSection = () => {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.35 }}
-              className="text-4xl md:text-6xl lg:text-8xl font-black text-white mb-5 md:mb-7 leading-[1.05] tracking-tight"
+              className="text-3xl md:text-5xl lg:text-7xl font-bold text-[#ffffff] mb-4 lg:mb-7 leading-[1.1] tracking-tight drop-shadow-lg"
+              style={{ textShadow: "0 2px 8px rgba(0,0,0,0.5)" }}
             >
               {slides[currentSlide].title} <br />
               <span className="gradient-text">
@@ -125,7 +132,7 @@ const HeroSection = () => {
               initial={{ opacity: 0, y: 25 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.45 }}
-              className="text-base md:text-lg lg:text-xl text-gray-200 mb-10 md:mb-12 max-w-xl leading-relaxed font-medium"
+              className="text-sm md:text-lg lg:text-xl text-white mb-6 lg:mb-12 max-w-xl leading-relaxed font-medium drop-shadow-md"
             >
               {slides[currentSlide].description}
             </motion.p>
@@ -138,45 +145,57 @@ const HeroSection = () => {
             >
               <button 
                 onClick={() => setShowForm(!showForm)}
-                className="bg-gradient-to-r from-primary-500 to-primary-700 hover:from-primary-600 hover:to-primary-800 text-white font-black px-9 py-4.5 md:px-12 md:py-5 rounded-3xl transition-all hover:shadow-[0_30px_80px_rgba(14,165,233,0.45)] hover:-translate-y-1.5 active:scale-[0.97] text-center flex items-center gap-2.5 btn-glow"
+                className="bg-[#00bcd4] hover:bg-[#0097a7] text-white font-semibold px-8 py-3.5 lg:px-10 lg:py-4 rounded-xl transition-all hover:shadow-xl hover:-translate-y-1 active:scale-95 text-center flex items-center gap-2.5 text-sm lg:text-base"
               >
-                {showForm ? <X size={22} /> : <ChevronRight size={22} />}
+                {showForm ? <X size={20} /> : <ChevronRight size={20} />}
                 {showForm ? "Hide Form" : "Plan Your Journey"}
               </button>
             </motion.div>
           </motion.div>
 
-          {/* Enquiry Form (Right Side / Mobile: Below) */}
-          <AnimatePresence>
-            {showForm && (
-              <motion.div
-                initial={{ opacity: 0, x: 50, scale: 0.92 }}
-                animate={{ opacity: 1, x: 0, scale: 1 }}
-                exit={{ opacity: 0, x: 50, scale: 0.92 }}
-                transition={{ duration: 0.6, type: "spring", damping: 20 }}
-              >
-                <EnquiryForm showTitle={false} />
-              </motion.div>
-            )}
-          </AnimatePresence>
+          {/* Enquiry Form (Right Side) */}
+          <div className={cn(
+            "lg:col-span-5 w-full transition-all duration-500",
+            showForm ? "block" : "hidden lg:block lg:opacity-0"
+          )}>
+            <AnimatePresence>
+              {showForm && (
+                <motion.div
+                  initial={{ opacity: 0, y: 40, scale: 0.95 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: 40, scale: 0.95 }}
+                  transition={{ duration: 0.5, ease: "easeOut" }}
+                  className="relative"
+                >
+                  <div className="max-h-[75vh] lg:max-h-[85vh] overflow-y-auto custom-scrollbar bg-white rounded-3xl lg:rounded-[2.5rem] shadow-2xl mx-auto w-full max-w-[500px] lg:max-w-none">
+                    <button 
+                      onClick={() => setShowForm(false)}
+                      className="lg:hidden absolute top-4 right-4 z-20 w-10 h-10 bg-black/5 rounded-full flex items-center justify-center text-gray-800 backdrop-blur-md"
+                    >
+                      <X size={20} />
+                    </button>
+                    <EnquiryForm showTitle={false} className="!shadow-none !border-0 !rounded-none" />
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
         </div>
       </div>
 
       {/* Carousel Controls */}
-      <div className="hidden md:flex absolute bottom-12 left-12 z-20 space-x-4">
-        <button 
-          onClick={prevSlide}
-          className="w-16 h-16 bg-white/10 backdrop-blur-2xl border border-white/20 rounded-2xl flex items-center justify-center text-white hover:bg-white/20 hover:border-white/30 transition-all active:scale-90"
-        >
-          <ChevronLeft size={26} />
-        </button>
-        <button 
-          onClick={nextSlide}
-          className="w-16 h-16 bg-white/10 backdrop-blur-2xl border border-white/20 rounded-2xl flex items-center justify-center text-white hover:bg-white/20 hover:border-white/30 transition-all active:scale-90"
-        >
-          <ChevronRight size={26} />
-        </button>
-      </div>
+      <button 
+        onClick={prevSlide}
+        className="hidden md:flex absolute left-8 top-1/2 -translate-y-1/2 z-20 w-14 h-14 bg-white/10 backdrop-blur-md border border-white/20 rounded-full items-center justify-center text-white hover:bg-white/20 hover:border-white/30 transition-all active:scale-90"
+      >
+        <ChevronLeft size={24} />
+      </button>
+      <button 
+        onClick={nextSlide}
+        className="hidden md:flex absolute right-8 top-1/2 -translate-y-1/2 z-20 w-14 h-14 bg-white/10 backdrop-blur-md border border-white/20 rounded-full items-center justify-center text-white hover:bg-white/20 hover:border-white/30 transition-all active:scale-90"
+      >
+        <ChevronRight size={24} />
+      </button>
 
       {/* Slide Indicators */}
       <div className="absolute bottom-12 right-12 z-20 hidden md:flex space-x-3">

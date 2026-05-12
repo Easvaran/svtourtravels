@@ -15,20 +15,19 @@ const iconMap: { [key: string]: any } = {
 
 const WhyChooseUs = () => {
   return (
-    <section className="py-24 bg-white overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4">
+    <section className="py-[60px] px-[20px] bg-white overflow-hidden">
+      <div className="max-w-[1200px] mx-auto">
         {/* Stats Banner */}
         <motion.div 
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="bg-primary rounded-[3rem] p-12 md:p-16 shadow-[0_30px_60px_rgba(8,112,184,0.3)] grid grid-cols-2 lg:grid-cols-4 gap-12 text-center text-white mb-24 relative overflow-hidden"
+          className="bg-[#ffffff] rounded-[12px] p-[25px] shadow-[0_5px_20px_rgba(0,0,0,0.08)] grid grid-cols-2 lg:grid-cols-4 gap-12 text-center mb-24 relative overflow-hidden transition-all duration-300 hover:-translate-y-[5px]"
         >
-          <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10 pointer-events-none" />
           {stats.map((stat, index) => (
             <div key={index} className="relative z-10">
-              <p className="text-4xl md:text-5xl font-black mb-2">{stat.value}</p>
-              <p className="text-blue-100 font-bold uppercase tracking-widest text-xs">{stat.label}</p>
+              <p className="text-[32px] font-bold text-[#00bcd4] mb-2">{stat.value}</p>
+              <p className="text-gray-500 font-bold uppercase tracking-widest text-xs">{stat.label}</p>
             </div>
           ))}
         </motion.div>
@@ -38,7 +37,7 @@ const WhyChooseUs = () => {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-primary font-black tracking-[0.3em] uppercase text-sm mb-4 block"
+            className="text-[#00bcd4] font-black tracking-[0.3em] uppercase text-sm mb-4 block"
           >
             Our Promise
           </motion.span>
@@ -72,10 +71,10 @@ const WhyChooseUs = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
-                className="p-10 rounded-[2.5rem] bg-gray-50 border border-transparent hover:border-primary/10 hover:bg-white hover:shadow-xl transition-all group"
+                className="p-[25px] rounded-[12px] bg-[#ffffff] border border-transparent shadow-[0_5px_20px_rgba(0,0,0,0.08)] hover:-translate-y-[5px] transition-all duration-300 text-center group"
               >
-                <div className="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mb-8 shadow-sm group-hover:bg-secondary group-hover:text-primary transition-all duration-500 text-primary">
-                  <Icon size={32} strokeWidth={2.5} />
+                <div className="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto mb-8 shadow-sm group-hover:bg-secondary transition-all duration-500 text-[#00bcd4]">
+                  <Icon size={28} strokeWidth={2.5} />
                 </div>
                 <h3 className="text-2xl font-black text-gray-900 mb-4">{card.title}</h3>
                 <p className="text-gray-500 font-medium leading-relaxed">{card.description}</p>

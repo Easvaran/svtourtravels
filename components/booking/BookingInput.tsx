@@ -28,18 +28,17 @@ export default function BookingInput({
   min,
   options
 }: BookingInputProps) {
-  const baseClasses = "w-full bg-gray-50 border-2 border-transparent rounded-2xl py-3 md:py-4 pl-10 md:pl-12 pr-4 focus:border-primary/20 focus:bg-white focus:ring-0 outline-none transition-all font-bold text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-sm";
+  const baseClasses = "w-full bg-white border border-gray-200 rounded-xl h-14 pl-12 pr-4 focus:border-[#00bcd4] focus:ring-4 focus:ring-[#00bcd4]/10 outline-none transition-all font-semibold text-gray-900 placeholder:text-gray-400 placeholder:font-normal text-sm shadow-sm";
 
   return (
-    <div className="space-y-2 w-full">
-      <label className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] ml-1">
+    <div className="space-y-2 w-full mb-4">
+      <label className="text-[11px] font-bold text-gray-500 uppercase tracking-wider ml-1">
         {label}
       </label>
       <div className="relative group">
-        <Icon 
-          className="absolute left-3 md:left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors" 
-          size={18} 
-        />
+        <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#00bcd4] transition-colors pointer-events-none z-10">
+          <Icon size={18} />
+        </div>
         
         {type === "select" ? (
           <select
