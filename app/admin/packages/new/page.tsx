@@ -32,6 +32,10 @@ export default function PackageFormPage() {
     image: "",
     category: "Family",
     includes: ["Hotel", "Cab", "Food"],
+    exclusions: ["Personal Expenses", "Entry Fees"],
+    itinerary: [
+      { day: "Day 1", title: "Arrival & Sightseeing", description: "Arrival at destination and check-in to hotel." }
+    ],
     customEnabled: true,
     featured: false,
     description: ""
@@ -44,7 +48,11 @@ export default function PackageFormPage() {
         .then(data => {
           setFormData({
             ...data,
-            includes: data.includes || ["Hotel", "Cab", "Food"]
+            includes: data.includes || ["Hotel", "Cab", "Food"],
+            exclusions: data.exclusions || ["Personal Expenses", "Entry Fees"],
+            itinerary: data.itinerary || [
+              { day: "Day 1", title: "Arrival & Sightseeing", description: "Arrival at destination and check-in to hotel." }
+            ]
           });
           setLoading(false);
         });
@@ -91,6 +99,40 @@ export default function PackageFormPage() {
 
   const removeInclude = (index: number) => {
     setFormData({ ...formData, includes: formData.includes.filter((_, i) => i !== index) });
+  };
+
+  const handleExclusionChange = (index: number, value: string) => {
+    const newExclusions = [...formData.exclusions];
+    newExclusions[index] = value;
+    setFormData({ ...formData, exclusions: newExclusions });
+  };
+
+  const addExclusion = () => {
+    setFormData({ ...formData, exclusions: [...formData.exclusions, ""] });
+  };
+
+  const removeExclusion = (index: number) => {
+    setFormData({ ...formData, exclusions: formData.exclusions.filter((_, i) => i !== index) });
+  };
+
+  const handleItineraryChange = (index: number, field: string, value: string) => {
+    const newItinerary = [...formData.itinerary];
+    newItinerary[index] = { ...newItinerary[index], [field]: value };
+    setFormData({ ...formData, itinerary: newItinerary });
+  };
+
+  const addItineraryDay = () => {
+    setFormData({ 
+      ...formData, 
+      itinerary: [
+        ...formData.itinerary, 
+        { day: `Day ${formData.itinerary.length + 1}`, title: "", description: "" }
+      ] 
+    });
+  };
+
+  const removeItineraryDay = (index: number) => {
+    setFormData({ ...formData, itinerary: formData.itinerary.filter((_, i) => i !== index) });
   };
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -251,12 +293,108 @@ export default function PackageFormPage() {
               ))}
             </div>
           </section>
+
+          <section className="bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-sm space-y-6">
+            <div className="flex items-center justify-between">
+              <h3 className="text-xl font-black text-gray-900 flex items-center space-x-2">
+                <span className="w-8 h-8 bg-red-50 text-red-600 rounded-lg flex items-center justify-center text-sm">03</span>
+                <span>Package Exclusions</span>
+              </h3>
+              <button 
+                type="button"
+                onClick={addExclusion}
+                className="p-2 bg-primary/5 text-primary hover:bg-primary hover:text-white rounded-xl transition-all"
+              >
+                <Plus size={20} />
+              </button>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {formData.exclusions?.map((item, idx) => (
+                <div key={idx} className="flex space-x-2 items-center bg-gray-50 p-4 rounded-2xl border border-gray-100">
+                  <Tag size={16} className="text-red-500" />
+                  <input 
+                    type="text" 
+                    placeholder="Ex: Airfare"
+                    className="flex-1 bg-transparent outline-none font-bold text-gray-900"
+                    value={item}
+                    onChange={(e) => handleExclusionChange(idx, e.target.value)}
+                  />
+                  <button type="button" onClick={() => removeExclusion(idx)} className="text-gray-300 hover:text-red-500"><Trash2 size={16} /></button>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          <section className="bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-sm space-y-6">
+            <div className="flex items-center justify-between">
+              <h3 className="text-xl font-black text-gray-900 flex items-center space-x-2">
+                <span className="w-8 h-8 bg-purple-50 text-purple-600 rounded-lg flex items-center justify-center text-sm">04</span>
+                <span>Itinerary (Day-wise Plan)</span>
+              </h3>
+              <button 
+                type="button"
+                onClick={addItineraryDay}
+                className="p-2 bg-primary/5 text-primary hover:bg-primary hover:text-white rounded-xl transition-all"
+              >
+                <Plus size={20} />
+              </button>
+            </div>
+
+            <div className="space-y-6">
+              {formData.itinerary?.map((item, idx) => (
+                <div key={idx} className="bg-gray-50 p-6 rounded-3xl border border-gray-100 space-y-4 relative group">
+                  <button 
+                    type="button" 
+                    onClick={() => removeItineraryDay(idx)} 
+                    className="absolute top-4 right-4 text-gray-300 hover:text-red-500 transition-colors"
+                  >
+                    <Trash2 size={18} />
+                  </button>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div className="space-y-2">
+                      <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Day</label>
+                      <input 
+                        type="text" 
+                        placeholder="Day 1"
+                        className="w-full bg-white border-2 border-transparent rounded-xl py-3 px-4 focus:border-primary/10 outline-none transition-all font-bold text-gray-900"
+                        value={item.day}
+                        onChange={(e) => handleItineraryChange(idx, "day", e.target.value)}
+                      />
+                    </div>
+                    <div className="md:col-span-3 space-y-2">
+                      <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Title</label>
+                      <input 
+                        type="text" 
+                        placeholder="Arrival & City Tour"
+                        className="w-full bg-white border-2 border-transparent rounded-xl py-3 px-4 focus:border-primary/10 outline-none transition-all font-bold text-gray-900"
+                        value={item.title}
+                        onChange={(e) => handleItineraryChange(idx, "title", e.target.value)}
+                      />
+                    </div>
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Description</label>
+                    <textarea 
+                      rows={3}
+                      placeholder="Describe what happens on this day..."
+                      className="w-full bg-white border-2 border-transparent rounded-xl py-3 px-4 focus:border-primary/10 outline-none transition-all font-bold text-gray-900 resize-none"
+                      value={item.description}
+                      onChange={(e) => handleItineraryChange(idx, "description", e.target.value)}
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
         </div>
 
         <div className="space-y-8">
           <section className="bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-sm space-y-6">
             <h3 className="text-xl font-black text-gray-900 flex items-center space-x-2">
-              <span className="w-8 h-8 bg-orange-50 text-orange-600 rounded-lg flex items-center justify-center text-sm">03</span>
+              <span className="w-8 h-8 bg-orange-50 text-orange-600 rounded-lg flex items-center justify-center text-sm">05</span>
               <span>Settings & Category</span>
             </h3>
             

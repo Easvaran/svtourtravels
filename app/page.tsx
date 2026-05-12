@@ -1,17 +1,28 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { 
+  ChevronRight, 
+  MapPin, 
+  Users, 
+  Clock, 
+  ArrowUpRight, 
+  ArrowDownRight, 
+  Globe, 
+  Car, 
+  Heart, 
+  Phone 
+} from "lucide-react";
+import { useSettings } from "@/lib/SettingsContext";
 import HeroSection from "@/components/HeroSection";
 import TourCard from "@/components/TourCard";
 import EnquiryForm from "@/components/EnquiryForm";
-import TravelPackages from "@/components/TravelPackages";
 import WhyChooseUs from "@/components/WhyChooseUs";
 import Testimonials from "@/components/Testimonials";
-import { useState, useEffect } from "react";
 import SafeImage from "@/components/SafeImage";
 import Link from "next/link";
-import { ChevronRight } from "lucide-react";
-import { useSettings } from "@/lib/SettingsContext";
+import { cn } from "@/lib/utils";
 
 export default function Home() {
   const { settings } = useSettings();
@@ -96,43 +107,95 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Enquiry Section */}
-      <section className="py-[60px] px-[20px] bg-white relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-1/2 h-full bg-primary/5 -skew-x-12 translate-x-1/4 hidden lg:block" />
+      {/* Services Section */}
+      <section className="py-[100px] px-[20px] bg-white relative overflow-hidden">
+        <div className="absolute top-0 left-0 w-full h-full bg-gray-50/50 pointer-events-none" />
         <div className="max-w-[1200px] mx-auto relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
-            <div>
-              <span className="text-primary font-black tracking-[0.3em] uppercase text-sm mb-4 block">Get a Quote</span>
-              <h2 className="text-4xl md:text-6xl font-black text-gray-900 mb-8 leading-[1.1]">
-                Can't Find Your <br />
-                <span className="text-primary underline decoration-secondary decoration-wavy underline-offset-8">Dream Destination?</span>
-              </h2>
-              <p className="text-gray-500 text-lg mb-10 font-medium">
-                Don't worry! Our travel experts can create a custom itinerary just for you. Tell us your preferences, budget, and travel dates, and we'll handle the rest.
-              </p>
-              
-              <div className="space-y-8">
-                {[
-                  { title: "24/7 Premium Support", desc: "Always here for your needs" },
-                  { title: "Luxury Fleet Access", desc: "Travel in style and comfort" },
-                  { title: "Best Price Guarantee", desc: "Unmatched value for your trip" }
-                ].map((item, idx) => (
-                  <div key={idx} className="flex items-center space-x-4 group">
-                    <div className="w-14 h-14 bg-secondary/20 rounded-2xl flex items-center justify-center text-primary group-hover:bg-secondary transition-colors">
-                      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" />
-                      </svg>
-                    </div>
-                    <div className="flex flex-col">
-                      <span className="font-bold text-gray-900 text-lg">{item.title}</span>
-                      <span className="text-gray-500 text-sm">{item.desc}</span>
-                    </div>
+          <div className="text-center mb-20">
+            <motion.span 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-[#00bcd4] font-bold tracking-[0.3em] uppercase text-sm mb-4 block"
+            >
+              Our Services
+            </motion.span>
+            <motion.h2 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+              className="text-4xl md:text-6xl font-black text-gray-900 mb-6"
+            >
+              Premium Travel <span className="text-[#00bcd4]">Solutions</span>
+            </motion.h2>
+            <motion.div 
+              initial={{ opacity: 0, width: 0 }}
+              whileInView={{ opacity: 1, width: 80 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+              className="h-1.5 bg-[#00bcd4] mx-auto rounded-full" 
+            />
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {[
+              { 
+                title: "Customized Tour Packages", 
+                desc: "Tailor-made itineraries designed to match your specific interests, budget, and travel style.",
+                icon: Globe,
+                color: "bg-blue-500/10 text-blue-600"
+              },
+              { 
+                title: "Luxury Vehicle Fleet", 
+                desc: "Wide range of premium cars and coaches for comfortable group travel with professional drivers.",
+                icon: Car,
+                color: "bg-[#00bcd4]/10 text-[#00bcd4]"
+              },
+              { 
+                title: "Honeymoon Specials", 
+                desc: "Romantic getaways to the world's most beautiful destinations with exclusive couple perks.",
+                icon: Heart,
+                color: "bg-pink-500/10 text-pink-600"
+              },
+              { 
+                title: "Corporate Travel", 
+                desc: "Efficient travel management for businesses, including conferences, meetings, and team outings.",
+                icon: Users,
+                color: "bg-indigo-500/10 text-indigo-600"
+              },
+              { 
+                title: "Pilgrimage Tours", 
+                desc: "Spiritually enriching journeys to sacred sites with organized facilities for a peaceful experience.",
+                icon: MapPin,
+                color: "bg-orange-500/10 text-orange-600"
+              },
+              { 
+                title: "24/7 Roadside Support", 
+                desc: "Round-the-clock assistance for all our travelers to ensure a safe and worry-free journey.",
+                icon: Phone,
+                color: "bg-green-500/10 text-green-600"
+              }
+            ].map((service, idx) => {
+              const Icon = service.icon;
+              return (
+                <motion.div
+                  key={idx}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: idx * 0.1 }}
+                  whileHover={{ y: -10 }}
+                  className="bg-white p-10 rounded-[3rem] border border-gray-100 shadow-[0_20px_50px_rgba(0,0,0,0.03)] hover:shadow-2xl hover:shadow-[#00bcd4]/10 transition-all duration-500 group"
+                >
+                  <div className={cn("w-16 h-16 rounded-2xl flex items-center justify-center mb-8 transition-transform duration-500 group-hover:scale-110", service.color)}>
+                    <Icon size={32} />
                   </div>
-                ))}
-              </div>
-            </div>
-            
-            <EnquiryForm />
+                  <h3 className="text-2xl font-bold text-gray-900 mb-4">{service.title}</h3>
+                  <p className="text-gray-500 font-medium leading-relaxed">{service.desc}</p>
+                </motion.div>
+              );
+            })}
           </div>
         </div>
       </section>

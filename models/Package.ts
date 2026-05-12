@@ -12,6 +12,12 @@ const PackageSchema = new Schema(
       enum: ["Honeymoon", "Family", "Group", "Custom"]
     },
     includes: [{ type: String }], // e.g., ["Hotel", "Cab", "Food"]
+    exclusions: [{ type: String }], // e.g., ["Flight", "Personal Expenses"]
+    itinerary: [{
+      day: { type: String },
+      title: { type: String },
+      description: { type: String }
+    }],
     customEnabled: { type: Boolean, default: true },
     featured: { type: Boolean, default: false },
     description: { type: String },

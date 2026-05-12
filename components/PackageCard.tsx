@@ -5,7 +5,10 @@ import SafeImage from "./SafeImage";
 import { Hotel, Car, Utensils, ArrowRight, MessageCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 
+import Link from "next/link";
+
 interface PackageCardProps {
+  _id: string;
   name: string;
   price: string;
   duration: string;
@@ -16,6 +19,7 @@ interface PackageCardProps {
 }
 
 const PackageCard = ({
+  _id,
   name,
   price,
   duration,
@@ -96,10 +100,13 @@ const PackageCard = ({
           >
             <MessageCircle size={24} />
           </a>
-          <button className="flex-1 bg-primary hover:bg-blue-700 text-white font-black py-5 rounded-2xl transition-all shadow-[0_20px_50px_rgba(8,112,184,0.2)] hover:shadow-[0_20px_50px_rgba(8,112,184,0.4)] flex items-center justify-center gap-3 group/btn">
-            <span>{customEnabled ? "Custom Package" : "Book Now"}</span>
+          <Link 
+            href={`/packages/${_id}`}
+            className="flex-1 bg-primary hover:bg-blue-700 text-white font-black py-5 rounded-2xl transition-all shadow-[0_20px_50px_rgba(8,112,184,0.2)] hover:shadow-[0_20px_50px_rgba(8,112,184,0.4)] flex items-center justify-center gap-3 group/btn"
+          >
+            <span>View Details</span>
             <ArrowRight size={20} className="group-hover/btn:translate-x-1 transition-transform" />
-          </button>
+          </Link>
         </div>
       </div>
     </motion.div>

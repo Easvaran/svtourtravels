@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Send, User, Phone, MapPin, Calendar, Users, IndianRupee, Clock, CheckCircle, Car } from "lucide-react";
 import toast from "react-hot-toast";
@@ -29,6 +29,7 @@ const EnquiryForm = ({
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [paymentType, setPaymentType] = useState<"enquiry" | "advance" | "full">("enquiry");
+  const [vehicles, setVehicles] = useState<any[]>([]);
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
@@ -38,7 +39,28 @@ const EnquiryForm = ({
     people: "1",
     packageType: "Family",
     message: "",
+    vehicleId: "",
   });
+
+  const [internalSelectedVehicle, setInternalSelectedVehicle] = useState<any>(selectedVehicle);
+
+  useEffect(() => {
+    setInternalSelectedVehicle(selectedVehicle);
+    setFormData(prev => ({ ...prev, vehicleId: selectedVehicle ? (selectedVehicle._id || selectedVehicle.id || "") : "" }));
+  }, [selectedVehicle]);
+
+  useEffect(() => {
+    // Fetch vehicles if not provided
+    fetch("/api/vehicles")
+      .then(res => res.json())
+      .then(data => {
+        const activeVehicles = data.filter((v: any) => v.status === "active");
+        setVehicles(activeVehicles);
+      })
+      .catch(err => console.error("Error fetching vehicles:", err));
+  }, []);
+
+  const currentVehicle = internalSelectedVehicle || vehicles.find(v => v._id === formData.vehicleId);
 
   const pricePerPerson = typeof initialPrice === 'string' 
     ? parseInt(initialPrice.replace(/[^0-9]/g, '')) 
@@ -48,12 +70,18 @@ const EnquiryForm = ({
   const daysCount = Number(formData.days) || 1;
 
   const tourAmount = pricePerPerson * peopleCount;
-  const vehicleAmount = selectedVehicle ? (Number(selectedVehicle.price) * daysCount) : 0;
+  const vehicleAmount = currentVehicle ? (Number(currentVehicle.pricePerDay || currentVehicle.price) * daysCount) : 0;
   const totalAmount = tourAmount + vehicleAmount;
   const WHATSAPP_NUMBER = "918668076871";
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+    
+    if (name === "vehicleId") {
+      const vehicle = vehicles.find(v => v._id === value);
+      setInternalSelectedVehicle(vehicle);
+    }
   };
 
   const resetForm = () => {
@@ -66,20 +94,30 @@ const EnquiryForm = ({
       people: "1",
       packageType: "Family",
       message: "",
+      vehicleId: "",
     });
+    setInternalSelectedVehicle(null);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!formData.vehicleId && !internalSelectedVehicle) {
+      toast.error("Please select a vehicle first 🚗");
+      return;
+    }
+
     setLoading(true);
 
     try {
+      const finalVehicle = internalSelectedVehicle || vehicles.find(v => v._id === formData.vehicleId);
+      
       const submissionData = {
         ...formData,
-        vehicleName: selectedVehicle?.name || "",
-        vehicleType: selectedVehicle?.type || "",
-        vehiclePrice: selectedVehicle?.price || 0,
-        vehicleSeats: selectedVehicle?.seats || 0,
+        vehicleName: finalVehicle?.name || "",
+        vehicleType: finalVehicle?.type || "",
+        vehiclePrice: finalVehicle?.pricePerDay || finalVehicle?.price || 0,
+        vehicleSeats: finalVehicle?.seats || 0,
         paymentType,
         totalAmount,
         paidAmount: paymentType === "full" ? totalAmount : paymentType === "advance" ? Math.round(totalAmount * 0.3) : 0,
@@ -108,7 +146,7 @@ const EnquiryForm = ({
               customerName: formData.name,
               phone: formData.phone,
               tourName: formData.destination,
-              vehicleName: selectedVehicle?.name || "",
+              vehicleName: finalVehicle?.name || "",
               travelDate: formData.travelDate,
               paymentType: "enquiry",
               totalAmount: totalAmount,
@@ -127,12 +165,12 @@ const EnquiryForm = ({
 *Date:* ${formData.travelDate}
 *Days:* ${formData.days}
 *People:* ${formData.people}
-${selectedVehicle ? `
+${finalVehicle ? `
 *Vehicle Details:*
-- Vehicle: ${selectedVehicle.name}
-- Type: ${selectedVehicle.type}
-- Seats: ${selectedVehicle.seats}
-- Price: ₹${selectedVehicle.price}/day
+- Vehicle: ${finalVehicle.name}
+- Type: ${finalVehicle.type}
+- Seats: ${finalVehicle.seats}
+- Price: ₹${finalVehicle.pricePerDay || finalVehicle.price}/day
 ` : ""}
 *Package:* ${formData.packageType}
 *Message:* ${formData.message || "None"}
@@ -188,8 +226,33 @@ ${selectedVehicle ? `
 
       <form onSubmit={handleSubmit} className="space-y-6">
         <Script src="https://checkout.razorpay.com/v1/checkout.js" strategy="lazyOnload" />
-        {/* Selected Vehicle Summary */}
-        {selectedVehicle && (
+        
+        {/* Vehicle Selection - Mandatory */}
+        <div className="space-y-2">
+          <BookingInput 
+            label="Choose Vehicle (Compulsory)" 
+            name="vehicleId" 
+            value={formData.vehicleId || (internalSelectedVehicle?._id || "")} 
+            onChange={handleChange} 
+            type="select" 
+            icon={Car} 
+            options={[
+              { value: "", label: "Select a Vehicle" },
+              ...vehicles.map(v => ({ 
+                value: v._id, 
+                label: `${v.name} (${v.seats} Seats) - ₹${v.pricePerDay || v.price}/day` 
+              }))
+            ]}
+          />
+          {!formData.vehicleId && !internalSelectedVehicle && (
+            <p className="text-red-500 text-[10px] font-bold uppercase tracking-widest ml-1 animate-pulse">
+              * Please select a vehicle to continue
+            </p>
+          )}
+        </div>
+
+        {/* Selected Vehicle Summary - Only show if selected and matches the ID */}
+        {currentVehicle && (
           <motion.div 
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -201,12 +264,12 @@ ${selectedVehicle ? `
               </div>
               <div>
                 <p className="text-[10px] font-bold text-[#00bcd4] uppercase tracking-widest mb-1">Selected Vehicle</p>
-                <h4 className="text-lg font-bold text-gray-900">{selectedVehicle.name}</h4>
+                <h4 className="text-lg font-bold text-gray-900">{currentVehicle.name}</h4>
               </div>
             </div>
             <div className="text-right">
               <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Price</p>
-              <p className="text-xl font-bold text-gray-900">₹{selectedVehicle.price.toLocaleString()}</p>
+              <p className="text-xl font-bold text-gray-900">₹{(currentVehicle.pricePerDay || currentVehicle.price).toLocaleString()}</p>
             </div>
           </motion.div>
         )}
