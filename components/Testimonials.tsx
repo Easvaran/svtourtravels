@@ -73,7 +73,7 @@ const Testimonials = () => {
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             whileHover={{ scale: 1.05 }}
-            whileActive={{ scale: 0.95 }}
+            whileTap={{ scale: 0.95 }}
             onClick={() => setIsModalOpen(true)}
             className="inline-flex items-center space-x-2 bg-[#00bcd4] text-white px-8 py-4 rounded-2xl font-bold shadow-lg shadow-[#00bcd4]/20 hover:shadow-xl transition-all"
           >
