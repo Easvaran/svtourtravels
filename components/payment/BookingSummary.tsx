@@ -21,7 +21,7 @@ interface BookingSummaryProps {
 export default function BookingSummary({ booking }: BookingSummaryProps) {
   if (!booking) return null;
 
-  const advanceAmount = Math.round(booking.totalAmount * 0.3);
+  const advanceAmount = Math.round(booking.totalAmount * 0.1);
   const remainingAmount = booking.totalAmount - advanceAmount;
 
   return (
@@ -115,7 +115,7 @@ export default function BookingSummary({ booking }: BookingSummaryProps) {
           {booking.paymentType === "advance" ? (
             <>
               <div className="flex justify-between items-center text-primary font-black pt-2">
-                <span className="text-xs uppercase tracking-widest">Payable Now (30%)</span>
+                <span className="text-xs uppercase tracking-widest">Payable Now (10%)</span>
                 <span className="text-2xl">₹{advanceAmount.toLocaleString()}</span>
               </div>
               <div className="flex justify-between items-center text-white/50 pt-2 border-t border-white/10">

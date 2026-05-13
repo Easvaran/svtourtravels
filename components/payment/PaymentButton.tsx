@@ -20,7 +20,7 @@ export default function PaymentButton({ booking }: PaymentButtonProps) {
     try {
       const payableNow = booking.paymentType === "full" 
         ? booking.totalAmount 
-        : Math.round(booking.totalAmount * 0.3);
+        : Math.round(booking.totalAmount * 0.1);
 
       const orderRes = await fetch("/api/razorpay/order", {
         method: "POST",

@@ -120,8 +120,8 @@ const EnquiryForm = ({
         vehicleSeats: finalVehicle?.seats || 0,
         paymentType,
         totalAmount,
-        paidAmount: paymentType === "full" ? totalAmount : paymentType === "advance" ? Math.round(totalAmount * 0.3) : 0,
-        remainingAmount: paymentType === "full" ? 0 : paymentType === "advance" ? totalAmount - Math.round(totalAmount * 0.3) : totalAmount,
+        paidAmount: paymentType === "full" ? totalAmount : paymentType === "advance" ? Math.round(totalAmount * 0.1) : 0,
+        remainingAmount: paymentType === "full" ? 0 : paymentType === "advance" ? totalAmount - Math.round(totalAmount * 0.1) : totalAmount,
       };
 
       // If it's just an enquiry, use the normal flow
@@ -407,7 +407,7 @@ ${finalVehicle ? `
                   : paymentType === "enquiry" 
                     ? "Send Enquiry & WhatsApp" 
                     : paymentType === "advance" 
-                      ? `Pay Advance ₹${Math.round(totalAmount * 0.3).toLocaleString()} Now` 
+                      ? `Pay Advance ₹${Math.round(totalAmount * 0.1).toLocaleString()} Now` 
                       : `Pay Full Amount ₹${totalAmount.toLocaleString()} Now`}
               </span>
             </div>

@@ -11,7 +11,7 @@ interface PaymentSectionProps {
 }
 
 export default function PaymentSection({ paymentType, setPaymentType, totalAmount }: PaymentSectionProps) {
-  const advanceAmount = Math.round(totalAmount * 0.3);
+  const advanceAmount = Math.round(totalAmount * 0.1);
   const remainingAmount = totalAmount - advanceAmount;
 
   const options = [
@@ -24,7 +24,7 @@ export default function PaymentSection({ paymentType, setPaymentType, totalAmoun
     },
     { 
       id: "advance", 
-      title: "Pay Advance (30%)", 
+      title: "Pay Advance (10%)", 
       subtitle: `Pay ₹${advanceAmount.toLocaleString()} to block`, 
       icon: CreditCard,
       badge: "Fastest"
