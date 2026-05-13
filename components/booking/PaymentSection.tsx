@@ -107,7 +107,7 @@ export default function PaymentSection({ paymentType, setPaymentType, totalAmoun
               {paymentType === "advance" && (
                 <div className="space-y-3 pt-3 border-t border-gray-50">
                   <div className="flex justify-between items-center text-primary">
-                    <span className="text-[10px] font-black uppercase tracking-widest">Payable Now (30%)</span>
+                    <span className="text-[10px] font-black uppercase tracking-widest">Payable Now (10%)</span>
                     <span className="text-2xl font-black">₹{advanceAmount.toLocaleString()}</span>
                   </div>
                   <div className="flex justify-between items-center text-gray-400">
