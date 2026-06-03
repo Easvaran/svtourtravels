@@ -77,9 +77,13 @@ export const metadata: Metadata = {
   verification: {
     google: "wJJFY_2llTEmf5HgRC3Ogi0BoG88iygCVdRn-r3HijQ",
   },
+};
 
+export const viewport = {
   themeColor: "#0f172a",
-  viewport: "width=device-width, initial-scale=1, maximum-scale=5",
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
 };
 
 export default function RootLayout({
