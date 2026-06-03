@@ -8,20 +8,21 @@ export async function GET() {
   try {
     await connectDB();
     const tourCount = await Tour.countDocuments();
-    const packageCount = await Package.countDocuments();
     const enquiryCount = await Enquiry.countDocuments();
     
-    // Get recent enquiries
-    const recentEnquiries = await Enquiry.find({}).sort({ createdAt: -1 }).limit(5);
+    // Get recent enquiries that are not hidden
+    const recentEnquiries = await Enquiry.find({ hiddenFromDashboard: { $ne: true } }).sort({ createdAt: -1 }).limit(5);
     
-    // Get stats for last 7 days (mocking some data if needed, but here just count)
+    // Get stats for last 7 days
     const sevenDaysAgo = new Date();
     sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
-    const recentEnquiryCount = await Enquiry.countDocuments({ createdAt: { $gte: sevenDaysAgo } });
+    const recentEnquiryCount = await Enquiry.countDocuments({ 
+      createdAt: { $gte: sevenDaysAgo },
+      hiddenFromDashboard: { $ne: true }
+    });
 
     return NextResponse.json({
       tourCount,
-      packageCount,
       enquiryCount,
       recentEnquiryCount,
       recentEnquiries

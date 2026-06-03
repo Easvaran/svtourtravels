@@ -2,22 +2,19 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { motion } from "framer-motion";
 import { 
   Save, 
   ArrowLeft, 
   Car, 
-  Info, 
   IndianRupee, 
   Users, 
-  Wind, 
-  Star,
-  Layout,
-  Eye
+  Eye,
+  Briefcase,
+  Upload
 } from "lucide-react";
-import VehicleUploader from "./VehicleUploader";
-import Vehicle360Uploader from "./Vehicle360Uploader";
 import toast from "react-hot-toast";
+import SafeImage from "../SafeImage";
+import ImageUploader from "./ImageUploader";
 
 interface VehicleFormProps {
   initialData?: any;
@@ -31,29 +28,46 @@ export default function VehicleForm({ initialData, isEdit = false }: VehicleForm
     name: initialData?.name || "",
     slug: initialData?.slug || "",
     type: initialData?.type || "Sedan",
-    description: initialData?.description || "",
-    pricePerDay: initialData?.pricePerDay || "",
+    oneWayPrice: initialData?.oneWayPrice || "",
+    roundTripPrice: initialData?.roundTripPrice || "",
+    oneWayBeta: initialData?.oneWayBeta || "",
+    roundTripBeta: initialData?.roundTripBeta || "",
+    numBags: initialData?.numBags || "2",
     seats: initialData?.seats || "",
-    airConditioned: initialData?.airConditioned ?? true,
-    isPopular: initialData?.isPopular ?? false,
     thumbnail: initialData?.thumbnail || "",
-    gallery: initialData?.gallery || [],
-    frames360: initialData?.frames360 || [],
     status: initialData?.status || "active",
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Check name at least
+    if (!formData.name) {
+      toast.error("Vehicle Name is required");
+      return;
+    }
+
     setSaving(true);
 
     try {
       const url = isEdit ? `/api/vehicles/${initialData._id}` : "/api/vehicles";
       const method = isEdit ? "PUT" : "POST";
 
+      const finalFormData = {
+        ...formData,
+        // Convert empty strings to 0 for numeric fields
+        oneWayPrice: Number(formData.oneWayPrice) || 0,
+        roundTripPrice: Number(formData.roundTripPrice) || 0,
+        oneWayBeta: Number(formData.oneWayBeta) || 0,
+        roundTripBeta: Number(formData.roundTripBeta) || 0,
+        seats: Number(formData.seats) || 4,
+        thumbnail: formData.thumbnail || "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?q=80&w=2070&auto=format&fit=crop"
+      };
+
       const res = await fetch(url, {
         method,
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(finalFormData),
       });
 
       const data = await res.json();
@@ -76,7 +90,7 @@ export default function VehicleForm({ initialData, isEdit = false }: VehicleForm
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 sticky top-0 z-30 bg-gray-50/80 backdrop-blur-md py-4 -mx-4 px-4 border-b border-gray-100 mb-8">
         <div>
           <h1 className="text-3xl font-black text-gray-900">{isEdit ? "Edit Vehicle" : "Add New Vehicle"}</h1>
-          <p className="text-gray-500 font-medium">Configure vehicle details and interactive 360° preview</p>
+          <p className="text-gray-500 font-medium">Configure vehicle details and pricing</p>
         </div>
         <div className="flex items-center space-x-3 w-full md:w-auto">
           <button
@@ -115,11 +129,10 @@ export default function VehicleForm({ initialData, isEdit = false }: VehicleForm
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
-                <label className="text-xs font-black text-gray-400 uppercase tracking-widest ml-1">Vehicle Name</label>
+                <label className="text-xs font-black text-gray-600 uppercase tracking-widest ml-1">Vehicle Name</label>
                 <div className="relative group">
                   <Car className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors" size={20} />
                   <input
-                    required
                     type="text" 
                     placeholder="Ex: Tempo Traveller Luxury"
                     className="w-full bg-gray-50 border-2 border-transparent rounded-2xl py-4 pl-12 pr-6 focus:border-primary/10 focus:bg-white outline-none transition-all font-bold text-gray-900"
@@ -134,20 +147,9 @@ export default function VehicleForm({ initialData, isEdit = false }: VehicleForm
               </div>
 
               <div className="space-y-2">
-                <label className="text-xs font-black text-gray-400 uppercase tracking-widest ml-1">Slug (URL)</label>
-                <input
-                  required
-                  type="text" 
-                  className="w-full bg-gray-50 border-2 border-transparent rounded-2xl py-4 px-6 focus:border-primary/10 focus:bg-white outline-none transition-all font-bold text-gray-400"
-                  value={formData.slug}
-                  onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
-                />
-              </div>
-
-              <div className="space-y-2">
-                <label className="text-xs font-black text-gray-400 uppercase tracking-widest ml-1">Vehicle Type</label>
+                <label className="text-xs font-black text-gray-600 uppercase tracking-widest ml-1">Vehicle Type</label>
                 <select
-                  className="w-full bg-gray-50 border-2 border-transparent rounded-2xl py-4 px-6 focus:border-primary/10 focus:bg-white outline-none transition-all font-bold text-gray-900 appearance-none"
+                  className="w-full bg-gray-50 border-2 border-transparent rounded-2xl py-4 px-6 focus:border-primary/10 focus:bg-white outline-none transition-all font-bold text-gray-900 appearance-none shadow-sm"
                   value={formData.type}
                   onChange={(e) => setFormData({ ...formData, type: e.target.value })}
                 >
@@ -160,9 +162,9 @@ export default function VehicleForm({ initialData, isEdit = false }: VehicleForm
               </div>
 
               <div className="space-y-2">
-                <label className="text-xs font-black text-gray-400 uppercase tracking-widest ml-1">Status</label>
+                <label className="text-xs font-black text-gray-600 uppercase tracking-widest ml-1">Status</label>
                 <select
-                  className="w-full bg-gray-50 border-2 border-transparent rounded-2xl py-4 px-6 focus:border-primary/10 focus:bg-white outline-none transition-all font-bold text-gray-900 appearance-none"
+                  className="w-full bg-gray-50 border-2 border-transparent rounded-2xl py-4 px-6 focus:border-primary/10 focus:bg-white outline-none transition-all font-bold text-gray-900 appearance-none shadow-sm"
                   value={formData.status}
                   onChange={(e) => setFormData({ ...formData, status: e.target.value })}
                 >
@@ -170,18 +172,6 @@ export default function VehicleForm({ initialData, isEdit = false }: VehicleForm
                   <option value="inactive">Inactive</option>
                 </select>
               </div>
-            </div>
-
-            <div className="space-y-2">
-              <label className="text-xs font-black text-gray-400 uppercase tracking-widest ml-1">Vehicle Description</label>
-              <textarea 
-                required
-                rows={4}
-                placeholder="Describe the vehicle highlights, comfort, and best use case..."
-                className="w-full bg-gray-50 border-2 border-transparent rounded-2xl py-4 px-6 focus:border-primary/10 focus:bg-white outline-none transition-all font-bold text-gray-900 resize-none"
-                value={formData.description}
-                onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-              />
             </div>
           </section>
 
@@ -193,26 +183,80 @@ export default function VehicleForm({ initialData, isEdit = false }: VehicleForm
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
-                <label className="text-xs font-black text-gray-400 uppercase tracking-widest ml-1">Price Per Day (₹)</label>
+                <label className="text-xs font-black text-gray-600 uppercase tracking-widest ml-1">One Way Price (₹/km)</label>
                 <div className="relative group">
                   <IndianRupee className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors" size={20} />
                   <input
-                    required
                     type="number" 
-                    placeholder="Ex: 4500"
+                    placeholder="Ex: 14"
                     className="w-full bg-gray-50 border-2 border-transparent rounded-2xl py-4 pl-12 pr-6 focus:border-primary/10 focus:bg-white outline-none transition-all font-bold text-gray-900"
-                    value={formData.pricePerDay}
-                    onChange={(e) => setFormData({ ...formData, pricePerDay: e.target.value })}
+                    value={formData.oneWayPrice}
+                    onChange={(e) => setFormData({ ...formData, oneWayPrice: e.target.value })}
                   />
                 </div>
               </div>
 
               <div className="space-y-2">
-                <label className="text-xs font-black text-gray-400 uppercase tracking-widest ml-1">Seating Capacity</label>
+                <label className="text-xs font-black text-gray-600 uppercase tracking-widest ml-1">Round Trip Price (₹/km)</label>
+                <div className="relative group">
+                  <IndianRupee className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors" size={20} />
+                  <input
+                    type="number" 
+                    placeholder="Ex: 13"
+                    className="w-full bg-gray-50 border-2 border-transparent rounded-2xl py-4 pl-12 pr-6 focus:border-primary/10 focus:bg-white outline-none transition-all font-bold text-gray-900"
+                    value={formData.roundTripPrice}
+                    onChange={(e) => setFormData({ ...formData, roundTripPrice: e.target.value })}
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-xs font-black text-gray-600 uppercase tracking-widest ml-1">One Way Beta (₹/day)</label>
+                <div className="relative group">
+                  <IndianRupee className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors" size={20} />
+                  <input
+                    type="number" 
+                    placeholder="Ex: 400"
+                    className="w-full bg-gray-50 border-2 border-transparent rounded-2xl py-4 pl-12 pr-6 focus:border-primary/10 focus:bg-white outline-none transition-all font-bold text-gray-900"
+                    value={formData.oneWayBeta}
+                    onChange={(e) => setFormData({ ...formData, oneWayBeta: e.target.value })}
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-xs font-black text-gray-600 uppercase tracking-widest ml-1">Round Trip Beta (₹/day)</label>
+                <div className="relative group">
+                  <IndianRupee className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors" size={20} />
+                  <input
+                    type="number" 
+                    placeholder="Ex: 500"
+                    className="w-full bg-gray-50 border-2 border-transparent rounded-2xl py-4 pl-12 pr-6 focus:border-primary/10 focus:bg-white outline-none transition-all font-bold text-gray-900"
+                    value={formData.roundTripBeta}
+                    onChange={(e) => setFormData({ ...formData, roundTripBeta: e.target.value })}
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-xs font-black text-gray-600 uppercase tracking-widest ml-1">Number of Bags</label>
+                <div className="relative group">
+                  <Briefcase className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors" size={20} />
+                  <input
+                    type="text" 
+                    placeholder="Ex: 2-3"
+                    className="w-full bg-gray-50 border-2 border-transparent rounded-2xl py-4 pl-12 pr-6 focus:border-primary/10 focus:bg-white outline-none transition-all font-bold text-gray-900"
+                    value={formData.numBags}
+                    onChange={(e) => setFormData({ ...formData, numBags: e.target.value })}
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-xs font-black text-gray-600 uppercase tracking-widest ml-1">Seating Capacity</label>
                 <div className="relative group">
                   <Users className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors" size={20} />
                   <input
-                    required
                     type="number" 
                     placeholder="Ex: 12"
                     className="w-full bg-gray-50 border-2 border-transparent rounded-2xl py-4 pl-12 pr-6 focus:border-primary/10 focus:bg-white outline-none transition-all font-bold text-gray-900"
@@ -222,84 +266,66 @@ export default function VehicleForm({ initialData, isEdit = false }: VehicleForm
                 </div>
               </div>
             </div>
-
-            <div className="flex flex-wrap gap-6">
-              <label className="flex items-center space-x-3 cursor-pointer group">
-                <div className={`w-12 h-6 rounded-full relative transition-colors ${formData.airConditioned ? 'bg-primary' : 'bg-gray-200'}`}>
-                  <input 
-                    type="checkbox" 
-                    className="hidden" 
-                    checked={formData.airConditioned}
-                    onChange={() => setFormData({ ...formData, airConditioned: !formData.airConditioned })}
-                  />
-                  <div className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-all ${formData.airConditioned ? 'left-7' : 'left-1'}`} />
-                </div>
-                <div className="flex items-center space-x-2">
-                  <Wind size={18} className={formData.airConditioned ? 'text-primary' : 'text-gray-400'} />
-                  <span className="text-sm font-black text-gray-700">Air Conditioned</span>
-                </div>
-              </label>
-
-              <label className="flex items-center space-x-3 cursor-pointer group">
-                <div className={`w-12 h-6 rounded-full relative transition-colors ${formData.isPopular ? 'bg-secondary' : 'bg-gray-200'}`}>
-                  <input 
-                    type="checkbox" 
-                    className="hidden" 
-                    checked={formData.isPopular}
-                    onChange={() => setFormData({ ...formData, isPopular: !formData.isPopular })}
-                  />
-                  <div className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-all ${formData.isPopular ? 'left-7' : 'left-1'}`} />
-                </div>
-                <div className="flex items-center space-x-2">
-                  <Star size={18} className={formData.isPopular ? 'text-secondary' : 'text-gray-400'} />
-                  <span className="text-sm font-black text-gray-700">Most Popular Badge</span>
-                </div>
-              </label>
-            </div>
-          </section>
-
-          <section className="bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-sm space-y-6">
-            <h3 className="text-xl font-black text-gray-900 flex items-center space-x-2">
-              <span className="w-8 h-8 bg-orange-50 text-orange-600 rounded-lg flex items-center justify-center text-sm">03</span>
-              <span>Interactive 360° Preview</span>
-            </h3>
-            <Vehicle360Uploader 
-              frames={formData.frames360}
-              onChange={(frames) => setFormData({ ...formData, frames360: frames })}
-            />
           </section>
         </div>
 
-        {/* Right Column: Media */}
+        {/* Right Column: Live Preview */}
         <div className="space-y-8">
           <section className="bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-sm space-y-6">
             <h3 className="text-xl font-black text-gray-900 flex items-center space-x-2">
-              <Layout size={20} className="text-blue-600" />
-              <span>Media Assets</span>
+              <Upload size={20} className="text-blue-600" />
+              <span>Vehicle Image</span>
             </h3>
-            <VehicleUploader 
-              label="Thumbnail Image" 
+            <ImageUploader 
+              label="Vehicle Display Image"
+              description="Upload a high-quality photo of the vehicle or provide a direct image link."
               value={formData.thumbnail}
               onChange={(url) => setFormData({ ...formData, thumbnail: url })}
-              description="Main image used for lists and forms"
             />
+            <p className="text-[10px] text-gray-400 font-bold uppercase tracking-widest text-center px-4">
+              If left empty, a professional default image will be used.
+            </p>
           </section>
 
           <div className="bg-blue-600 p-8 rounded-[2.5rem] text-white shadow-xl shadow-blue-600/20 space-y-4">
             <div className="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center">
               <Eye size={24} />
             </div>
-            <h4 className="text-xl font-black">Live Preview</h4>
-            <p className="text-white/70 text-sm font-medium">Your changes will automatically reflect on the tour details pages.</p>
-            <div className="pt-4 space-y-2">
-              <div className="flex justify-between text-xs font-bold uppercase tracking-widest text-white/50">
-                <span>Vehicle Name</span>
-                <span className="text-white">{formData.name || "Untitled"}</span>
+            <h4 className="text-xl font-black">Pricing Card Preview</h4>
+            
+            <div className="bg-white rounded-[2rem] p-4 text-gray-900 shadow-xl">
+              <div className="aspect-video rounded-2xl overflow-hidden bg-gray-100 mb-4 relative">
+                <SafeImage 
+                  src={formData.thumbnail || "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?q=80&w=2070&auto=format&fit=crop"} 
+                  alt="Preview" 
+                  fill
+                  className="object-cover"
+                />
               </div>
-              <div className="flex justify-between text-xs font-bold uppercase tracking-widest text-white/50">
-                <span>Price</span>
-                <span className="text-white">₹{Number(formData.pricePerDay).toLocaleString()}</span>
+              <h5 className="text-lg font-black mb-4 text-center">{formData.name || "Vehicle Name"}</h5>
+              
+              <div className="grid grid-cols-2 gap-2 mb-4">
+                <div className="bg-emerald-50 p-2 rounded-xl border border-emerald-100">
+                  <p className="text-[8px] font-black text-emerald-800 uppercase tracking-widest mb-0.5">One Way</p>
+                  <p className="text-xs font-black">₹{formData.oneWayPrice || 0}/km</p>
+                </div>
+                <div className="bg-blue-50 p-2 rounded-xl border border-blue-100">
+                  <p className="text-[8px] font-black text-blue-800 uppercase tracking-widest mb-0.5">Round Trip</p>
+                  <p className="text-xs font-black">₹{formData.roundTripPrice || 0}/km</p>
+                </div>
+                <div className="bg-gray-50 p-2 rounded-xl border border-gray-100">
+                  <p className="text-[8px] font-black text-gray-500 uppercase tracking-widest mb-0.5">One Way Beta</p>
+                  <p className="text-xs font-black text-gray-900">₹{formData.oneWayBeta || 0}<span className="text-gray-500 ml-0.5">/day</span></p>
+                </div>
+                <div className="bg-gray-50 p-2 rounded-xl border border-gray-100">
+                  <p className="text-[8px] font-black text-gray-500 uppercase tracking-widest mb-0.5">Round Trip Beta</p>
+                  <p className="text-xs font-black text-gray-900">₹{formData.roundTripBeta || 0}<span className="text-gray-500 ml-0.5">/day</span></p>
+                </div>
               </div>
+
+              <button type="button" className="w-full py-3 mt-4 rounded-xl bg-emerald-500 text-white text-xs font-black uppercase tracking-widest">
+                Book {formData.name || "Now"}
+              </button>
             </div>
           </div>
         </div>

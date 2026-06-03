@@ -18,8 +18,13 @@ export async function POST(req: Request) {
     await connectDB();
 
     // Basic validation
-    if (!body.name || !body.pricePerDay || !body.thumbnail) {
-      return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
+    if (!body.name) {
+      return NextResponse.json({ error: "Vehicle name is required" }, { status: 400 });
+    }
+
+    // Ensure slug is unique if not provided
+    if (!body.slug) {
+      body.slug = body.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
     }
 
     const vehicle = await Vehicle.create(body);

@@ -10,6 +10,12 @@ export interface Vehicle {
   frameCount: number;
   description: string;
   popular?: boolean;
+  oneWayPrice?: number;
+  roundTripPrice?: number;
+  oneWayBeta?: number;
+  roundTripBeta?: number;
+  numBags?: string;
+  note?: string;
 }
 
 export const vehicles: Vehicle[] = [
@@ -24,7 +30,8 @@ export const vehicles: Vehicle[] = [
     framesPath: "/vehicles/tempo-traveller/",
     frameCount: 36,
     description: "Perfect for family and group trips",
-    popular: true
+    popular: true,
+    note: "Driver Beta (₹500/day), Toll/Parking, and Inter-state permits are extra as per actuals."
   },
   {
     id: "innova-crysta",

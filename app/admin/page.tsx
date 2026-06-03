@@ -10,30 +10,54 @@ import {
   Clock,
   ArrowUpRight,
   ArrowDownRight,
-  Package as PackageIcon
+  Package as PackageIcon,
+  Trash2,
+  RefreshCw
 } from "lucide-react";
 import { motion } from "framer-motion";
+import toast from "react-hot-toast";
 
 export default function AdminDashboard() {
   const [stats, setStats] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [clearing, setClearing] = useState(false);
+
+  const fetchStats = async () => {
+    try {
+      const res = await fetch("/api/admin/stats");
+      const data = await res.json();
+      if (res.ok) {
+        setStats(data);
+      }
+    } catch (error) {
+      console.error("Failed to fetch stats:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchStats = async () => {
-      try {
-        const res = await fetch("/api/admin/stats");
-        const data = await res.json();
-        if (res.ok) {
-          setStats(data);
-        }
-      } catch (error) {
-        console.error("Failed to fetch stats:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
     fetchStats();
   }, []);
+
+  const handleClearActivity = async () => {
+    if (!confirm("Are you sure you want to clear all recent enquiry activity? This will delete all enquiries.")) return;
+    
+    setClearing(true);
+    try {
+      const res = await fetch("/api/admin/stats/clear", { method: "DELETE" });
+      if (res.ok) {
+        toast.success("Recent activity cleared ✨");
+        fetchStats();
+      } else {
+        toast.error("Failed to clear activity");
+      }
+    } catch (error) {
+      toast.error("An error occurred");
+    } finally {
+      setClearing(false);
+    }
+  };
 
   if (loading) return <div className="animate-pulse space-y-8">
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -49,14 +73,6 @@ export default function AdminDashboard() {
       icon: MapPin, 
       color: "bg-[#00bcd4]",
       trend: "+2 this month",
-      isPositive: true
-    },
-    { 
-      label: "Total Packages", 
-      value: stats?.packageCount || 0, 
-      icon: PackageIcon, 
-      color: "bg-[#00bcd4]",
-      trend: "+5 this month",
       isPositive: true
     },
     { 
@@ -116,7 +132,17 @@ export default function AdminDashboard() {
         <div className="lg:col-span-2 bg-white rounded-[2.5rem] border border-gray-100 shadow-sm overflow-hidden">
           <div className="p-8 border-b border-gray-50 flex items-center justify-between">
             <h2 className="text-xl font-bold text-gray-900">Recent Enquiries</h2>
-            <button className="text-[#00bcd4] font-bold text-sm hover:underline">View All</button>
+            <div className="flex items-center gap-4">
+              <button 
+                onClick={handleClearActivity}
+                disabled={clearing || !stats?.recentEnquiries?.length}
+                className="flex items-center gap-2 text-red-500 font-bold text-xs uppercase tracking-widest hover:bg-red-50 px-4 py-2 rounded-xl transition-all disabled:opacity-30 disabled:hover:bg-transparent"
+              >
+                {clearing ? <RefreshCw size={14} className="animate-spin" /> : <Trash2 size={14} />}
+                Clear Activity
+              </button>
+              <Link href="/admin/enquiries" className="text-[#00bcd4] font-bold text-sm hover:underline">View All</Link>
+            </div>
           </div>
           <div className="overflow-x-auto">
             <table className="w-full text-left">
@@ -159,7 +185,7 @@ export default function AdminDashboard() {
           <div className="bg-[#0f172a] p-8 rounded-[2.5rem] text-white shadow-xl shadow-slate-900/20">
             <h3 className="text-2xl font-bold mb-4">Quick Actions</h3>
             <div className="space-y-3">
-              <Link href="/admin/tours/new" className="block w-full bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 text-center py-4 rounded-2xl font-bold transition-all text-white">
+              <Link href="/admin/tours/add" className="block w-full bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 text-center py-4 rounded-2xl font-bold transition-all text-white">
                 Add New Tour
               </Link>
               <Link href="/admin/packages/new" className="block w-full bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/10 text-center py-4 rounded-2xl font-bold transition-all text-white">

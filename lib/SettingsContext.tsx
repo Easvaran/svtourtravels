@@ -19,6 +19,7 @@ interface Settings {
   };
   adminUsername?: string;
   adminEmail?: string;
+  tariffNote?: string;
 }
 
 interface SettingsContextType {
@@ -44,6 +45,7 @@ const defaultSettings: Settings = {
   },
   adminUsername: "admin",
   adminEmail: "admin@svtourtravels.com",
+  tariffNote: "",
 };
 
 const SettingsContext = createContext<SettingsContextType>({

@@ -11,6 +11,11 @@ const ReviewSchema = new Schema(
   { timestamps: true }
 );
 
-const Review = models.Review || model("Review", ReviewSchema);
+// Force schema update in development
+if (mongoose.models && mongoose.models.Review) {
+  delete mongoose.models.Review;
+}
+
+const Review = model("Review", ReviewSchema);
 
 export default Review;

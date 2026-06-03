@@ -153,14 +153,37 @@ export default function EnquiriesPage() {
                           <Calendar size={14} />
                           <span>{enq.travelDate}</span>
                         </div>
-                        <div className="flex items-center space-x-1">
-                          <Clock size={14} />
-                          <span>{enq.days} Days</span>
-                        </div>
-                        <div className="flex items-center space-x-1">
-                          <Users size={14} />
-                          <span>{enq.people} Adults</span>
-                        </div>
+                        {enq.time && (
+                          <div className="flex items-center space-x-1">
+                            <Clock size={14} />
+                            <span>{enq.time}</span>
+                          </div>
+                        )}
+                        {enq.packageType === "taxi" ? (
+                          <>
+                            <div className="flex items-center space-x-1">
+                              <Car size={14} />
+                              <span className="capitalize">{enq.tripType?.replace("-", " ") || "One Way"}</span>
+                            </div>
+                            {enq.returnDate && (
+                              <div className="flex items-center space-x-1">
+                                <Calendar size={14} className="text-blue-500" />
+                                <span>Return: {enq.returnDate}</span>
+                              </div>
+                            )}
+                          </>
+                        ) : (
+                          <>
+                            <div className="flex items-center space-x-1">
+                              <Clock size={14} />
+                              <span>{enq.days} Days</span>
+                            </div>
+                            <div className="flex items-center space-x-1">
+                              <Users size={14} />
+                              <span>{enq.people} Adults</span>
+                            </div>
+                          </>
+                        )}
                       </div>
                       
                       {enq.vehicleName && (
@@ -197,6 +220,7 @@ export default function EnquiriesPage() {
                           <div className="flex items-center space-x-2 bg-gray-50 text-gray-500 px-3 py-1.5 rounded-xl border border-gray-100">
                             <AlertCircle size={14} />
                             <span className="text-[10px] font-black uppercase tracking-widest">Enquiry Only</span>
+                            {enq.totalAmount > 0 && <span className="text-[10px] font-bold border-l border-gray-200 pl-2">Est. ₹{enq.totalAmount?.toLocaleString()}</span>}
                           </div>
                         )}
                       </div>

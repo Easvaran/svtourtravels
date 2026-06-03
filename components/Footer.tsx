@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { 
   Instagram, 
@@ -16,6 +17,22 @@ import { useSettings } from "@/lib/SettingsContext";
 
 const Footer = () => {
   const { settings } = useSettings();
+  const [tours, setTours] = useState<any[]>([]);
+
+  useEffect(() => {
+    const fetchTours = async () => {
+      try {
+        const res = await fetch("/api/tours");
+        const data = await res.json();
+        if (Array.isArray(data)) {
+          setTours(data.filter((t: any) => t.status === "active").slice(0, 4));
+        }
+      } catch (error) {
+        console.error("Failed to fetch tours for footer:", error);
+      }
+    };
+    fetchTours();
+  }, []);
 
   return (
     <footer className="bg-[#0f172a] text-white py-16 px-4 border-t border-white/5">
@@ -60,21 +77,37 @@ const Footer = () => {
         <div>
           <h3 className="text-white font-bold text-lg mb-8 uppercase tracking-widest border-b border-[#00bcd4]/30 pb-2 inline-block">Quick Links</h3>
           <ul className="space-y-4 font-medium">
-            <li><Link href="/about" className="text-gray-300 hover:text-[#00bcd4] transition-colors flex items-center group"><ChevronRight size={14} className="mr-2 text-[#00bcd4]" /> About Us</Link></li>
-            <li><Link href="/tours" className="text-gray-300 hover:text-[#00bcd4] transition-colors flex items-center group"><ChevronRight size={14} className="mr-2 text-[#00bcd4]" /> All Tours</Link></li>
-            <li><Link href="/packages" className="text-gray-300 hover:text-[#00bcd4] transition-colors flex items-center group"><ChevronRight size={14} className="mr-2 text-[#00bcd4]" /> Packages</Link></li>
-            <li><Link href="/contact" className="text-gray-300 hover:text-[#00bcd4] transition-colors flex items-center group"><ChevronRight size={14} className="mr-2 text-[#00bcd4]" /> Contact</Link></li>
+            <li><Link href="/" className="text-gray-300 hover:text-[#00bcd4] transition-colors flex items-center group"><ChevronRight size={14} className="mr-2 text-[#00bcd4]" /> Home</Link></li>
+            <li><Link href="/tariff" className="text-gray-300 hover:text-[#00bcd4] transition-colors flex items-center group"><ChevronRight size={14} className="mr-2 text-[#00bcd4]" /> Tariff</Link></li>
+            <li><Link href="/tours" className="text-gray-300 hover:text-[#00bcd4] transition-colors flex items-center group"><ChevronRight size={14} className="mr-2 text-[#00bcd4]" /> Tours</Link></li>
+            <li><Link href="/services" className="text-gray-300 hover:text-[#00bcd4] transition-colors flex items-center group"><ChevronRight size={14} className="mr-2 text-[#00bcd4]" /> Services</Link></li>
+            <li><Link href="/why-us" className="text-gray-300 hover:text-[#00bcd4] transition-colors flex items-center group"><ChevronRight size={14} className="mr-2 text-[#00bcd4]" /> Why Us</Link></li>
+            <li><Link href="/contact" className="text-gray-300 hover:text-[#00bcd4] transition-colors flex items-center group"><ChevronRight size={14} className="mr-2 text-[#00bcd4]" /> Contact Us</Link></li>
           </ul>
         </div>
 
         {/* Popular Tours */}
         <div>
-          <h3 className="text-white font-bold text-lg mb-8 uppercase tracking-widest border-b border-[#00bcd4]/30 pb-2 inline-block">Destinations</h3>
+          <h3 className="text-white font-bold text-lg mb-8 uppercase tracking-widest border-b border-[#00bcd4]/30 pb-2 inline-block">Popular Routes</h3>
           <ul className="space-y-4 font-medium">
-            <li><Link href="/tours" className="text-gray-300 hover:text-[#00bcd4] transition-colors flex items-center group"><ChevronRight size={14} className="mr-2 text-[#00bcd4]" /> Ooty Hill Station</Link></li>
-            <li><Link href="/tours" className="text-gray-300 hover:text-[#00bcd4] transition-colors flex items-center group"><ChevronRight size={14} className="mr-2 text-[#00bcd4]" /> Kodaikanal Lake</Link></li>
-            <li><Link href="/tours" className="text-gray-300 hover:text-[#00bcd4] transition-colors flex items-center group"><ChevronRight size={14} className="mr-2 text-[#00bcd4]" /> Kerala Backwaters</Link></li>
-            <li><Link href="/tours" className="text-gray-300 hover:text-[#00bcd4] transition-colors flex items-center group"><ChevronRight size={14} className="mr-2 text-[#00bcd4]" /> Goa Beaches</Link></li>
+            {tours.length > 0 ? (
+              tours.map((tour) => (
+                <li key={tour._id}>
+                  <Link 
+                    href="/tours" 
+                    className="text-gray-300 hover:text-[#00bcd4] transition-colors flex items-center group"
+                  >
+                    <ChevronRight size={14} className="mr-2 text-[#00bcd4]" /> 
+                    {tour.from} → {tour.to}
+                  </Link>
+                </li>
+              ))
+            ) : (
+              <>
+                <li><Link href="/tours" className="text-gray-300 hover:text-[#00bcd4] transition-colors flex items-center group"><ChevronRight size={14} className="mr-2 text-[#00bcd4]" /> Ooty → Bangalore</Link></li>
+                <li><Link href="/tours" className="text-gray-300 hover:text-[#00bcd4] transition-colors flex items-center group"><ChevronRight size={14} className="mr-2 text-[#00bcd4]" /> Chennai → Madurai</Link></li>
+              </>
+            )}
           </ul>
         </div>
 

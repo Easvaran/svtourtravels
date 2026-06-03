@@ -1,28 +1,32 @@
 import mongoose, { Schema, model, models } from "mongoose";
 
-const ItinerarySchema = new Schema({
-  day: { type: Number, required: true },
-  title: { type: String, required: true },
-  description: { type: String, required: true },
-});
-
 const TourSchema = new Schema(
   {
-    title: { type: String, required: true },
-    slug: { type: String, required: true, unique: true },
-    image: { type: String, required: true },
-    price: { type: String, required: true },
+    from: { type: String, required: true },
+    to: { type: String, required: true },
+    distance: { type: String, required: true },
     duration: { type: String, required: true },
-    rating: { type: Number, default: 5.0 },
-    description: { type: String, required: true },
-    itinerary: [ItinerarySchema],
-    inclusions: [{ type: String }],
-    exclusions: [{ type: String }],
-    featured: { type: Boolean, default: false },
+    price: { type: Number, required: true },
+    isPopular: { type: Boolean, default: false },
+    status: { 
+      type: String, 
+      enum: ["active", "inactive", "deleted"], 
+      default: "active" 
+    },
+    // Optional fields for backward compatibility if needed
+    title: { type: String },
+    description: { type: String },
+    image: { type: String },
+    slug: { type: String },
   },
   { timestamps: true }
 );
 
-const Tour = models.Tour || model("Tour", TourSchema);
+// Force schema update in development
+if (mongoose.models && mongoose.models.Tour) {
+  delete mongoose.models.Tour;
+}
+
+const Tour = model("Tour", TourSchema);
 
 export default Tour;

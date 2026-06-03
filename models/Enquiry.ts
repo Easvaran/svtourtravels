@@ -6,9 +6,12 @@ const EnquirySchema = new Schema(
     phone: { type: String, required: true },
     destination: { type: String, required: true },
     travelDate: { type: String, required: true },
-    days: { type: Number, required: true },
-    people: { type: Number, required: true },
-    packageType: { type: String, required: true },
+    time: { type: String },
+    tripType: { type: String },
+    returnDate: { type: String },
+    days: { type: Number, default: 1 },
+    people: { type: Number, default: 1 },
+    packageType: { type: String, default: "taxi" },
     message: { type: String },
     vehicleName: { type: String },
     vehicleType: { type: String },
@@ -21,6 +24,7 @@ const EnquirySchema = new Schema(
     paymentStatus: { type: String, enum: ["pending", "partially_paid", "fully_paid"], default: "pending" },
     razorpayOrderId: { type: String },
     razorpayPaymentId: { type: String },
+    hiddenFromDashboard: { type: Boolean, default: false },
   },
   { timestamps: true }
 );

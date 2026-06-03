@@ -2,291 +2,180 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { 
+  Navigation, 
+  MapPin, 
+  Clock, 
+  Navigation2,
+  ArrowRight,
+  Info,
+  ChevronRight,
+  Star
+} from "lucide-react";
+import Link from "next/link";
 import SafeImage from "@/components/SafeImage";
-import TourCard from "@/components/TourCard";
-import { Search, MapPin, IndianRupee, Clock, ChevronDown, Filter, Sparkles, ChevronRight } from "lucide-react";
-import { tours as staticTours } from "@/lib/data";
 
-export default function ToursPage() {
-  const [tours, setTours] = useState(staticTours);
-  const [filteredTours, setFilteredTours] = useState(staticTours);
+const TourPage = () => {
+  const [tours, setTours] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedLocation, setSelectedLocation] = useState("All");
-  const [selectedPrice, setSelectedPrice] = useState("All");
-  const [selectedDuration, setSelectedDuration] = useState("All");
 
   useEffect(() => {
-    console.log("Tours Data:", staticTours);
-    fetch("/api/tours")
-      .then(res => res.json())
-      .then(data => {
-        if (Array.isArray(data) && data.length > 0) {
-          setTours(data);
-          setFilteredTours(data);
+    const fetchTours = async () => {
+      try {
+        const res = await fetch("/api/tours");
+        const data = await res.json();
+        if (Array.isArray(data)) {
+          setTours(data.filter((t: any) => t.status === "active"));
         }
+      } catch (error) {
+        console.error("Failed to fetch tours:", error);
+      } finally {
         setLoading(false);
-      })
-      .catch(() => {
-        setLoading(false);
-      });
+      }
+    };
+    fetchTours();
   }, []);
 
-  useEffect(() => {
-    applyFilters();
-  }, [searchTerm, selectedLocation, selectedPrice, selectedDuration, tours]);
-
-  const applyFilters = () => {
-    let result = tours;
-
-    if (selectedLocation && selectedLocation !== "All") {
-      result = result.filter(t => (t.location === selectedLocation) || (t.title?.toLowerCase().includes(selectedLocation.toLowerCase())));
-    }
-
-    if (searchTerm) {
-      result = result.filter(t =>
-        t.title?.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-    }
-
-    // Additional filters (Price, Duration) can be added here if needed, 
-    // but following user's primary instructions for Location and Search first.
-    
-    if (selectedPrice !== "All") {
-      const priceNum = (p: any) => parseInt(p?.toString().replace(/,/g, "") || "0");
-      result = result.filter(t => {
-        const p = priceNum(t.price);
-        if (selectedPrice === "Under 10k") return p < 10000;
-        if (selectedPrice === "10k - 20k") return p >= 10000 && p <= 20000;
-        if (selectedPrice === "20k - 30k") return p >= 20000 && p <= 30000;
-        return p > 30000;
-      });
-    }
-
-    if (selectedDuration !== "All") {
-      const days = (d: any) => parseInt(d?.toString().split(" ")[0] || "0");
-      result = result.filter(t => {
-        const d = days(t.duration);
-        if (selectedDuration === "1-3 Days") return d >= 1 && d <= 3;
-        if (selectedDuration === "4-6 Days") return d >= 4 && d <= 6;
-        return d >= 7;
-      });
-    }
-
-    setFilteredTours(result);
-  };
-
-  const locations = ["All", "Ooty", "Kodaikanal", "Chennai", "Madurai", "Kerala", "Himachal", "Goa"];
-  const priceRanges = ["All", "Under 10k", "10k - 20k", "20k - 30k", "Above 30k"];
-  const durations = ["All", "1-3 Days", "4-6 Days", "7+ Days"];
-
-  const featuredTours = Array.isArray(tours) ? tours.filter((t: any) => t.featured).slice(0, 3) : [];
-
   return (
-    <div className="min-h-screen bg-gray-50/50">
-      {/* Hero Section */}
-      <section className="relative h-[50vh] min-h-[400px] flex items-center justify-center overflow-hidden">
-        <SafeImage
-          src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?q=80&w=2021&auto=format&fit=crop"
-          alt="Explore Tours"
-          fill
-          priority
-          className="object-cover"
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/30 to-black/60" />
+    <div className="min-h-screen bg-[#f8fafc]">
+      {/* Page Header */}
+      <section className="relative pt-32 pb-20 bg-[#0870b8] overflow-hidden">
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-white via-transparent to-transparent" />
+        </div>
         
-        <div className="relative z-10 text-center max-w-4xl px-4">
+        <div className="max-w-7xl mx-auto px-4 relative z-10 text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-secondary text-sm font-black uppercase tracking-[0.2em] mb-6"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white text-sm font-black uppercase tracking-[0.2em] mb-6"
           >
-            <Sparkles size={16} />
-            <span>Discover Tamil Nadu</span>
+            <Navigation size={16} />
+            <span>Popular One-Way Routes</span>
           </motion.div>
-          <motion.h1
+          
+          <motion.h1 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="text-5xl md:text-7xl font-black text-white mb-6 leading-tight tracking-tighter"
+            className="text-4xl md:text-6xl font-black text-white mb-6"
           >
-            Explore Our <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-secondary to-yellow-300">Curated Tours</span>
+            Popular One-Way <span className="text-[#00bcd4]">Destinations</span>
           </motion.h1>
-          <motion.p
+          
+          <motion.p 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="text-lg md:text-xl text-gray-200 max-w-2xl mx-auto leading-relaxed font-medium"
+            className="text-white/80 text-lg font-medium max-w-2xl mx-auto"
           >
-            Handpicked travel experiences designed to give you unforgettable memories.
+            Fixed pricing with no hidden charges. Explore our most popular routes 
+            across South India with professional drivers you can trust.
           </motion.p>
         </div>
       </section>
 
-      {/* Filter Bar */}
-      <div className="max-w-7xl mx-auto px-4 -mt-10 relative z-20">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
-          className="bg-white p-6 md:p-10 rounded-[2.5rem] shadow-[0_40px_100px_rgba(0,0,0,0.1)] border border-gray-100"
-        >
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {/* Search */}
-            <div className="space-y-2">
-              <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-2">Search Tours</label>
-              <div className="relative group">
-                <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-primary group-focus-within:scale-110 transition-transform" size={18} />
-                <input
-                  type="text"
-                  placeholder="Where to?"
-                  className="w-full h-14 bg-gray-50 border-2 border-transparent focus:border-primary/10 focus:bg-white rounded-2xl pl-12 pr-4 outline-none transition-all font-bold text-gray-900 placeholder:text-gray-400"
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                />
-              </div>
-            </div>
-
-            {/* Location */}
-            <div className="space-y-2">
-              <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-2">Location</label>
-              <div className="relative group">
-                <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 text-primary group-focus-within:scale-110 transition-transform z-10" size={18} />
-                <select
-                  className="w-full h-14 bg-gray-50 border-2 border-transparent focus:border-primary/10 focus:bg-white rounded-2xl pl-12 pr-4 outline-none transition-all font-bold text-gray-900 appearance-none relative cursor-pointer"
-                  value={selectedLocation}
-                  onChange={(e) => setSelectedLocation(e.target.value)}
+      {/* Tours Grid */}
+      <section className="py-24 px-4">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+            {loading ? (
+              [...Array(6)].map((_, i) => (
+                <div key={i} className="bg-white rounded-[2.5rem] h-[400px] animate-pulse shadow-sm" />
+              ))
+            ) : tours.length > 0 ? (
+              tours.map((tour, index) => (
+                <motion.div
+                  key={tour._id}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1 }}
+                  className={`bg-white rounded-[2.5rem] border ${tour.isPopular ? 'border-yellow-400 ring-4 ring-yellow-400/10 shadow-xl shadow-yellow-400/5' : 'border-gray-100 shadow-sm hover:shadow-xl'} transition-all duration-500 group overflow-hidden flex flex-col h-full`}
                 >
-                  {locations.map(loc => <option key={loc} value={loc}>{loc}</option>)}
-                </select>
-                <ChevronDown size={16} className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
-              </div>
-            </div>
+                  {tour.image ? (
+                    <div className="relative aspect-video w-full overflow-hidden">
+                      <SafeImage src={tour.image} alt={`${tour.from} to ${tour.to}`} fill className="object-cover group-hover:scale-110 transition-transform duration-700" />
+                      {tour.isPopular && (
+                        <div className="absolute top-4 right-4 bg-yellow-400 text-gray-900 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest flex items-center gap-1.5 shadow-lg z-10">
+                          <Star size={10} className="fill-current" />
+                          Popular
+                        </div>
+                      )}
+                    </div>
+                  ) : (
+                    <div className="relative aspect-video w-full overflow-hidden bg-gray-100 flex items-center justify-center">
+                      <Navigation2 size={48} className="text-gray-200" />
+                      {tour.isPopular && (
+                        <div className="absolute top-4 right-4 bg-yellow-400 text-gray-900 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest flex items-center gap-1.5 shadow-lg z-10">
+                          <Star size={10} className="fill-current" />
+                          Popular
+                        </div>
+                      )}
+                    </div>
+                  )}
+                  <div className="p-8 flex flex-col flex-1 relative">
+                    {/* Header: Locations */}
+                    <div className="flex items-center gap-5 mb-8 relative">
+                      <div className="flex flex-col items-center gap-1.5">
+                        <div className="w-3 h-3 rounded-full border-2 border-yellow-400 bg-white" />
+                        <div className="w-px h-10 border-r-2 border-dashed border-gray-200" />
+                        <Navigation2 size={16} className="text-[#10b981] rotate-180" />
+                      </div>
+                      <div className="flex flex-col gap-6">
+                        <span className="text-xl font-black text-gray-900 group-hover:text-[#0870b8] transition-colors">{tour.from}</span>
+                        <span className="text-xl font-black text-gray-900 group-hover:text-[#0870b8] transition-colors">{tour.to}</span>
+                      </div>
+                    </div>
 
-            {/* Price */}
-            <div className="space-y-2">
-              <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-2">Price Range</label>
-              <div className="relative group">
-                <IndianRupee className="absolute left-4 top-1/2 -translate-y-1/2 text-primary group-focus-within:scale-110 transition-transform z-10" size={18} />
-                <select
-                  className="w-full h-14 bg-gray-50 border-2 border-transparent focus:border-primary/10 focus:bg-white rounded-2xl pl-12 pr-4 outline-none transition-all font-bold text-gray-900 appearance-none relative cursor-pointer"
-                  value={selectedPrice}
-                  onChange={(e) => setSelectedPrice(e.target.value)}
-                >
-                  {priceRanges.map(price => <option key={price} value={price}>{price}</option>)}
-                </select>
-                <ChevronDown size={16} className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
-              </div>
-            </div>
+                    {/* Stats Row */}
+                    <div className="grid grid-cols-2 gap-4 bg-gray-50/50 rounded-2xl p-5 mb-8 border border-gray-100">
+                      <div className="flex flex-col">
+                        <span className="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-1.5">Distance</span>
+                        <div className="flex items-center gap-2 text-[#10b981] font-black text-sm">
+                          <Navigation size={14} className="rotate-45" />
+                          {tour.distance}
+                        </div>
+                      </div>
+                      <div className="flex flex-col">
+                        <span className="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-1.5">Duration</span>
+                        <div className="flex items-center gap-2 text-yellow-500 font-black text-sm">
+                          <Clock size={14} />
+                          {tour.duration}
+                        </div>
+                      </div>
+                    </div>
 
-            {/* Duration */}
-            <div className="space-y-2">
-              <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-2">Duration</label>
-              <div className="relative group">
-                <Clock className="absolute left-4 top-1/2 -translate-y-1/2 text-primary group-focus-within:scale-110 transition-transform z-10" size={18} />
-                <select
-                  className="w-full h-14 bg-gray-50 border-2 border-transparent focus:border-primary/10 focus:bg-white rounded-2xl pl-12 pr-4 outline-none transition-all font-bold text-gray-900 appearance-none relative cursor-pointer"
-                  value={selectedDuration}
-                  onChange={(e) => setSelectedDuration(e.target.value)}
-                >
-                  {durations.map(dur => <option key={dur} value={dur}>{dur}</option>)}
-                </select>
-                <ChevronDown size={16} className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
+                    {/* Footer: Price and Book */}
+                    <div className="flex flex-col sm:flex-row items-center sm:items-end justify-between mt-auto pt-6 border-t border-gray-100 gap-6">
+                      <div className="flex flex-col items-center sm:items-start">
+                        <span className="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-1">Starting from</span>
+                        <span className="text-3xl font-black text-[#10b981]">₹{tour.price.toLocaleString()}</span>
+                      </div>
+                      
+                      <Link 
+                        href={`/?destination=Taxi from ${tour.from} to ${tour.to}#booking-form`}
+                        className={`inline-flex items-center justify-center gap-2 px-6 py-4 rounded-2xl font-black text-sm transition-all shadow-lg active:scale-95 w-full sm:w-auto ${tour.isPopular ? 'bg-[#eab308] hover:bg-[#ca8a04] text-white shadow-yellow-400/20' : 'bg-[#10b981] hover:bg-[#059669] text-white shadow-emerald-400/20'}`}
+                      >
+                        <ArrowRight size={18} />
+                        Book Now
+                      </Link>
+                    </div>
+                  </div>
+                </motion.div>
+              ))
+            ) : (
+              <div className="col-span-full text-center py-20 bg-white rounded-[3rem] border-2 border-dashed border-gray-100">
+                <Info size={60} className="mx-auto text-gray-200 mb-4" />
+                <h3 className="text-xl font-black text-gray-900">No popular routes available right now.</h3>
+                <p className="text-gray-500 font-medium mt-2">Check back soon for new destinations!</p>
               </div>
-            </div>
+            )}
           </div>
-        </motion.div>
-      </div>
-
-      {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 py-24 space-y-32">
-        {/* Popular Section */}
-        {featuredTours.length > 0 && !searchTerm && selectedLocation === "All" && (
-          <section className="space-y-12">
-            <div className="flex flex-col md:flex-row justify-between items-end gap-6">
-              <div className="max-w-2xl">
-                <span className="text-primary font-black tracking-[0.3em] uppercase text-sm mb-4 block">Most Loved</span>
-                <h2 className="text-4xl md:text-5xl font-black text-gray-900 leading-none tracking-tight">Popular Tours</h2>
-              </div>
-              <div className="h-[2px] flex-1 bg-gray-200 mb-4 hidden md:block mx-12" />
-              <button className="group flex items-center gap-2 text-primary font-black uppercase tracking-widest text-sm hover:gap-4 transition-all">
-                <span>See Why</span>
-                <ChevronRight size={20} className="text-primary" />
-              </button>
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
-              {featuredTours.map((tour: any) => (
-                <div key={tour._id} className="lg:scale-105 first:lg:origin-left last:lg:origin-right">
-                  <TourCard {...tour} />
-                </div>
-              ))}
-            </div>
-          </section>
-        )}
-
-        {/* All Tours Grid */}
-        <section className="space-y-12">
-          <div className="flex items-center justify-between">
-            <h2 className="text-3xl font-black text-gray-900">
-              {searchTerm || selectedLocation !== "All" ? `Search Results (${filteredTours.length})` : "All Tour Packages"}
-            </h2>
-            <div className="flex items-center gap-2 text-gray-400 font-bold text-sm">
-              <Filter size={16} />
-              <span>{filteredTours.length} tours found</span>
-            </div>
-          </div>
-
-          {loading ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {[1, 2, 3, 4, 5, 6].map(i => (
-                <div key={i} className="h-[500px] bg-white rounded-[2.5rem] animate-pulse border border-gray-100" />
-              ))}
-            </div>
-          ) : filteredTours.length === 0 ? (
-            <div className="text-center py-20 bg-white rounded-[3rem] border-2 border-dashed border-gray-100">
-              <div className="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-6">
-                <Search size={32} className="text-gray-300" />
-              </div>
-              <h3 className="text-2xl font-black text-gray-900 mb-2">No tours found</h3>
-              <p className="text-gray-500 font-medium italic mb-4">
-                Showing popular tours instead
-              </p>
-              <button 
-                onClick={() => {
-                  setSearchTerm("");
-                  setSelectedLocation("All");
-                  setSelectedPrice("All");
-                  setSelectedDuration("All");
-                  setFilteredTours(tours);
-                }}
-                className="bg-primary text-white font-black px-10 py-4 rounded-2xl hover:bg-blue-700 transition-all shadow-lg shadow-primary/20 hover:-translate-y-1"
-              >
-                Show All Tours
-              </button>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              <AnimatePresence mode="popLayout">
-                {filteredTours.map((tour: any) => (
-                  <motion.div
-                    key={tour._id || tour.id}
-                    layout
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.9 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    <TourCard {...tour} />
-                  </motion.div>
-                ))}
-              </AnimatePresence>
-            </div>
-          )}
-        </section>
-      </div>
+        </div>
+      </section>
     </div>
   );
-}
+};
 
+export default TourPage;

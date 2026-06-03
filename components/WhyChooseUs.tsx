@@ -1,86 +1,95 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { stats, trustCards } from "@/lib/data";
-import { ShieldCheck, Award, Lock, Zap, Heart, Headphones } from "lucide-react";
+import { trustCards } from "@/lib/data";
+import { ShieldCheck, Users, MapPin, Sparkles } from "lucide-react";
 
 const iconMap: { [key: string]: any } = {
-  "Best Price Guarantee": Award,
-  "Trusted Guides": ShieldCheck,
-  "Safe Travel": Lock,
-  "Easy Booking": Zap,
-  "Custom Packages": Heart,
-  "Customer Support": Headphones,
+  "Transparent Pricing": ShieldCheck,
+  "Professional Drivers": Users,
+  "Wide Coverage": MapPin,
+  "Clean Fleet": Sparkles,
 };
 
 const WhyChooseUs = () => {
   return (
-    <section className="py-[60px] px-[20px] bg-white overflow-hidden">
-      <div className="max-w-[1200px] mx-auto">
-        {/* Stats Banner */}
-        <motion.div 
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="bg-[#ffffff] rounded-[12px] p-[25px] shadow-[0_5px_20px_rgba(0,0,0,0.08)] grid grid-cols-2 lg:grid-cols-4 gap-12 text-center mb-24 relative overflow-hidden transition-all duration-300 hover:-translate-y-[5px]"
-        >
-          {stats.map((stat, index) => (
-            <div key={index} className="relative z-10">
-              <p className="text-[32px] font-bold text-[#00bcd4] mb-2">{stat.value}</p>
-              <p className="text-gray-500 font-bold uppercase tracking-widest text-xs">{stat.label}</p>
-            </div>
-          ))}
-        </motion.div>
-
-        <div className="text-center max-w-3xl mx-auto mb-20">
-          <motion.span 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-[#00bcd4] font-black tracking-[0.3em] uppercase text-sm mb-4 block"
-          >
-            Our Promise
-          </motion.span>
-          <motion.h2 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.1 }}
-            className="text-4xl md:text-5xl font-black text-gray-900 mb-6"
-          >
-            Why Choose Us?
-          </motion.h2>
-          <motion.p 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.2 }}
-            className="text-gray-500 text-lg font-medium"
-          >
-            We are committed to providing you with the best travel experience possible.
-          </motion.p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {trustCards.map((card, index) => {
-            const Icon = iconMap[card.title];
-            return (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
+    <section id="why-us" className="py-24 px-6 bg-gray-50/50 overflow-hidden">
+      <div className="max-w-7xl mx-auto">
+        <div className="flex flex-col lg:flex-row items-center gap-16">
+          {/* Content Column */}
+          <div className="flex-1 space-y-8">
+            <div className="space-y-4">
+              <motion.h2 
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-                className="p-[25px] rounded-[12px] bg-[#ffffff] border border-transparent shadow-[0_5px_20px_rgba(0,0,0,0.08)] hover:-translate-y-[5px] transition-all duration-300 text-center group"
+                className="text-4xl md:text-5xl font-black text-gray-900 leading-tight"
               >
-                <div className="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto mb-8 shadow-sm group-hover:bg-secondary transition-all duration-500 text-[#00bcd4]">
-                  <Icon size={28} strokeWidth={2.5} />
-                </div>
-                <h3 className="text-2xl font-black text-gray-900 mb-4">{card.title}</h3>
-                <p className="text-gray-500 font-medium leading-relaxed">{card.description}</p>
-              </motion.div>
-            );
-          })}
+                Why Choose <span className="text-[#00bcd4]">Book Drop Taxi Online?</span>
+              </motion.h2>
+              <motion.p 
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.1 }}
+                className="text-gray-500 text-lg font-medium leading-relaxed max-w-2xl"
+              >
+                We're committed to making your travel experience seamless, affordable, and comfortable. 
+                Join thousands of happy travelers across South India.
+              </motion.p>
+            </div>
+
+            <div className="space-y-6">
+              {trustCards.map((card, index) => {
+                const Icon = iconMap[card.title] || ShieldCheck;
+                return (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: index * 0.1 }}
+                    className="flex items-start gap-6 group p-4 rounded-3xl hover:bg-white hover:shadow-xl hover:shadow-[#00bcd4]/5 transition-all duration-500"
+                  >
+                    <div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center flex-shrink-0 shadow-sm text-[#00bcd4] group-hover:bg-[#00bcd4] group-hover:text-white transition-all duration-500">
+                      <Icon size={24} strokeWidth={2.5} />
+                    </div>
+                    <div className="space-y-1">
+                      <h3 className="text-xl font-black text-gray-900 group-hover:text-[#00bcd4] transition-colors">
+                        {card.title}
+                      </h3>
+                      <p className="text-gray-500 font-medium leading-relaxed">
+                        {card.description}
+                      </p>
+                    </div>
+                  </motion.div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Image/Visual Column (Optional, but makes it look professional) */}
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            className="flex-1 hidden lg:block relative"
+          >
+            <div className="absolute -inset-4 bg-[#00bcd4]/5 rounded-[3rem] blur-2xl" />
+            <div className="relative rounded-[3rem] overflow-hidden border-8 border-white shadow-2xl">
+              <img 
+                src="https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?q=80&w=2070&auto=format&fit=crop" 
+                alt="SV Travels" 
+                className="w-full aspect-[4/5] object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+              <div className="absolute bottom-10 left-10 right-10">
+                <p className="text-white text-3xl font-black leading-tight">
+                  Your Trusted Partner <br /> for Every Journey.
+                </p>
+              </div>
+            </div>
+          </motion.div>
         </div>
       </div>
     </section>

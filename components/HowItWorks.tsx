@@ -11,8 +11,8 @@ const steps = [
   },
   {
     icon: Package,
-    title: "Select Package",
-    description: "Pick a package that fits your budget and preferences perfectly.",
+    title: "Check Tariff",
+    description: "View our transparent pricing and select the vehicle that fits your group.",
   },
   {
     icon: Edit,

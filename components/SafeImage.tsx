@@ -21,11 +21,19 @@ const SafeImage = ({
   useEffect(() => {
     const isValidSrc = (url: string | undefined | null) => {
       if (!url) return false;
-      return url.startsWith("/") || url.startsWith("http://") || url.startsWith("https://");
+      const cleanUrl = url.trim();
+      return (
+        cleanUrl.startsWith("/") || 
+        cleanUrl.startsWith("http://") || 
+        cleanUrl.startsWith("https://") ||
+        cleanUrl.startsWith("data:")
+      );
     };
 
     if (isValidSrc(src)) {
-      setImgSrc(src as string);
+      // Clean trailing characters like ) or whitespace that might come from bad copy-paste
+      const cleanSrc = (src as string).trim().replace(/\)$/, "");
+      setImgSrc(cleanSrc);
       setError(false);
     } else {
       setImgSrc(fallbackSrc);

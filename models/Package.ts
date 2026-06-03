@@ -25,6 +25,11 @@ const PackageSchema = new Schema(
   { timestamps: true }
 );
 
-const Package = models.Package || model("Package", PackageSchema);
+// Force schema update in development
+if (mongoose.models && mongoose.models.Package) {
+  delete mongoose.models.Package;
+}
+
+const Package = model("Package", PackageSchema);
 
 export default Package;

@@ -22,7 +22,7 @@ export async function POST(req: Request) {
     await connectDB();
     
     // Validate required fields
-    const requiredFields = ['name', 'phone', 'destination', 'travelDate', 'days', 'people', 'packageType'];
+    const requiredFields = ['name', 'phone', 'destination', 'travelDate'];
     for (const field of requiredFields) {
       if (body[field] === undefined || body[field] === null || body[field] === '') {
         return NextResponse.json(
@@ -37,9 +37,12 @@ export async function POST(req: Request) {
       phone: body.phone,
       destination: body.destination,
       travelDate: body.travelDate,
-      days: Number(body.days),
-      people: Number(body.people),
-      packageType: body.packageType,
+      time: body.time || "",
+      tripType: body.tripType || "one-way",
+      returnDate: body.returnDate || "",
+      days: Number(body.days) || 1,
+      people: Number(body.people) || 1,
+      packageType: body.packageType || "taxi",
       message: body.message || "",
       vehicleName: body.vehicleName || "",
       vehicleType: body.vehicleType || "",

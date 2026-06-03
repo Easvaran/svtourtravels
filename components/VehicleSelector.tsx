@@ -36,6 +36,11 @@ const VehicleSelector = ({ selectedVehicleId, onSelectVehicle }: VehicleSelector
             frameCount: v.frames360?.length || 0,
             description: v.description,
             popular: v.isPopular,
+            oneWayPrice: v.oneWayPrice,
+            roundTripPrice: v.roundTripPrice,
+            oneWayBeta: v.oneWayBeta,
+            roundTripBeta: v.roundTripBeta,
+            numBags: v.numBags,
             frames360: v.frames360 // Keep original frames array for better 360 viewer support
           }));
         setVehicles(mappedVehicles);

@@ -39,6 +39,15 @@ export const metadata: Metadata = {
   creator: "SV Tour and Travels",
   publisher: "SV Tour and Travels",
 
+  icons: {
+    icon: [
+      { url: "/icon.svg", type: "image/svg+xml" },
+    ],
+    apple: [
+      { url: "/icon.svg" },
+    ],
+  },
+
   openGraph: {
     title: "SV Tour and Travels | Best Tours and Travels in Chennai",
     description:

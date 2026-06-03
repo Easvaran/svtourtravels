@@ -69,6 +69,7 @@ export default function SettingsPage() {
     adminPassword: "",
     adminEmail: "",
     additionalEmails: [] as string[],
+    tariffNote: "",
   });
 
   const [newEmail, setNewEmail] = useState("");
@@ -121,6 +122,7 @@ export default function SettingsPage() {
           adminPassword: "",
           adminEmail: settingsData.adminEmail || "",
           additionalEmails: settingsData.additionalEmails || [],
+          tariffNote: settingsData.tariffNote || "",
         });
       } else {
         throw new Error(data.message || data.error || "Failed to load settings");
@@ -477,6 +479,21 @@ export default function SettingsPage() {
                 />
               </div>
               <p className="text-[10px] text-gray-400 ml-1 italic">* Go to Google Maps &gt; Share &gt; Embed a map &gt; Copy the URL inside the "src" attribute.</p>
+            </div>
+
+            <div className="space-y-2 pt-4 border-t border-gray-100">
+              <label className="text-xs font-black text-gray-600 uppercase tracking-widest ml-1">Tariff Section Note</label>
+              <div className="relative">
+                <Shield className="absolute left-4 top-6 text-gray-400" size={18} />
+                <textarea
+                  rows={3}
+                  placeholder="Ex: Note: Driver Beta (₹500/day), Toll/Parking, and Inter-state permits are extra as per actuals."
+                  className="w-full bg-gray-50 border-2 border-transparent rounded-2xl py-4 pl-12 pr-6 focus:border-primary/10 focus:bg-white outline-none transition-all font-bold text-gray-900 resize-none text-sm"
+                  value={formData.tariffNote}
+                  onChange={(e) => setFormData({ ...formData, tariffNote: e.target.value })}
+                />
+              </div>
+              <p className="text-[10px] text-gray-400 ml-1 font-medium italic">This note will be displayed at the bottom of the Tariff section on the website.</p>
             </div>
           </div>
         </section>

@@ -20,12 +20,18 @@ const SettingsSchema = new Schema(
     adminPassword: { type: String, default: "pass" },
     adminEmail: { type: String, default: "admin@svtourtravels.com" },
     additionalEmails: { type: [String], default: [] },
+    tariffNote: { type: String, default: "" },
     resetOtp: { type: String, default: null },
     resetOtpExpires: { type: Date, default: null },
   },
   { timestamps: true }
 );
 
-const Settings = models.Settings || model("Settings", SettingsSchema);
+// Force schema update in development
+if (mongoose.models && mongoose.models.Settings) {
+  delete mongoose.models.Settings;
+}
+
+const Settings = model("Settings", SettingsSchema);
 
 export default Settings;

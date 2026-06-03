@@ -223,12 +223,10 @@ export const stats = [
 ];
 
 export const trustCards = [
-  { title: "Best Price Guarantee", description: "We offer the most competitive rates in the market." },
-  { title: "Trusted Guides", description: "Our guides are highly experienced and knowledgeable." },
-  { title: "Safe Travel", description: "Your safety is our top priority throughout the journey." },
-  { title: "Easy Booking", description: "Seamless and hassle-free booking process." },
-  { title: "Custom Packages", description: "Tailor-made itineraries to suit your specific needs." },
-  { title: "Customer Support", description: "Round-the-clock assistance for all your queries." }
+  { title: "Transparent Pricing", description: "No hidden costs or surprise charges. What you see is what you pay." },
+  { title: "Professional Drivers", description: "Background-checked, experienced, and punctual staff for safe journeys." },
+  { title: "Wide Coverage", description: "Serving all of Tamil Nadu, Pondicherry, and Bangalore with reliable service." },
+  { title: "Clean Fleet", description: "Sanitized and well-maintained AC cars for a comfortable ride." }
 ];
 
 export const testimonialData = [
