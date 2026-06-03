@@ -25,7 +25,7 @@ const WhyChooseUs = () => {
                 viewport={{ once: true }}
                 className="text-4xl md:text-5xl font-black text-gray-900 leading-tight"
               >
-                Why Choose <span className="text-[#00bcd4]">Book Drop Taxi Online?</span>
+                Why Choose <span className="text-[#00bcd4]">SV Tour and Travels?</span>
               </motion.h2>
               <motion.p 
                 initial={{ opacity: 0, x: -20 }}
@@ -34,7 +34,7 @@ const WhyChooseUs = () => {
                 transition={{ delay: 0.1 }}
                 className="text-gray-500 text-lg font-medium leading-relaxed max-w-2xl"
               >
-                We're committed to making your travel experience seamless, affordable, and comfortable. 
+                SV Tour and Travels is committed to making your travel experience seamless, affordable, and comfortable. 
                 Join thousands of happy travelers across South India.
               </motion.p>
             </div>

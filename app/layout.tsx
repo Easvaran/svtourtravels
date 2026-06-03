@@ -15,14 +15,21 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://www.svtourandtravels.com"),
 
   title: {
-    default: "SV Tour and Travels | Best Tours and Travels in Chennai",
+    default: "SV Tour and Travels | Taxi Service in Pangur, Puducherry | Cab Booking, Airport Pickup & Drop",
     template: "%s | SV Tour and Travels",
   },
 
   description:
-    "SV Tour and Travels provides reliable cab booking, airport pickup and drop, local taxi, outstation trips, and tour packages in Chennai at affordable prices.",
+    "SV Tour and Travels offers reliable taxi service in Pangur, Puducherry. Book airport pickup & drop, local taxi, outstation cab booking, and tour packages at affordable prices.",
 
   keywords: [
+    "SV Tour and Travels",
+    "Taxi Service in Pangur",
+    "Taxi Service in Puducherry",
+    "Airport Pickup and Drop",
+    "Local Taxi Service",
+    "Outstation Cab Booking",
+    "Tour Packages",
     "Tours and Travels in Chennai",
     "Best Travels in Chennai",
     "Cab Booking Chennai",
@@ -49,20 +56,31 @@ export const metadata: Metadata = {
   },
 
   openGraph: {
-    title: "SV Tour and Travels | Best Tours and Travels in Chennai",
+    title: "SV Tour and Travels | Taxi Service in Pangur, Puducherry",
     description:
-      "Book affordable cab services, airport transfers, local and outstation trips with SV Tour and Travels in Chennai.",
+      "Reliable cab booking, airport pickup & drop, local taxi, and outstation trips with SV Tour and Travels in Pangur, Puducherry.",
     url: "https://www.svtourandtravels.com",
     siteName: "SV Tour and Travels",
     locale: "en_IN",
     type: "website",
+    images: [
+      {
+        url: "https://images.unsplash.com/photo-1488646953014-85cb44e25828?q=80&w=2070&auto=format&fit=crop",
+        width: 2070,
+        height: 1380,
+        alt: "SV Tour and Travels - Taxi Service",
+      },
+    ],
   },
 
   twitter: {
     card: "summary_large_image",
-    title: "SV Tour and Travels",
+    title: "SV Tour and Travels | Taxi Service in Pangur, Puducherry",
     description:
-      "Reliable tours, travels, airport pickup, taxi and outstation cab services in Chennai.",
+      "Reliable tours, travels, airport pickup, taxi and outstation cab services in Pangur, Puducherry.",
+    images: [
+      "https://images.unsplash.com/photo-1488646953014-85cb44e25828?q=80&w=2070&auto=format&fit=crop",
+    ],
   },
 
   robots: {
@@ -80,7 +98,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport = {
-  themeColor: "#0f172a",
+  themeColor: "#0870b8",
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
@@ -107,6 +125,103 @@ export default function RootLayout({
             gtag('config', 'G-T78JH0Y8VL');
           `}
         </Script>
+        
+        {/* JSON-LD Schema Markup */}
+        <Script
+          id="schema-markup"
+          type="application/ld+json"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify([
+              {
+                "@context": "https://schema.org",
+                "@type": "LocalBusiness",
+                "name": "SV Tour and Travels",
+                "image": "https://www.svtourandtravels.com/icon.svg",
+                "url": "https://www.svtourandtravels.com",
+                "telephone": "+918668076871",
+                "address": {
+                  "@type": "PostalAddress",
+                  "streetAddress": "Pangur",
+                  "addressLocality": "Puducherry",
+                  "addressRegion": "Puducherry",
+                  "postalCode": "605001",
+                  "addressCountry": "IN"
+                },
+                "priceRange": "₹₹",
+                "openingHours": "Mo-Su 00:00-23:59",
+                "sameAs": [
+                  "https://www.facebook.com/svtourandtravels",
+                  "https://www.instagram.com/svtourandtravels",
+                  "https://www.youtube.com/svtourandtravels"
+                ]
+              },
+              {
+                "@context": "https://schema.org",
+                "@type": "TaxiService",
+                "name": "SV Tour and Travels",
+                "provider": {
+                  "@type": "LocalBusiness",
+                  "name": "SV Tour and Travels"
+                },
+                "areaServed": [
+                  "Pangur",
+                  "Puducherry",
+                  "Chennai",
+                  "Tamil Nadu"
+                ],
+                "hasOfferCatalog": {
+                  "@type": "OfferCatalog",
+                  "itemListElement": [
+                    {
+                      "@type": "Offer",
+                      "itemOffered": {
+                        "@type": "Service",
+                        "name": "Airport Pickup & Drop"
+                      }
+                    },
+                    {
+                      "@type": "Offer",
+                      "itemOffered": {
+                        "@type": "Service",
+                        "name": "Local Taxi Service"
+                      }
+                    },
+                    {
+                      "@type": "Offer",
+                      "itemOffered": {
+                        "@type": "Service",
+                        "name": "Outstation Cab Booking"
+                      }
+                    },
+                    {
+                      "@type": "Offer",
+                      "itemOffered": {
+                        "@type": "Service",
+                        "name": "Tour Packages"
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "@context": "https://schema.org",
+                "@type": "TouristService",
+                "name": "SV Tour and Travels",
+                "provider": {
+                  "@type": "LocalBusiness",
+                  "name": "SV Tour and Travels"
+                },
+                "areaServed": [
+                  "Pangur",
+                  "Puducherry",
+                  "Chennai",
+                  "Tamil Nadu"
+                ]
+              }
+            ])
+          }}
+        />
       </head>
       <body className={poppins.className}>
         <SettingsProvider>

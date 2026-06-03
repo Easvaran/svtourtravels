@@ -73,8 +73,8 @@ const HeroSection = () => {
               transition={{ delay: 0.2 }}
               className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-white mb-6 lg:mb-8 leading-[1.2] tracking-tight text-center lg:text-left"
             >
-              Affordable One Way Drop Taxi Across <br className="hidden md:block" />
-              Tamil Nadu, Pondicherry & Bangalore
+              SV Tour and Travels<br className="hidden md:block" />
+              <span className="text-[#00bcd4]">Taxi Service in Pangur, Puducherry</span>
             </motion.h1>
             
             <motion.div 
