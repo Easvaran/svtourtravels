@@ -1,9 +1,10 @@
 import { NextResponse } from "next/server";
-import { razorpay } from "@/lib/razorpay";
+import { getRazorpayInstance } from "@/lib/razorpay";
 
 export async function POST(req: Request) {
   try {
     const { amount, currency = "INR" } = await req.json();
+    const razorpay = getRazorpayInstance();
 
     const options = {
       amount: Math.round(amount * 100), // amount in smallest currency unit (paise)

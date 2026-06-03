@@ -65,7 +65,7 @@ const TaxiQuoteForm = ({ className = "" }: { className?: string }) => {
 
   // Load Google Maps script
   useEffect(() => {
-    if (window.google) return;
+    if (typeof window === 'undefined' || window.google) return;
     
     const script = document.createElement("script");
     script.src = `https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&libraries=places`;
@@ -80,7 +80,7 @@ const TaxiQuoteForm = ({ className = "" }: { className?: string }) => {
 
   // Initialize Autocomplete and Distance Matrix
   useEffect(() => {
-    if (!window.google || !pickupInputRef.current || !dropInputRef.current) return;
+    if (typeof window === 'undefined' || !window.google || !pickupInputRef.current || !dropInputRef.current) return;
 
     const pickupAutocomplete = new window.google.maps.places.Autocomplete(pickupInputRef.current);
     const dropAutocomplete = new window.google.maps.places.Autocomplete(dropInputRef.current);
@@ -132,7 +132,7 @@ const TaxiQuoteForm = ({ className = "" }: { className?: string }) => {
         calculateDistance();
       }
     });
-  }, [window.google]);
+  }, []);
 
   useEffect(() => {
     fetch("/api/vehicles")
@@ -146,6 +146,8 @@ const TaxiQuoteForm = ({ className = "" }: { className?: string }) => {
 
   // Effect to handle URL changes (pre-selecting vehicle)
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+    
     const handleUrlChange = () => {
       const params = new URLSearchParams(window.location.search);
       const preSelectedId = params.get("vehicleId");
