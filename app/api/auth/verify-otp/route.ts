@@ -24,7 +24,7 @@ export async function POST(req: Request) {
       );
     }
 
-    if (new Date() > new Date(settings.resetOtpExpires)) {
+    if (!settings.resetOtpExpires || new Date() > new Date(settings.resetOtpExpires)) {
       return NextResponse.json(
         { message: "OTP has expired", success: false },
         { status: 400 }
