@@ -320,10 +320,7 @@ export default function TourDetailsPage() {
 
                   <EnquiryForm 
                     className="shadow-none border-none p-0 md:p-0 rounded-none" 
-                    showTitle={false} 
-                    initialPrice={tour.price}
                     tourTitle={tour.title}
-                    selectedVehicle={selectedVehicle}
                   />
                 </div>
               </div>
