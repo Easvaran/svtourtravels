@@ -20,7 +20,8 @@ export async function GET() {
       ...tour,
       featured: true, 
       rating: tour.rating || 5.0,
-      slug: tour.slug || tour.title.toLowerCase().replace(/ /g, "-").replace(/[^\w-]+/g, "")
+      slug: tour.slug || tour.title.toLowerCase().replace(/ /g, "-").replace(/[^\w-]+/g, ""),
+      price: Number(String(tour.price).replace(/[^0-9]/g, ""))
     }));
 
     await Tour.insertMany(formattedTours);
