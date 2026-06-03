@@ -162,6 +162,8 @@ _Thank you for choosing SV Tour & Travels!_
       phone: "",
       destination: tourTitle || "",
       travelDate: "",
+      time: "",
+      returnDate: "",
       days: "",
       people: "1",
       packageType: "Family Trip",
