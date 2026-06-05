@@ -67,15 +67,19 @@ const HeroSection = () => {
             transition={{ duration: 0.8, ease: "easeOut" }}
             className="text-left flex flex-col items-center lg:items-start"
           >
-            <motion.h1 
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-white mb-6 lg:mb-8 leading-[1.2] tracking-tight text-center lg:text-left"
-            >
-              SV Tour and Travels<br className="hidden md:block" />
-              <span className="text-[#00bcd4]">Taxi Service in Pangur, Puducherry</span>
-            </motion.h1>
+            <AnimatePresence mode="wait">
+              <motion.h1 
+                key={currentSlide}
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -30 }}
+                transition={{ delay: 0.2 }}
+                className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-white mb-6 lg:mb-8 leading-[1.2] tracking-tight text-center lg:text-left"
+              >
+                {slides[currentSlide].title}<br className="hidden md:block" />
+                <span className="text-[#00bcd4]">{slides[currentSlide].subtitle}</span>
+              </motion.h1>
+            </AnimatePresence>
             
             <motion.div 
               initial={{ opacity: 0, y: 25 }}
