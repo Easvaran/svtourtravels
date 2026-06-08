@@ -1,4 +1,11 @@
+# *
 User-agent: *
 Allow: /
+Disallow: /admin/
+Disallow: /api/
 
+# Host
+Host: https://www.svtourandtravels.com
+
+# Sitemaps
 Sitemap: https://www.svtourandtravels.com/sitemap.xml

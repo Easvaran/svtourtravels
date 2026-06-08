@@ -15,31 +15,26 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://www.svtourandtravels.com"),
 
   title: {
-    default: "SV Tour and Travels | Taxi Service in Pangur, Puducherry | Cab Booking, Airport Pickup & Drop",
+    default: "SV Tour and Travels | Taxi Service in Puducherry | Pondicherry Cab Booking, Chennai Airport Pickup & Drop",
     template: "%s | SV Tour and Travels",
   },
 
   description:
-    "SV Tour and Travels offers reliable taxi service in Pangur, Puducherry. Book airport pickup & drop, local taxi, outstation cab booking, and tour packages at affordable prices.",
+    "SV Tour and Travels provides reliable taxi service in Puducherry (Pondicherry). Book Chennai Airport pickup & drop, local taxi, outstation cabs, and tour packages at affordable prices. Call +91 8668076871.",
 
   keywords: [
-    "SV Tour and Travels",
-    "Taxi Service in Pangur",
     "Taxi Service in Puducherry",
+    "Pondicherry Taxi",
+    "Cab Booking Puducherry",
+    "Chennai Airport Taxi",
     "Airport Pickup and Drop",
+    "Outstation Taxi Puducherry",
     "Local Taxi Service",
-    "Outstation Cab Booking",
-    "Tour Packages",
-    "Tours and Travels in Chennai",
-    "Best Travels in Chennai",
-    "Cab Booking Chennai",
-    "Airport Pickup Chennai",
-    "Airport Drop Taxi Chennai",
-    "Outstation Cab Chennai",
-    "Tour Packages Chennai",
-    "Taxi Service Chennai",
-    "Affordable Travels Chennai",
-    "24/7 Cab Service Chennai",
+    "Tour Packages Puducherry",
+    "One Way Taxi",
+    "Round Trip Taxi",
+    "SV Tour and Travels",
+    "Pangur Puducherry Taxi",
   ],
 
   authors: [{ name: "SV Tour and Travels" }],
@@ -56,9 +51,9 @@ export const metadata: Metadata = {
   },
 
   openGraph: {
-    title: "SV Tour and Travels | Taxi Service in Pangur, Puducherry",
+    title: "SV Tour and Travels | Taxi Service in Puducherry & Pondicherry",
     description:
-      "Reliable cab booking, airport pickup & drop, local taxi, and outstation trips with SV Tour and Travels in Pangur, Puducherry.",
+      "Reliable taxi services in Puducherry: Chennai Airport pickup & drop, local rides, outstation cabs, and tour packages. Book now with SV Tour and Travels.",
     url: "https://www.svtourandtravels.com",
     siteName: "SV Tour and Travels",
     locale: "en_IN",
@@ -68,16 +63,16 @@ export const metadata: Metadata = {
         url: "https://images.unsplash.com/photo-1488646953014-85cb44e25828?q=80&w=2070&auto=format&fit=crop",
         width: 2070,
         height: 1380,
-        alt: "SV Tour and Travels - Taxi Service",
+        alt: "SV Tour and Travels - Taxi Service in Puducherry",
       },
     ],
   },
 
   twitter: {
     card: "summary_large_image",
-    title: "SV Tour and Travels | Taxi Service in Pangur, Puducherry",
+    title: "SV Tour and Travels | Taxi Service in Puducherry & Pondicherry",
     description:
-      "Reliable tours, travels, airport pickup, taxi and outstation cab services in Pangur, Puducherry.",
+      "Reliable taxi services in Puducherry: Chennai Airport pickup & drop, local rides, outstation cabs, and tour packages.",
     images: [
       "https://images.unsplash.com/photo-1488646953014-85cb44e25828?q=80&w=2070&auto=format&fit=crop",
     ],
@@ -86,6 +81,13 @@ export const metadata: Metadata = {
   robots: {
     index: true,
     follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
   },
 
   alternates: {
@@ -137,9 +139,11 @@ export default function RootLayout({
                 "@context": "https://schema.org",
                 "@type": "LocalBusiness",
                 "name": "SV Tour and Travels",
+                "alternateName": "SV Tours",
                 "image": "https://www.svtourandtravels.com/icon.svg",
                 "url": "https://www.svtourandtravels.com",
-                "telephone": "+918668076871",
+                "telephone": "+91-8668076871",
+                "priceRange": "₹₹",
                 "address": {
                   "@type": "PostalAddress",
                   "streetAddress": "Pangur",
@@ -148,57 +152,104 @@ export default function RootLayout({
                   "postalCode": "605001",
                   "addressCountry": "IN"
                 },
-                "priceRange": "₹₹",
-                "openingHours": "Mo-Su 00:00-23:59",
+                "geo": {
+                  "@type": "GeoCoordinates",
+                  "latitude": 11.9139,
+                  "longitude": 79.8145
+                },
+                "openingHoursSpecification": [
+                  {
+                    "@type": "OpeningHoursSpecification",
+                    "dayOfWeek": [
+                      "Monday",
+                      "Tuesday",
+                      "Wednesday",
+                      "Thursday",
+                      "Friday",
+                      "Saturday",
+                      "Sunday"
+                    ],
+                    "opens": "00:00",
+                    "closes": "23:59"
+                  }
+                ],
                 "sameAs": [
                   "https://www.facebook.com/svtourandtravels",
-                  "https://www.instagram.com/svtourandtravels",
-                  "https://www.youtube.com/svtourandtravels"
+                  "https://www.instagram.com/svtourandtravels"
+                ],
+                "areaServed": [
+                  "Pangur",
+                  "Puducherry",
+                  "Pondicherry",
+                  "Chennai",
+                  "Tamil Nadu"
                 ]
               },
               {
                 "@context": "https://schema.org",
                 "@type": "TaxiService",
-                "name": "SV Tour and Travels",
+                "name": "SV Tour and Travels Taxi Service",
                 "provider": {
                   "@type": "LocalBusiness",
                   "name": "SV Tour and Travels"
                 },
                 "areaServed": [
-                  "Pangur",
+                  "Pangur, Puducherry",
                   "Puducherry",
+                  "Pondicherry",
                   "Chennai",
                   "Tamil Nadu"
                 ],
                 "hasOfferCatalog": {
                   "@type": "OfferCatalog",
+                  "name": "Taxi and Cab Services",
                   "itemListElement": [
                     {
                       "@type": "Offer",
                       "itemOffered": {
                         "@type": "Service",
-                        "name": "Airport Pickup & Drop"
+                        "name": "Chennai Airport Pickup and Drop",
+                        "description": "Reliable Chennai Airport pickup and drop taxi service from Puducherry and Pondicherry."
                       }
                     },
                     {
                       "@type": "Offer",
                       "itemOffered": {
                         "@type": "Service",
-                        "name": "Local Taxi Service"
+                        "name": "Local Taxi Service in Puducherry",
+                        "description": "Affordable local taxi service for sightseeing and daily commutes in Puducherry."
                       }
                     },
                     {
                       "@type": "Offer",
                       "itemOffered": {
                         "@type": "Service",
-                        "name": "Outstation Cab Booking"
+                        "name": "Outstation Taxi from Puducherry",
+                        "description": "Comfortable outstation taxi service from Puducherry to Chennai and other cities."
                       }
                     },
                     {
                       "@type": "Offer",
                       "itemOffered": {
                         "@type": "Service",
-                        "name": "Tour Packages"
+                        "name": "One Way Taxi",
+                        "description": "Convenient one-way taxi service for hassle-free travel."
+                      }
+                    },
+                    {
+                      "@type": "Offer",
+                      "itemOffered": {
+                        "@type": "Service",
+                        "name": "Round Trip Taxi",
+                        "description": "Affordable round-trip taxi booking for complete travel solutions."
+                      }
+                    },
+                    {
+                      "@type": "Offer",
+                      "itemOffered": {
+                        "@type": "Service",
+                        "name": "Tour Packages in Puducherry",
+                        "description": "Exciting tour packages in and around Puducherry for a memorable trip."
                       }
                     }
                   ]
@@ -206,18 +257,21 @@ export default function RootLayout({
               },
               {
                 "@context": "https://schema.org",
-                "@type": "TouristService",
+                "@type": "WebSite",
                 "name": "SV Tour and Travels",
-                "provider": {
-                  "@type": "LocalBusiness",
-                  "name": "SV Tour and Travels"
-                },
-                "areaServed": [
-                  "Pangur",
-                  "Puducherry",
-                  "Chennai",
-                  "Tamil Nadu"
-                ]
+                "url": "https://www.svtourandtravels.com",
+                "potentialAction": {
+                  "@type": "SearchAction",
+                  "target": "https://www.svtourandtravels.com/search?q={search_term_string}",
+                  "query-input": "required name=search_term_string"
+                }
+              },
+              {
+                "@context": "https://schema.org",
+                "@type": "Organization",
+                "name": "SV Tour and Travels",
+                "url": "https://www.svtourandtravels.com",
+                "logo": "https://www.svtourandtravels.com/icon.svg"
               }
             ])
           }}
