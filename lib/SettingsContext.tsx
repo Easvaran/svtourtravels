@@ -101,7 +101,9 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({ chil
           console.log("Updating favicon to:", settingsData.faviconUrl);
           // Remove existing favicon links
           const existingLinks = document.querySelectorAll("link[rel~='icon']");
-          existingLinks.forEach(link => link.remove());
+          existingLinks.forEach(link => {
+            link.remove();
+          });
           
           // Create new favicon link
           const link = document.createElement('link');
