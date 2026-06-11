@@ -70,8 +70,8 @@ export default function AdminToursPage() {
   };
 
   const filteredTours = Array.isArray(tours) ? tours.filter(t => 
-    t.from.toLowerCase().includes(searchTerm.toLowerCase()) || 
-    t.to.toLowerCase().includes(searchTerm.toLowerCase())
+    (t.from || '').toLowerCase().includes(searchTerm.toLowerCase()) || 
+    (t.to || '').toLowerCase().includes(searchTerm.toLowerCase())
   ) : [];
 
   return (
