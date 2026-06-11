@@ -152,7 +152,7 @@ const TariffSection = () => {
           >
             <p className="text-gray-600 font-medium text-center text-sm md:text-base leading-relaxed">
               <span className="text-[#10b981] font-extrabold italic mr-1">Note:</span>{" "}
-              <span className="italic">{settings.tariffNote.replace(/^Note:\s*/i, '')}</span>
+              <span className="italic">{(settings.tariffNote || '').replace(/^Note:\s*/i, '')}</span>
             </p>
           </motion.div>
         )}

@@ -86,7 +86,15 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({ chil
           hasLogo: !!settingsData.logoUrl,
           hasFavicon: !!settingsData.faviconUrl
         });
-        setSettings(settingsData);
+        // Merge with defaultSettings to ensure all properties exist
+        setSettings({
+          ...defaultSettings,
+          ...settingsData,
+          socialLinks: {
+            ...defaultSettings.socialLinks,
+            ...(settingsData.socialLinks || {})
+          }
+        });
 
         // Update favicon dynamically
         if (settingsData.faviconUrl) {

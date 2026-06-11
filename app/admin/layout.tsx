@@ -86,7 +86,7 @@ export default function AdminLayout({
                 </div>
               )}
               <span className="font-bold text-xl text-[#00bcd4] group-hover:text-gray-900 transition-colors">
-                {settings.websiteName.split(" ")[0].toUpperCase()} <span className="text-gray-900">ADMIN</span>
+                {(settings.websiteName || 'SV TOUR & TRAVELS').split(" ")[0].toUpperCase()} <span className="text-gray-900">ADMIN</span>
               </span>
             </Link>
           )}
@@ -157,7 +157,7 @@ export default function AdminLayout({
               </div>
             )}
             <span className="font-bold text-xl text-[#00bcd4] group-hover:text-gray-900 transition-colors">
-              {settings.websiteName.split(" ")[0].toUpperCase()} <span className="text-gray-900">ADMIN</span>
+              {(settings.websiteName || 'SV TOUR & TRAVELS').split(" ")[0].toUpperCase()} <span className="text-gray-900">ADMIN</span>
             </span>
           </Link>
           <button 
