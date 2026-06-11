@@ -123,8 +123,8 @@ const ToursClient = () => {
                         <Navigation2 size={16} className="text-[#10b981] rotate-180" />
                       </div>
                       <div className="flex flex-col gap-6">
-                        <span className="text-xl font-black text-gray-900 group-hover:text-[#0870b8] transition-colors">{tour.from}</span>
-                        <span className="text-xl font-black text-gray-900 group-hover:text-[#0870b8] transition-colors">{tour.to}</span>
+                        <span className="text-xl font-black text-gray-900 group-hover:text-[#0870b8] transition-colors">{tour.from || ''}</span>
+                        <span className="text-xl font-black text-gray-900 group-hover:text-[#0870b8] transition-colors">{tour.to || ''}</span>
                       </div>
                     </div>
 
@@ -134,14 +134,14 @@ const ToursClient = () => {
                         <span className="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-1.5">Distance</span>
                         <div className="flex items-center gap-2 text-[#10b981] font-black text-sm">
                           <Navigation size={14} className="rotate-45" />
-                          {tour.distance}
+                          {tour.distance || ''}
                         </div>
                       </div>
                       <div className="flex flex-col">
                         <span className="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-1.5">Duration</span>
                         <div className="flex items-center gap-2 text-yellow-500 font-black text-sm">
                           <Clock size={14} />
-                          {tour.duration}
+                          {tour.duration || ''}
                         </div>
                       </div>
                     </div>
