@@ -98,7 +98,7 @@ export default function VehicleTable({ vehicles, onDelete }: VehicleTableProps) 
                 </div>
                 <div className="text-right">
                   <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Per Day</p>
-                  <p className="text-lg font-black text-gray-900">₹{vehicle.pricePerDay.toLocaleString()}</p>
+                  <p className="text-lg font-black text-gray-900">₹{(vehicle.pricePerDay || 0).toLocaleString()}</p>
                 </div>
               </div>
 

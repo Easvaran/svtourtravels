@@ -143,7 +143,7 @@ const ToursSection = () => {
                   <div className="flex flex-col sm:flex-row items-center sm:items-end justify-between mt-auto pt-6 border-t border-gray-100 gap-6">
                     <div className="flex flex-col items-center sm:items-start">
                       <span className="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-1">Starting from</span>
-                      <span className="text-3xl font-black text-[#10b981]">₹{tour.price.toLocaleString()}</span>
+                      <span className="text-3xl font-black text-[#10b981]">₹{(tour.price || 0).toLocaleString()}</span>
                     </div>
                     
                     <Link 

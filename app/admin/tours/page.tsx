@@ -159,7 +159,7 @@ export default function AdminToursPage() {
                 <div className="flex items-baseline justify-between mt-auto pt-6 border-t border-gray-100">
                   <div className="flex flex-col">
                     <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Starting from</span>
-                    <span className="text-2xl font-black text-[#10b981]">₹{tour.price.toLocaleString()}</span>
+                    <span className="text-2xl font-black text-[#10b981]">₹{(tour.price || 0).toLocaleString()}</span>
                   </div>
                   
                   <div className="flex gap-2">

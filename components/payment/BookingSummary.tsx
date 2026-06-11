@@ -21,8 +21,8 @@ interface BookingSummaryProps {
 export default function BookingSummary({ booking }: BookingSummaryProps) {
   if (!booking) return null;
 
-  const advanceAmount = Math.round(booking.totalAmount * 0.1);
-  const remainingAmount = booking.totalAmount - advanceAmount;
+  const advanceAmount = Math.round((booking.totalAmount || 0) * 0.1);
+  const remainingAmount = (booking.totalAmount || 0) - advanceAmount;
 
   return (
     <motion.div 
@@ -109,7 +109,7 @@ export default function BookingSummary({ booking }: BookingSummaryProps) {
         <div className="space-y-3">
           <div className="flex justify-between items-center text-white/70">
             <span className="text-xs font-bold uppercase tracking-widest">Total Trip Price</span>
-            <span className="font-black">₹{booking.totalAmount.toLocaleString()}</span>
+            <span className="font-black">₹{(booking.totalAmount || 0).toLocaleString()}</span>
           </div>
 
           {booking.paymentType === "advance" ? (
@@ -126,7 +126,7 @@ export default function BookingSummary({ booking }: BookingSummaryProps) {
           ) : (
             <div className="flex justify-between items-center text-primary font-black pt-2">
               <span className="text-xs uppercase tracking-widest">Payable Now</span>
-              <span className="text-2xl">₹{booking.totalAmount.toLocaleString()}</span>
+              <span className="text-2xl">₹{(booking.totalAmount || 0).toLocaleString()}</span>
             </div>
           )}
         </div>
