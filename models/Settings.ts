@@ -23,6 +23,10 @@ const SettingsSchema = new Schema(
     tariffNote: { type: String, default: "" },
     resetOtp: { type: String, default: null },
     resetOtpExpires: { type: Date, default: null },
+    // SEO Fields
+    metaTitle: { type: String, default: "" },
+    metaDescription: { type: String, default: "" },
+    logoAltText: { type: String, default: "" },
   },
   { timestamps: true }
 );

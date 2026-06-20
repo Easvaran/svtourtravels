@@ -18,7 +18,9 @@ import {
   Plus,
   X,
   Loader2,
-  Upload
+  Upload,
+  Settings as SettingsIcon,
+  FileText
 } from "lucide-react";
 import { motion } from "framer-motion";
 import toast from "react-hot-toast";
@@ -49,6 +51,7 @@ export default function SettingsPage() {
   const [saving, setSaving] = useState(false);
   const [logoUploading, setLogoUploading] = useState(false);
   const [faviconUploading, setFaviconUploading] = useState(false);
+  const [activeTab, setActiveTab] = useState("general");
   
   const [formData, setFormData] = useState({
     websiteName: "",
@@ -70,6 +73,9 @@ export default function SettingsPage() {
     adminEmail: "",
     additionalEmails: [] as string[],
     tariffNote: "",
+    metaTitle: "",
+    metaDescription: "",
+    logoAltText: "",
   });
 
   const [newEmail, setNewEmail] = useState("");
@@ -123,6 +129,9 @@ export default function SettingsPage() {
           adminEmail: settingsData.adminEmail || "",
           additionalEmails: settingsData.additionalEmails || [],
           tariffNote: settingsData.tariffNote || "",
+          metaTitle: settingsData.metaTitle || "",
+          metaDescription: settingsData.metaDescription || "",
+          logoAltText: settingsData.logoAltText || "",
         });
       } else {
         throw new Error(data.message || data.error || "Failed to load settings");
@@ -395,345 +404,432 @@ export default function SettingsPage() {
         </button>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <section className="bg-white p-8 md:p-10 rounded-[2.5rem] border border-gray-100 shadow-sm space-y-8">
-          <h3 className="text-xl font-black text-gray-900 flex items-center space-x-3">
-            <Globe className="text-primary" size={24} />
-            <span>Website Information</span>
-          </h3>
+      {/* Tabs */}
+      <div className="flex gap-2 bg-white p-2 rounded-[2rem] border border-gray-100 shadow-sm">
+        <button
+          type="button"
+          onClick={() => setActiveTab("general")}
+          className={`flex-1 px-6 py-3 rounded-[1.5rem] font-black text-sm transition-all flex items-center justify-center gap-2 ${
+            activeTab === "general"
+              ? "bg-primary text-white shadow-lg shadow-primary/20"
+              : "text-gray-500 hover:text-gray-700 hover:bg-gray-50"
+          }`}
+        >
+          <SettingsIcon size={18} />
+          <span>General</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => setActiveTab("seo")}
+          className={`flex-1 px-6 py-3 rounded-[1.5rem] font-black text-sm transition-all flex items-center justify-center gap-2 ${
+            activeTab === "seo"
+              ? "bg-primary text-white shadow-lg shadow-primary/20"
+              : "text-gray-500 hover:text-gray-700 hover:bg-gray-50"
+          }`}
+        >
+          <FileText size={18} />
+          <span>SEO</span>
+        </button>
+      </div>
 
-          <div className="space-y-6">
-            <div className="space-y-2">
-              <label className="text-xs font-black text-gray-400 uppercase tracking-widest ml-1">Website Name</label>
-              <input
-                type="text"
-                className="w-full bg-gray-50 border-2 border-transparent rounded-2xl py-4 px-6 focus:border-primary/10 focus:bg-white outline-none transition-all font-bold text-gray-900"
-                value={formData.websiteName}
-                onChange={(e) => setFormData({ ...formData, websiteName: e.target.value })}
-              />
-            </div>
+      {activeTab === "general" ? (
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <section className="bg-white p-8 md:p-10 rounded-[2.5rem] border border-gray-100 shadow-sm space-y-8">
+            <h3 className="text-xl font-black text-gray-900 flex items-center space-x-3">
+              <Globe className="text-primary" size={24} />
+              <span>Website Information</span>
+            </h3>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-6">
               <div className="space-y-2">
-                <label className="text-xs font-black text-gray-400 uppercase tracking-widest ml-1">Contact Email</label>
-                <div className="relative">
-                  <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
-                  <input
-                    type="email"
-                    className="w-full bg-gray-50 border-2 border-transparent rounded-2xl py-4 pl-12 pr-6 focus:border-primary/10 focus:bg-white outline-none transition-all font-bold text-gray-900"
-                    value={formData.contactEmail}
-                    onChange={(e) => setFormData({ ...formData, contactEmail: e.target.value })}
-                  />
+                <label className="text-xs font-black text-gray-400 uppercase tracking-widest ml-1">Website Name</label>
+                <input
+                  type="text"
+                  className="w-full bg-gray-50 border-2 border-transparent rounded-2xl py-4 px-6 focus:border-primary/10 focus:bg-white outline-none transition-all font-bold text-gray-900"
+                  value={formData.websiteName}
+                  onChange={(e) => setFormData({ ...formData, websiteName: e.target.value })}
+                />
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <label className="text-xs font-black text-gray-400 uppercase tracking-widest ml-1">Contact Email</label>
+                  <div className="relative">
+                    <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+                    <input
+                      type="email"
+                      className="w-full bg-gray-50 border-2 border-transparent rounded-2xl py-4 pl-12 pr-6 focus:border-primary/10 focus:bg-white outline-none transition-all font-bold text-gray-900"
+                      value={formData.contactEmail}
+                      onChange={(e) => setFormData({ ...formData, contactEmail: e.target.value })}
+                    />
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <label className="text-xs font-black text-gray-400 uppercase tracking-widest ml-1">Contact Phone</label>
+                  <div className="relative">
+                    <Phone className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+                    <input
+                      type="text"
+                      className="w-full bg-gray-50 border-2 border-transparent rounded-2xl py-4 pl-12 pr-6 focus:border-primary/10 focus:bg-white outline-none transition-all font-bold text-gray-900"
+                      value={formData.contactPhone}
+                      onChange={(e) => setFormData({ ...formData, contactPhone: e.target.value })}
+                    />
+                  </div>
                 </div>
               </div>
+
               <div className="space-y-2">
-                <label className="text-xs font-black text-gray-400 uppercase tracking-widest ml-1">Contact Phone</label>
+                <label className="text-xs font-black text-gray-400 uppercase tracking-widest ml-1">WhatsApp Number</label>
                 <div className="relative">
-                  <Phone className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+                  <MessageCircle className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
                   <input
                     type="text"
                     className="w-full bg-gray-50 border-2 border-transparent rounded-2xl py-4 pl-12 pr-6 focus:border-primary/10 focus:bg-white outline-none transition-all font-bold text-gray-900"
-                    value={formData.contactPhone}
-                    onChange={(e) => setFormData({ ...formData, contactPhone: e.target.value })}
+                    value={formData.whatsappNumber}
+                    onChange={(e) => setFormData({ ...formData, whatsappNumber: e.target.value })}
                   />
                 </div>
               </div>
-            </div>
 
-            <div className="space-y-2">
-              <label className="text-xs font-black text-gray-400 uppercase tracking-widest ml-1">WhatsApp Number</label>
-              <div className="relative">
-                <MessageCircle className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
-                <input
-                  type="text"
-                  className="w-full bg-gray-50 border-2 border-transparent rounded-2xl py-4 pl-12 pr-6 focus:border-primary/10 focus:bg-white outline-none transition-all font-bold text-gray-900"
-                  value={formData.whatsappNumber}
-                  onChange={(e) => setFormData({ ...formData, whatsappNumber: e.target.value })}
-                />
+              <div className="space-y-2">
+                <label className="text-xs font-black text-gray-400 uppercase tracking-widest ml-1">Office Address</label>
+                <div className="relative">
+                  <MapPin className="absolute left-4 top-6 text-gray-400" size={18} />
+                  <textarea
+                    rows={3}
+                    className="w-full bg-gray-50 border-2 border-transparent rounded-2xl py-4 pl-12 pr-6 focus:border-primary/10 focus:bg-white outline-none transition-all font-bold text-gray-900 resize-none"
+                    value={formData.address}
+                    onChange={(e) => setFormData({ ...formData, address: e.target.value })}
+                  />
+                </div>
               </div>
-            </div>
 
-            <div className="space-y-2">
-              <label className="text-xs font-black text-gray-400 uppercase tracking-widest ml-1">Office Address</label>
-              <div className="relative">
-                <MapPin className="absolute left-4 top-6 text-gray-400" size={18} />
-                <textarea
-                  rows={3}
-                  className="w-full bg-gray-50 border-2 border-transparent rounded-2xl py-4 pl-12 pr-6 focus:border-primary/10 focus:bg-white outline-none transition-all font-bold text-gray-900 resize-none"
-                  value={formData.address}
-                  onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-                />
+              <div className="space-y-2">
+                <label className="text-xs font-black text-gray-400 uppercase tracking-widest ml-1">Google Maps Iframe Link</label>
+                <div className="relative">
+                  <Globe className="absolute left-4 top-6 text-gray-400" size={18} />
+                  <textarea
+                    rows={3}
+                    placeholder='Paste the src URL from the Google Maps embed code here'
+                    className="w-full bg-gray-50 border-2 border-transparent rounded-2xl py-4 pl-12 pr-6 focus:border-primary/10 focus:bg-white outline-none transition-all font-bold text-gray-900 resize-none text-sm"
+                    value={formData.mapIframe}
+                    onChange={(e) => setFormData({ ...formData, mapIframe: e.target.value })}
+                  />
+                </div>
+                <p className="text-[10px] text-gray-400 ml-1 italic">* Go to Google Maps &gt; Share &gt; Embed a map &gt; Copy the URL inside the "src" attribute.</p>
               </div>
-            </div>
 
-            <div className="space-y-2">
-              <label className="text-xs font-black text-gray-400 uppercase tracking-widest ml-1">Google Maps Iframe Link</label>
-              <div className="relative">
-                <Globe className="absolute left-4 top-6 text-gray-400" size={18} />
-                <textarea
-                  rows={3}
-                  placeholder='Paste the src URL from the Google Maps embed code here'
-                  className="w-full bg-gray-50 border-2 border-transparent rounded-2xl py-4 pl-12 pr-6 focus:border-primary/10 focus:bg-white outline-none transition-all font-bold text-gray-900 resize-none text-sm"
-                  value={formData.mapIframe}
-                  onChange={(e) => setFormData({ ...formData, mapIframe: e.target.value })}
-                />
+              <div className="space-y-2 pt-4 border-t border-gray-100">
+                <label className="text-xs font-black text-gray-600 uppercase tracking-widest ml-1">Tariff Section Note</label>
+                <div className="relative">
+                  <Shield className="absolute left-4 top-6 text-gray-400" size={18} />
+                  <textarea
+                    rows={3}
+                    placeholder="Ex: Note: Driver Beta (₹500/day), Toll/Parking, and Inter-state permits are extra as per actuals."
+                    className="w-full bg-gray-50 border-2 border-transparent rounded-2xl py-4 pl-12 pr-6 focus:border-primary/10 focus:bg-white outline-none transition-all font-bold text-gray-900 resize-none text-sm"
+                    value={formData.tariffNote}
+                    onChange={(e) => setFormData({ ...formData, tariffNote: e.target.value })}
+                  />
+                </div>
+                <p className="text-[10px] text-gray-400 ml-1 font-medium italic">This note will be displayed at the bottom of the Tariff section on the website.</p>
               </div>
-              <p className="text-[10px] text-gray-400 ml-1 italic">* Go to Google Maps &gt; Share &gt; Embed a map &gt; Copy the URL inside the "src" attribute.</p>
-            </div>
-
-            <div className="space-y-2 pt-4 border-t border-gray-100">
-              <label className="text-xs font-black text-gray-600 uppercase tracking-widest ml-1">Tariff Section Note</label>
-              <div className="relative">
-                <Shield className="absolute left-4 top-6 text-gray-400" size={18} />
-                <textarea
-                  rows={3}
-                  placeholder="Ex: Note: Driver Beta (₹500/day), Toll/Parking, and Inter-state permits are extra as per actuals."
-                  className="w-full bg-gray-50 border-2 border-transparent rounded-2xl py-4 pl-12 pr-6 focus:border-primary/10 focus:bg-white outline-none transition-all font-bold text-gray-900 resize-none text-sm"
-                  value={formData.tariffNote}
-                  onChange={(e) => setFormData({ ...formData, tariffNote: e.target.value })}
-                />
-              </div>
-              <p className="text-[10px] text-gray-400 ml-1 font-medium italic">This note will be displayed at the bottom of the Tariff section on the website.</p>
-            </div>
-          </div>
-        </section>
-
-        <section className="bg-white p-8 md:p-10 rounded-[2.5rem] border border-gray-100 shadow-sm space-y-8">
-          <h3 className="text-xl font-black text-gray-900 flex items-center space-x-3">
-            <ImageIcon className="text-primary" size={24} />
-            <span>Branding</span>
-          </h3>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="space-y-4">
-              <label className="text-xs font-black text-gray-400 uppercase tracking-widest ml-1">Sidebar Logo</label>
-              <div className="flex flex-col items-center p-6 border-2 border-dashed border-gray-200 rounded-3xl hover:border-primary/30 transition-colors bg-gray-50/50">
-                {(logoPreview || formData.logoUrl) ? (
-                  <div className="relative w-full aspect-video rounded-2xl overflow-hidden bg-white border border-gray-100 mb-4 flex items-center justify-center p-4">
-                    {logoUploading && (
-                      <div className="absolute inset-0 bg-white/80 flex items-center justify-center z-10">
-                        <Loader2 className="w-8 h-8 text-primary animate-spin" />
-                      </div>
-                    )}
-                    <img 
-                      src={logoPreview || formData.logoUrl} 
-                      alt="Logo Preview" 
-                      className="max-w-full max-h-full object-contain"
-                    />
-                    <button 
-                      type="button"
-                      onClick={handleRemoveLogo}
-                      className="absolute top-2 right-2 p-1.5 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors shadow-lg z-20"
-                    >
-                      <X size={14} />
-                    </button>
-                  </div>
-                ) : (
-                  <div className="w-16 h-16 bg-white rounded-2xl border border-gray-100 flex items-center justify-center mb-4 text-gray-300">
-                    {logoUploading ? <Loader2 className="w-8 h-8 animate-spin" /> : <ImageIcon size={32} />}
-                  </div>
-                )}
-                <input 
-                  type="file" 
-                  ref={logoInputRef}
-                  className="hidden" 
-                  accept={LOGO_ALLOWED_TYPES.join(",")} 
-                  onChange={handleLogoChange} 
-                  disabled={logoUploading}
-                />
-                <button 
-                  type="button"
-                  onClick={() => logoInputRef.current?.click()}
-                  disabled={logoUploading}
-                  className="bg-white border border-gray-200 hover:border-primary text-gray-600 font-bold py-2 px-6 rounded-xl transition-all text-sm shadow-sm flex items-center space-x-2 disabled:opacity-50"
-                >
-                  {logoUploading ? (
-                    <><Loader2 size={16} className="animate-spin" /> Uploading...</>
-                  ) : (
-                    <><Upload size={16} /> Choose Logo</>
-                  )}
-                </button>
-                <p className="text-[10px] text-gray-400 mt-3 font-medium">JPG, JPEG, PNG or SVG (max 5MB)</p>
-              </div>
-            </div>
-
-            <div className="space-y-4">
-              <label className="text-xs font-black text-gray-400 uppercase tracking-widest ml-1">Favicon (Browser Icon)</label>
-              <div className="flex flex-col items-center p-6 border-2 border-dashed border-gray-200 rounded-3xl hover:border-primary/30 transition-colors bg-gray-50/50">
-                {(faviconPreview || formData.faviconUrl) ? (
-                  <div className="relative w-20 h-20 rounded-2xl overflow-hidden bg-white border border-gray-100 mb-4 flex items-center justify-center p-2">
-                    {faviconUploading && (
-                      <div className="absolute inset-0 bg-white/80 flex items-center justify-center z-10">
-                        <Loader2 className="w-6 h-6 text-primary animate-spin" />
-                      </div>
-                    )}
-                    <img 
-                      src={faviconPreview || formData.faviconUrl} 
-                      alt="Favicon Preview" 
-                      className="w-full h-full object-contain"
-                    />
-                    <button 
-                      type="button"
-                      onClick={handleRemoveFavicon}
-                      className="absolute top-1 right-1 p-1 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors shadow-lg z-20"
-                    >
-                      <X size={10} />
-                    </button>
-                  </div>
-                ) : (
-                  <div className="w-16 h-16 bg-white rounded-2xl border border-gray-100 flex items-center justify-center mb-4 text-gray-300">
-                    {faviconUploading ? <Loader2 className="w-8 h-8 animate-spin" /> : <Globe size={32} />}
-                  </div>
-                )}
-                <input 
-                  type="file" 
-                  ref={faviconInputRef}
-                  className="hidden" 
-                  accept={FAVICON_ALLOWED_TYPES.join(",")} 
-                  onChange={handleFaviconChange} 
-                  disabled={faviconUploading}
-                />
-                <button 
-                  type="button"
-                  onClick={() => faviconInputRef.current?.click()}
-                  disabled={faviconUploading}
-                  className="bg-white border border-gray-200 hover:border-primary text-gray-600 font-bold py-2 px-6 rounded-xl transition-all text-sm shadow-sm flex items-center space-x-2 disabled:opacity-50"
-                >
-                  {faviconUploading ? (
-                    <><Loader2 size={16} className="animate-spin" /> Uploading...</>
-                  ) : (
-                    <><Upload size={16} /> Choose Favicon</>
-                  )}
-                </button>
-                <p className="text-[10px] text-gray-400 mt-3 font-medium">ICO, PNG, JPG, JPEG or SVG (max 1MB)</p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <div className="space-y-8">
-          <section className="bg-white p-8 md:p-10 rounded-[2.5rem] border border-gray-100 shadow-sm space-y-8">
-            <h3 className="text-xl font-black text-gray-900 flex items-center space-x-3">
-              <Instagram className="text-primary" size={24} />
-              <span>Social Presence</span>
-            </h3>
-
-            <div className="space-y-4">
-              {[
-                { id: "instagram", icon: Instagram, label: "Instagram Profile" },
-                { id: "facebook", icon: Facebook, label: "Facebook Page" },
-                { id: "twitter", icon: Twitter, label: "Twitter / X Profile" },
-                { id: "youtube", icon: Youtube, label: "YouTube Channel" },
-              ].map((social) => {
-                const Icon = social.icon;
-                return (
-                  <div key={social.id} className="space-y-2">
-                    <label className="text-xs font-black text-gray-400 uppercase tracking-widest ml-1">{social.label}</label>
-                    <div className="relative">
-                      <Icon className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
-                      <input
-                        type="url"
-                        placeholder="https://..."
-                        className="w-full bg-gray-50 border-2 border-transparent rounded-2xl py-4 pl-12 pr-6 focus:border-primary/10 focus:bg-white outline-none transition-all font-bold text-gray-900"
-                        value={(formData.socialLinks as any)[social.id]}
-                        onChange={(e) => handleSocialChange(social.id, e.target.value)}
-                      />
-                    </div>
-                  </div>
-                );
-              })}
             </div>
           </section>
 
           <section className="bg-white p-8 md:p-10 rounded-[2.5rem] border border-gray-100 shadow-sm space-y-8">
             <h3 className="text-xl font-black text-gray-900 flex items-center space-x-3">
-              <Shield className="text-primary" size={24} />
-              <span>Security</span>
+              <ImageIcon className="text-primary" size={24} />
+              <span>Branding</span>
             </h3>
 
-            <div className="space-y-4">
-              <div className="space-y-2">
-                <label className="text-xs font-black text-gray-400 uppercase tracking-widest ml-1">Admin Username</label>
-                <input
-                  type="text"
-                  className="w-full bg-gray-50 border-2 border-transparent rounded-2xl py-4 px-6 focus:border-primary/10 focus:bg-white outline-none transition-all font-bold text-gray-900"
-                  value={formData.adminUsername}
-                  onChange={(e) => setFormData({ ...formData, adminUsername: e.target.value })}
-                />
-              </div>
-              <div className="space-y-2">
-                <label className="text-xs font-black text-gray-400 uppercase tracking-widest ml-1">Admin Email</label>
-                <div className="relative">
-                  <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
-                  <input
-                    type="email"
-                    placeholder="admin@example.com"
-                    className="w-full bg-gray-50 border-2 border-transparent rounded-2xl py-4 pl-12 pr-6 focus:border-primary/10 focus:bg-white outline-none transition-all font-bold text-gray-900"
-                    value={formData.adminEmail}
-                    onChange={(e) => setFormData({ ...formData, adminEmail: e.target.value })}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div className="space-y-4">
+                <label className="text-xs font-black text-gray-400 uppercase tracking-widest ml-1">Sidebar Logo</label>
+                <div className="flex flex-col items-center p-6 border-2 border-dashed border-gray-200 rounded-3xl hover:border-primary/30 transition-colors bg-gray-50/50">
+                  {(logoPreview || formData.logoUrl) ? (
+                    <div className="relative w-full aspect-video rounded-2xl overflow-hidden bg-white border border-gray-100 mb-4 flex items-center justify-center p-4">
+                      {logoUploading && (
+                        <div className="absolute inset-0 bg-white/80 flex items-center justify-center z-10">
+                          <Loader2 className="w-8 h-8 text-primary animate-spin" />
+                        </div>
+                      )}
+                      <img 
+                        src={logoPreview || formData.logoUrl} 
+                        alt="Logo Preview" 
+                        className="max-w-full max-h-full object-contain"
+                      />
+                      <button 
+                        type="button"
+                        onClick={handleRemoveLogo}
+                        className="absolute top-2 right-2 p-1.5 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors shadow-lg z-20"
+                      >
+                        <X size={14} />
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="w-16 h-16 bg-white rounded-2xl border border-gray-100 flex items-center justify-center mb-4 text-gray-300">
+                      {logoUploading ? <Loader2 className="w-8 h-8 animate-spin" /> : <ImageIcon size={32} />}
+                    </div>
+                  )}
+                  <input 
+                    type="file" 
+                    ref={logoInputRef}
+                    className="hidden" 
+                    accept={LOGO_ALLOWED_TYPES.join(",")} 
+                    onChange={handleLogoChange} 
+                    disabled={logoUploading}
                   />
+                  <button 
+                    type="button"
+                    onClick={() => logoInputRef.current?.click()}
+                    disabled={logoUploading}
+                    className="bg-white border border-gray-200 hover:border-primary text-gray-600 font-bold py-2 px-6 rounded-xl transition-all text-sm shadow-sm flex items-center space-x-2 disabled:opacity-50"
+                  >
+                    {logoUploading ? (
+                      <><Loader2 size={16} className="animate-spin" /> Uploading...</>
+                    ) : (
+                      <><Upload size={16} /> Choose Logo</>
+                    )}
+                  </button>
+                  <p className="text-[10px] text-gray-400 mt-3 font-medium">JPG, JPEG, PNG or SVG (max 5MB)</p>
                 </div>
               </div>
 
-              <div className="space-y-4 pt-2">
-                <label className="text-xs font-black text-gray-400 uppercase tracking-widest ml-1">Additional Security Emails</label>
-                <div className="flex gap-2">
-                  <div className="relative flex-1">
+              <div className="space-y-4">
+                <label className="text-xs font-black text-gray-400 uppercase tracking-widest ml-1">Favicon (Browser Icon)</label>
+                <div className="flex flex-col items-center p-6 border-2 border-dashed border-gray-200 rounded-3xl hover:border-primary/30 transition-colors bg-gray-50/50">
+                  {(faviconPreview || formData.faviconUrl) ? (
+                    <div className="relative w-20 h-20 rounded-2xl overflow-hidden bg-white border border-gray-100 mb-4 flex items-center justify-center p-2">
+                      {faviconUploading && (
+                        <div className="absolute inset-0 bg-white/80 flex items-center justify-center z-10">
+                          <Loader2 className="w-6 h-6 text-primary animate-spin" />
+                        </div>
+                      )}
+                      <img 
+                        src={faviconPreview || formData.faviconUrl} 
+                        alt="Favicon Preview" 
+                        className="w-full h-full object-contain"
+                      />
+                      <button 
+                        type="button"
+                        onClick={handleRemoveFavicon}
+                        className="absolute top-1 right-1 p-1 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors shadow-lg z-20"
+                      >
+                        <X size={10} />
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="w-16 h-16 bg-white rounded-2xl border border-gray-100 flex items-center justify-center mb-4 text-gray-300">
+                      {faviconUploading ? <Loader2 className="w-8 h-8 animate-spin" /> : <Globe size={32} />}
+                    </div>
+                  )}
+                  <input 
+                    type="file" 
+                    ref={faviconInputRef}
+                    className="hidden" 
+                    accept={FAVICON_ALLOWED_TYPES.join(",")} 
+                    onChange={handleFaviconChange} 
+                    disabled={faviconUploading}
+                  />
+                  <button 
+                    type="button"
+                    onClick={() => faviconInputRef.current?.click()}
+                    disabled={faviconUploading}
+                    className="bg-white border border-gray-200 hover:border-primary text-gray-600 font-bold py-2 px-6 rounded-xl transition-all text-sm shadow-sm flex items-center space-x-2 disabled:opacity-50"
+                  >
+                    {faviconUploading ? (
+                      <><Loader2 size={16} className="animate-spin" /> Uploading...</>
+                    ) : (
+                      <><Upload size={16} /> Choose Favicon</>
+                    )}
+                  </button>
+                  <p className="text-[10px] text-gray-400 mt-3 font-medium">ICO, PNG, JPG, JPEG or SVG (max 1MB)</p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <div className="space-y-8">
+            <section className="bg-white p-8 md:p-10 rounded-[2.5rem] border border-gray-100 shadow-sm space-y-8">
+              <h3 className="text-xl font-black text-gray-900 flex items-center space-x-3">
+                <Instagram className="text-primary" size={24} />
+                <span>Social Presence</span>
+              </h3>
+
+              <div className="space-y-4">
+                {[
+                  { id: "instagram", icon: Instagram, label: "Instagram Profile" },
+                  { id: "facebook", icon: Facebook, label: "Facebook Page" },
+                  { id: "twitter", icon: Twitter, label: "Twitter / X Profile" },
+                  { id: "youtube", icon: Youtube, label: "YouTube Channel" },
+                ].map((social) => {
+                  const Icon = social.icon;
+                  return (
+                    <div key={social.id} className="space-y-2">
+                      <label className="text-xs font-black text-gray-400 uppercase tracking-widest ml-1">{social.label}</label>
+                      <div className="relative">
+                        <Icon className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+                        <input
+                          type="url"
+                          placeholder="https://..."
+                          className="w-full bg-gray-50 border-2 border-transparent rounded-2xl py-4 pl-12 pr-6 focus:border-primary/10 focus:bg-white outline-none transition-all font-bold text-gray-900"
+                          value={(formData.socialLinks as any)[social.id]}
+                          onChange={(e) => handleSocialChange(social.id, e.target.value)}
+                        />
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </section>
+
+            <section className="bg-white p-8 md:p-10 rounded-[2.5rem] border border-gray-100 shadow-sm space-y-8">
+              <h3 className="text-xl font-black text-gray-900 flex items-center space-x-3">
+                <Shield className="text-primary" size={24} />
+                <span>Security</span>
+              </h3>
+
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <label className="text-xs font-black text-gray-400 uppercase tracking-widest ml-1">Admin Username</label>
+                  <input
+                    type="text"
+                    className="w-full bg-gray-50 border-2 border-transparent rounded-2xl py-4 px-6 focus:border-primary/10 focus:bg-white outline-none transition-all font-bold text-gray-900"
+                    value={formData.adminUsername}
+                    onChange={(e) => setFormData({ ...formData, adminUsername: e.target.value })}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-xs font-black text-gray-400 uppercase tracking-widest ml-1">Admin Email</label>
+                  <div className="relative">
                     <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
                     <input
                       type="email"
-                      placeholder="Add another email..."
+                      placeholder="admin@example.com"
                       className="w-full bg-gray-50 border-2 border-transparent rounded-2xl py-4 pl-12 pr-6 focus:border-primary/10 focus:bg-white outline-none transition-all font-bold text-gray-900"
-                      value={newEmail}
-                      onChange={(e) => setNewEmail(e.target.value)}
-                      onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), handleAddEmail())}
+                      value={formData.adminEmail}
+                      onChange={(e) => setFormData({ ...formData, adminEmail: e.target.value })}
                     />
                   </div>
-                  <button
-                    type="button"
-                    onClick={handleAddEmail}
-                    className="bg-gray-900 text-white p-4 rounded-2xl hover:bg-gray-800 transition-all active:scale-95"
-                  >
-                    <Plus size={24} />
-                  </button>
                 </div>
 
-                <div className="flex flex-wrap gap-2">
-                  {formData.additionalEmails.map((email) => (
-                    <div 
-                      key={email}
-                      className="bg-blue-50 text-primary px-4 py-2 rounded-xl flex items-center space-x-2 border border-blue-100 group animate-in fade-in zoom-in duration-200"
-                    >
-                      <span className="font-bold text-sm">{email}</span>
-                      <button
-                        type="button"
-                        onClick={() => handleRemoveEmail(email)}
-                        className="text-primary/40 hover:text-red-500 transition-colors"
-                      >
-                        <X size={16} />
-                      </button>
+                <div className="space-y-4 pt-2">
+                  <label className="text-xs font-black text-gray-400 uppercase tracking-widest ml-1">Additional Security Emails</label>
+                  <div className="flex gap-2">
+                    <div className="relative flex-1">
+                      <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+                      <input
+                        type="email"
+                        placeholder="Add another email..."
+                        className="w-full bg-gray-50 border-2 border-transparent rounded-2xl py-4 pl-12 pr-6 focus:border-primary/10 focus:bg-white outline-none transition-all font-bold text-gray-900"
+                        value={newEmail}
+                        onChange={(e) => setNewEmail(e.target.value)}
+                        onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), handleAddEmail())}
+                      />
                     </div>
-                  ))}
-                  {formData.additionalEmails.length === 0 && (
-                    <p className="text-xs text-gray-400 italic ml-1">No additional emails added</p>
-                  )}
+                    <button
+                      type="button"
+                      onClick={handleAddEmail}
+                      className="bg-gray-900 text-white p-4 rounded-2xl hover:bg-gray-800 transition-all active:scale-95"
+                    >
+                      <Plus size={24} />
+                    </button>
+                  </div>
+
+                  <div className="flex flex-wrap gap-2">
+                    {formData.additionalEmails.map((email) => (
+                      <div 
+                        key={email}
+                        className="bg-blue-50 text-primary px-4 py-2 rounded-xl flex items-center space-x-2 border border-blue-100 group animate-in fade-in zoom-in duration-200"
+                      >
+                        <span className="font-bold text-sm">{email}</span>
+                        <button
+                          type="button"
+                          onClick={() => handleRemoveEmail(email)}
+                          className="text-primary/40 hover:text-red-500 transition-colors"
+                        >
+                          <X size={16} />
+                        </button>
+                      </div>
+                    ))}
+                    {formData.additionalEmails.length === 0 && (
+                      <p className="text-xs text-gray-400 italic ml-1">No additional emails added</p>
+                    )}
+                  </div>
                 </div>
+
+                <div className="space-y-2">
+                  <label className="text-xs font-black text-gray-400 uppercase tracking-widest ml-1">Admin Password</label>
+                  <input
+                    type="password"
+                    placeholder="Leave empty to keep current"
+                    className="w-full bg-gray-50 border-2 border-transparent rounded-2xl py-4 px-6 focus:border-primary/10 focus:bg-white outline-none transition-all font-bold text-gray-900"
+                    value={formData.adminPassword}
+                    onChange={(e) => setFormData({ ...formData, adminPassword: e.target.value })}
+                  />
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+      ) : (
+        // SEO Tab
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <section className="bg-white p-8 md:p-10 rounded-[2.5rem] border border-gray-100 shadow-sm space-y-8">
+            <h3 className="text-xl font-black text-gray-900 flex items-center space-x-3">
+              <FileText className="text-primary" size={24} />
+              <span>SEO Settings</span>
+            </h3>
+
+            <div className="space-y-6">
+              <div className="space-y-2">
+                <label className="text-xs font-black text-gray-400 uppercase tracking-widest ml-1">Meta Title</label>
+                <div className="relative group">
+                  <FileText className="absolute left-4 top-6 text-gray-400 group-focus-within:text-primary transition-colors" size={18} />
+                  <input
+                    type="text"
+                    placeholder="SEO title for search engines"
+                    className="w-full bg-gray-50 border-2 border-transparent rounded-2xl py-4 pl-12 pr-6 focus:border-primary/10 focus:bg-white outline-none transition-all font-bold text-gray-900"
+                    value={formData.metaTitle}
+                    onChange={(e) => setFormData({ ...formData, metaTitle: e.target.value })}
+                  />
+                </div>
+                <p className="text-[10px] text-gray-400 font-medium ml-1">Recommended: 50-60 characters</p>
               </div>
 
               <div className="space-y-2">
-                <label className="text-xs font-black text-gray-400 uppercase tracking-widest ml-1">Admin Password</label>
-                <input
-                  type="password"
-                  placeholder="Leave empty to keep current"
-                  className="w-full bg-gray-50 border-2 border-transparent rounded-2xl py-4 px-6 focus:border-primary/10 focus:bg-white outline-none transition-all font-bold text-gray-900"
-                  value={formData.adminPassword}
-                  onChange={(e) => setFormData({ ...formData, adminPassword: e.target.value })}
-                />
+                <label className="text-xs font-black text-gray-400 uppercase tracking-widest ml-1">Meta Description</label>
+                <div className="relative group">
+                  <FileText className="absolute left-4 top-6 text-gray-400 group-focus-within:text-primary transition-colors" size={18} />
+                  <textarea
+                    placeholder="SEO description for search engines"
+                    rows={4}
+                    className="w-full bg-gray-50 border-2 border-transparent rounded-2xl py-4 pl-12 pr-6 focus:border-primary/10 focus:bg-white outline-none transition-all font-bold text-gray-900 resize-none"
+                    value={formData.metaDescription}
+                    onChange={(e) => setFormData({ ...formData, metaDescription: e.target.value })}
+                  />
+                </div>
+                <p className="text-[10px] text-gray-400 font-medium ml-1">Recommended: 150-160 characters</p>
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-xs font-black text-gray-400 uppercase tracking-widest ml-1">Logo Alt Text</label>
+                <div className="relative group">
+                  <ImageIcon className="absolute left-4 top-6 text-gray-400 group-focus-within:text-primary transition-colors" size={18} />
+                  <input
+                    type="text"
+                    placeholder="Alternative text for logo image"
+                    className="w-full bg-gray-50 border-2 border-transparent rounded-2xl py-4 pl-12 pr-6 focus:border-primary/10 focus:bg-white outline-none transition-all font-bold text-gray-900"
+                    value={formData.logoAltText}
+                    onChange={(e) => setFormData({ ...formData, logoAltText: e.target.value })}
+                  />
+                </div>
+                <p className="text-[10px] text-gray-400 font-medium ml-1">Describes the logo for accessibility and SEO</p>
               </div>
             </div>
           </section>
         </div>
-      </div>
+      )}
     </form>
   );
 }
