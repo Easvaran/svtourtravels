@@ -12,6 +12,10 @@ const ServiceSchema = new Schema(
       enum: ["active", "inactive", "deleted"], 
       default: "active" 
     },
+    // SEO Fields
+    metaTitle: { type: String, default: "" },
+    metaDescription: { type: String, default: "" },
+    altText: { type: String, default: "" },
   },
   { timestamps: true }
 );
