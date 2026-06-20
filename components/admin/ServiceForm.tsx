@@ -317,12 +317,12 @@ export default function ServiceForm({ initialData, isEdit = false }: ServiceForm
             
             <div className="bg-white rounded-[2.5rem] border border-gray-100 shadow-sm overflow-hidden flex flex-col h-full text-gray-900">
               {/* Service Image */}
-              <div className="relative h-48 w-full overflow-hidden">
+              <div className="relative aspect-video w-full overflow-hidden">
                 <SafeImage 
                   src={formData.image || "https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?q=80&w=2070&auto=format&fit=crop"} 
                   alt={formData.altText || formData.title} 
                   fill 
-                  className="object-cover"
+                  className="object-contain"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
               </div>

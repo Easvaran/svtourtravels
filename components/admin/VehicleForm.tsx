@@ -417,7 +417,7 @@ export default function VehicleForm({ initialData, isEdit = false }: VehicleForm
                   src={formData.thumbnail || "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?q=80&w=2070&auto=format&fit=crop"} 
                   alt={formData.altText || "Preview"} 
                   fill
-                  className="object-cover"
+                  className="object-contain"
                 />
               </div>
               <h5 className="text-lg font-black mb-4 text-center">{formData.name || "Vehicle Name"}</h5>

@@ -72,7 +72,7 @@ export default function VehicleTable({ vehicles, onDelete }: VehicleTableProps) 
           >
             {/* Image Preview */}
             <div className="relative aspect-video overflow-hidden">
-              <SafeImage src={vehicle.thumbnail} alt={vehicle.name} fill className="object-cover group-hover:scale-105 transition-transform duration-500" />
+              <SafeImage src={vehicle.thumbnail} alt={vehicle.name} fill className="object-contain group-hover:scale-105 transition-transform duration-500" />
               <div className="absolute top-4 left-4 flex gap-2">
                 <span className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest flex items-center gap-1.5 shadow-lg ${
                   vehicle.status === 'active' ? 'bg-green-500 text-white' : 'bg-gray-500 text-white'

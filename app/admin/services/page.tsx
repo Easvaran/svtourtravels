@@ -124,12 +124,12 @@ export default function AdminServicesPage() {
                 className="bg-white rounded-[2.5rem] border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-500 group overflow-hidden flex flex-col"
               >
                 {/* Image Preview */}
-                <div className="relative h-48 w-full overflow-hidden bg-gray-50">
+                <div className="relative aspect-video w-full overflow-hidden bg-gray-50">
                   <SafeImage 
                     src={service.image || "https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?q=80&w=2070&auto=format&fit=crop"} 
                     alt={service.title} 
                     fill 
-                    className="object-cover group-hover:scale-105 transition-transform duration-500"
+                    className="object-contain group-hover:scale-105 transition-transform duration-500"
                   />
                   <div className="absolute inset-0 bg-black/10" />
                   

@@ -30,12 +30,12 @@ const VehicleCard = ({ vehicle, isSelected, onSelect }: VehicleCardProps) => {
 
       {/* Image Section */}
       <div className="p-2">
-        <div className="relative h-64 w-full rounded-3xl overflow-hidden bg-gray-50">
+        <div className="relative aspect-video w-full rounded-3xl overflow-hidden bg-gray-50">
           <SafeImage 
             src={vehicle.image} 
             alt={vehicle.name}
             fill
-            className="object-cover transition-transform duration-700 group-hover:scale-110"
+            className="object-contain transition-transform duration-700 group-hover:scale-105"
           />
         </div>
       </div>

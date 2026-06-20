@@ -85,12 +85,12 @@ const ServicesSection = () => {
                   className="bg-white rounded-[2.5rem] border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-500 group overflow-hidden flex flex-col h-full"
                 >
                   {/* Service Image */}
-                  <div className="relative h-64 w-full overflow-hidden">
+                  <div className="relative aspect-video w-full overflow-hidden">
                     <SafeImage 
                       src={service.image || "https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?q=80&w=2070&auto=format&fit=crop"} 
                       alt={service.title} 
                       fill 
-                      className="object-cover transition-transform duration-700 group-hover:scale-110"
+                      className="object-contain transition-transform duration-700 group-hover:scale-105"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
                   </div>
