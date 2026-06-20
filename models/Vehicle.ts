@@ -24,6 +24,10 @@ const VehicleSchema = new Schema(
       default: "active" 
     },
     note: { type: String, default: "" },
+    // SEO Fields
+    metaTitle: { type: String, default: "" },
+    metaDescription: { type: String, default: "" },
+    altText: { type: String, default: "" },
   },
   { timestamps: true }
 );
