@@ -1,17 +1,13 @@
 import FAQSection, { FAQSchema } from "@/components/FAQSection";
 import HomeClient from "./HomeClient";
+import { buildPageMetadata } from "@/lib/seo";
 
-export const metadata = {
-  title: "SV Tour and Travels | Taxi Service in Puducherry & Pondicherry Cab Booking",
-  description: "SV Tour and Travels offers reliable taxi service in Puducherry, Pondicherry cab booking, Chennai airport pickup and drop, outstation taxi, and tour packages. Call +91 8668076871.",
-  keywords: ["Taxi Service in Puducherry", "Pondicherry Taxi", "Cab Booking Puducherry", "Chennai Airport Taxi", "Airport Pickup and Drop", "Outstation Taxi Puducherry", "Local Taxi Service", "Tour Packages Puducherry", "One Way Taxi", "Round Trip Taxi"],
-  openGraph: {
-    title: "SV Tour and Travels | Taxi Service in Puducherry & Pondicherry Cab Booking",
-    description: "SV Tour and Travels offers reliable taxi service in Puducherry, Pondicherry cab booking, Chennai airport pickup and drop, outstation taxi, and tour packages.",
-    url: "https://www.svtourandtravels.com",
-    type: "website"
-  }
-};
+export const metadata = buildPageMetadata({
+  title: "Taxi Service in Puducherry | Chennai Airport Pickup & Outstation Cabs",
+  description: "Book reliable taxi service in Puducherry and Pondicherry with SV Tour and Travels for Chennai airport pickup, local rides, outstation cabs, and tour packages.",
+  path: "/",
+  image: "https://images.unsplash.com/photo-1488646953014-85cb44e25828?q=80&w=2070&auto=format&fit=crop",
+});
 
 export default function Home() {
   return (

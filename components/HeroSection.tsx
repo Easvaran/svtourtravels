@@ -49,7 +49,7 @@ const HeroSection = () => {
         >
           <SafeImage
             src={slides[currentSlide].image}
-            alt="Taxi Service Hero"
+            alt={`SV Tour and Travels ${slides[currentSlide].title} in Puducherry`}
             fill
             priority
             className="object-cover"
@@ -89,6 +89,7 @@ const HeroSection = () => {
             >
               <a 
                 href="tel:8668076871"
+                aria-label="Call SV Tour and Travels for taxi booking"
                 className="inline-flex items-center justify-center gap-3 bg-emerald-500 hover:bg-emerald-600 text-white font-bold px-8 py-4 rounded-xl transition-all hover:shadow-xl hover:-translate-y-1 active:scale-95 text-lg w-full sm:w-auto"
               >
                 <Phone size={24} />
@@ -116,6 +117,7 @@ const HeroSection = () => {
           <button
             key={index}
             onClick={() => setCurrentSlide(index)}
+            aria-label={`Show slide ${index + 1}`}
             className={cn(
               "h-1.5 rounded-full transition-all duration-300",
               currentSlide === index ? "w-8 bg-emerald-500" : "w-4 bg-white/30"

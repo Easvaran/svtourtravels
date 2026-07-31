@@ -88,7 +88,7 @@ const ServicesSection = () => {
                   <div className="relative aspect-video w-full overflow-hidden">
                     <SafeImage 
                       src={service.image || "https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?q=80&w=2070&auto=format&fit=crop"} 
-                      alt={service.title} 
+                      alt={`${service.title} by SV Tour and Travels`} 
                       fill 
                       className="object-contain transition-transform duration-700 group-hover:scale-105"
                     />

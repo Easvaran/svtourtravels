@@ -88,7 +88,7 @@ const ToursSection = () => {
               >
                 {tour.image ? (
                   <div className="relative aspect-video w-full overflow-hidden">
-                    <SafeImage src={tour.image} alt={`${tour.from} to ${tour.to}`} fill className="object-cover group-hover:scale-110 transition-transform duration-700" />
+                    <SafeImage src={tour.image} alt={`Taxi from ${tour.from} to ${tour.to} by SV Tour and Travels`} fill className="object-cover group-hover:scale-110 transition-transform duration-700" />
                     {tour.isPopular && (
                       <div className="absolute top-4 right-4 bg-yellow-400 text-gray-900 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest flex items-center gap-1.5 shadow-lg z-10">
                         <Star size={10} className="fill-current" />

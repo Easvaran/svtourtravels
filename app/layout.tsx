@@ -56,7 +56,7 @@ export const metadata: Metadata = {
       "Reliable taxi services in Puducherry: Chennai Airport pickup & drop, local rides, outstation cabs, and tour packages. Book now with SV Tour and Travels.",
     url: "https://www.svtourandtravels.com",
     siteName: "SV Tour and Travels",
-    locale: "en_IN",
+    locale: "en_US",
     type: "website",
     images: [
       {
@@ -287,6 +287,24 @@ export default function RootLayout({
                   "target": "https://www.svtourandtravels.com/search?q={search_term_string}",
                   "query-input": "required name=search_term_string"
                 }
+              },
+              {
+                "@context": "https://schema.org",
+                "@type": "BreadcrumbList",
+                "itemListElement": [
+                  {
+                    "@type": "ListItem",
+                    "position": 1,
+                    "name": "Home",
+                    "item": "https://www.svtourandtravels.com"
+                  },
+                  {
+                    "@type": "ListItem",
+                    "position": 2,
+                    "name": "Services",
+                    "item": "https://www.svtourandtravels.com/services"
+                  }
+                ]
               },
               {
                 "@context": "https://schema.org",

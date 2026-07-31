@@ -39,10 +39,10 @@ export default function FAQSection() {
   };
 
   return (
-    <section className="py-24 bg-white">
+    <section className="py-24 bg-white" aria-labelledby="faq-heading">
       <div className="max-w-4xl mx-auto px-4">
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+          <h2 id="faq-heading" className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
             Frequently Asked <span className="text-[#00bcd4]">Questions</span>
           </h2>
           <p className="text-gray-600 text-lg">
@@ -62,6 +62,8 @@ export default function FAQSection() {
             >
               <button
                 onClick={() => toggleFAQ(index)}
+                aria-expanded={openIndex === index}
+                aria-controls={`faq-answer-${index}`}
                 className="w-full flex items-center justify-between px-6 py-5 text-left bg-gray-50 hover:bg-gray-100 transition-colors"
               >
                 <span className="text-lg font-semibold text-gray-900">
@@ -82,7 +84,7 @@ export default function FAQSection() {
                     transition={{ duration: 0.3 }}
                     className="overflow-hidden"
                   >
-                    <div className="px-6 py-5 bg-white">
+                    <div id={`faq-answer-${index}`} className="px-6 py-5 bg-white">
                       <p className="text-gray-600 leading-relaxed">
                         {faq.answer}
                       </p>

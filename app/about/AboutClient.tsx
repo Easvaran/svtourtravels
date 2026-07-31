@@ -15,9 +15,9 @@ export default function AboutClient() {
   ];
 
   return (
-    <div className="pt-0 font-poppins">
+    <main className="pt-0 font-poppins">
       {/* Header */}
-      <section className="relative h-[50vh] flex items-center justify-center overflow-hidden">
+      <header className="relative h-[50vh] flex items-center justify-center overflow-hidden">
         <Image
           src="https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?q=80&w=2070&auto=format&fit=crop"
           alt="About SV Tour and Travels"
@@ -30,10 +30,10 @@ export default function AboutClient() {
           <h1 className="text-5xl md:text-8xl font-bold text-white mb-4 tracking-tighter" style={{ textShadow: "0 4px 12px rgba(0,0,0,0.3)" }}>About Us</h1>
           <div className="w-24 h-1.5 bg-[#00bcd4] mx-auto rounded-full shadow-lg shadow-[#00bcd4]/30" />
         </div>
-      </section>
+      </header>
 
       {/* Mission & Vision */}
-      <section className="py-24 bg-[#0f172a] relative overflow-hidden">
+      <section className="py-24 bg-[#0f172a] relative overflow-hidden" aria-labelledby="about-mission-title">
         <div className="absolute top-0 right-0 w-96 h-96 bg-[#00bcd4]/5 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2" />
         <div className="absolute bottom-0 left-0 w-96 h-96 bg-blue-600/5 rounded-full blur-[100px] translate-y-1/2 -translate-x-1/2" />
         
@@ -50,7 +50,7 @@ export default function AboutClient() {
             </div>
             <div className="space-y-8">
               <span className="text-[#00bcd4] font-bold tracking-[0.3em] uppercase text-sm block">Who We Are</span>
-              <h2 className="text-4xl md:text-5xl font-bold text-white leading-tight">
+              <h2 id="about-mission-title" className="text-4xl md:text-5xl font-bold text-white leading-tight">
                 Crafting Unforgettable <br />
                 <span className="text-[#00bcd4]">Travel Experiences</span>
               </h2>
@@ -79,7 +79,7 @@ export default function AboutClient() {
       </section>
 
       {/* Stats */}
-      <section className="py-24 bg-white">
+      <section className="py-24 bg-white" aria-label="Company statistics">
         <div className="max-w-7xl mx-auto px-4">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-12">
             {stats.map((stat, i) => (
@@ -96,11 +96,11 @@ export default function AboutClient() {
       </section>
 
       {/* Team / Expertise */}
-      <section className="py-24 bg-gray-50 relative overflow-hidden">
+      <section className="py-24 bg-gray-50 relative overflow-hidden" aria-labelledby="expertise-heading">
         <div className="max-w-7xl mx-auto px-4 relative z-10">
           <div className="text-center max-w-3xl mx-auto mb-20">
             <span className="text-[#00bcd4] font-bold tracking-[0.3em] uppercase text-sm mb-4 block">Our Expertise</span>
-            <h2 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">Why Choose Us?</h2>
+            <h2 id="expertise-heading" className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">Why Choose Us?</h2>
             <div className="w-20 h-1 bg-[#00bcd4] mx-auto rounded-full mb-8" />
             <p className="text-gray-500 text-lg font-medium">Our team of travel enthusiasts brings years of industry experience to help you plan the perfect getaway.</p>
           </div>
@@ -120,6 +120,6 @@ export default function AboutClient() {
           </div>
         </div>
       </section>
-    </div>
+    </main>
   );
 }

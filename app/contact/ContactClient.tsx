@@ -32,9 +32,9 @@ export default function ContactClient() {
   ];
 
   return (
-    <div className="pt-0">
+    <main className="pt-0">
       {/* Header */}
-      <section className="bg-white py-24 text-gray-900 relative overflow-hidden">
+      <header className="bg-white py-24 text-gray-900 relative overflow-hidden">
         <div className="absolute inset-0 opacity-5">
           <div className="absolute top-0 right-0 w-96 h-96 bg-primary rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl" />
           <div className="absolute bottom-0 left-0 w-64 h-64 bg-secondary rounded-full translate-y-1/2 -translate-x-1/2 blur-3xl" />
@@ -56,7 +56,7 @@ export default function ContactClient() {
             Have questions about a package or need a custom itinerary? We're here to help you plan your next journey.
           </motion.p>
         </div>
-      </section>
+      </header>
 
       {/* Contact Cards */}
       <section className="py-24 bg-white -mt-12 relative z-20">
@@ -151,6 +151,6 @@ export default function ContactClient() {
           </motion.div>
         </div>
       </section>
-    </div>
+    </main>
   );
 }

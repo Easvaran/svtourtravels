@@ -26,7 +26,7 @@ export default function HomeClient() {
   const { settings } = useSettings();
 
   return (
-    <div className="relative">
+    <main className="relative">
       <HeroSection />
 
       <TariffSection />
@@ -42,7 +42,7 @@ export default function HomeClient() {
       <FAQSection />
 
       {/* Final Call to Action */}
-      <section className="py-[80px] px-[20px]">
+      <section className="py-[80px] px-[20px]" aria-labelledby="cta-heading">
         <div className="max-w-[1200px] mx-auto">
           <div className="bg-primary rounded-[4rem] relative overflow-hidden text-center text-white shadow-[0_40px_100px_rgba(8,112,184,0.4)]">
             <div className="absolute inset-0 pointer-events-none">
@@ -55,7 +55,7 @@ export default function HomeClient() {
               <div className="absolute inset-0 bg-black/60" />
             </div>
             <div className="relative z-10 py-[80px] px-[20px]">
-              <motion.h2 
+              <motion.h2 id="cta-heading"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -88,6 +88,6 @@ export default function HomeClient() {
           </div>
         </div>
       </section>
-    </div>
+    </main>
   );
 }

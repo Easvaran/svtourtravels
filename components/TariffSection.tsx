@@ -70,7 +70,7 @@ const TariffSection = () => {
                 <div className="relative h-48 mb-8 rounded-2xl overflow-hidden bg-[#f8fafc]">
                   <SafeImage
                     src={item.thumbnail || "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?q=80&w=2070&auto=format&fit=crop"}
-                    alt={item.name}
+                    alt={`${item.name} taxi for Puducherry travel`}
                     fill
                     className="object-contain p-4"
                   />
